@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel>
+    <StackPanel Margin="30">
         <Button x:Name="ScanButton" Content="Scan" Click="ScanButton_Click"></Button>
 
         <ListView x:Name="DevicesListView"></ListView>

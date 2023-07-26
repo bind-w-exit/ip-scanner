@@ -20,7 +20,7 @@ namespace IpScanner.Ui
             var endWith = IPAddress.Parse("192.168.0.105");
 
             var scanner = Domain.Models.IpScanner.Create(startWith, endWith, _lazyListViewProvider);
-            await scanner.Start(new System.Threading.CancellationToken());
+            await scanner.StartAsync(new System.Threading.CancellationToken());
         }
     }
 }

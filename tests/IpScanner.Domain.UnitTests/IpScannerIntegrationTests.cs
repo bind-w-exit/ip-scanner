@@ -35,7 +35,7 @@ namespace IpScanner.Domain.UnitTests
             var ipScanner = Models.IpScanner.Create(from, to, lazyResultProvider);
 
             // Act
-            await ipScanner.Start(cts.Token);
+            await ipScanner.StartAsync(cts.Token);
 
             // Assert
             int notExpectedScannedDevicesCount = 0;

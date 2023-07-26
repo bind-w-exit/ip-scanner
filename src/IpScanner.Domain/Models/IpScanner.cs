@@ -1,12 +1,12 @@
-﻿using IpScanner.Domain.Interfaces;
-using System;
+﻿using IpScanner.Domain.Enums;
+using IpScanner.Domain.Exceptions;
+using IpScanner.Domain.Extensions;
+using IpScanner.Domain.Interfaces;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-
 
 namespace IpScanner.Domain.Models
 {
@@ -15,6 +15,8 @@ namespace IpScanner.Domain.Models
         private readonly int _startHostId;
         private readonly int _endHostId;
         private readonly ILazyResultProvider _resultProvider;
+        private readonly IManufactorReceiver _manufactorReceiver;
+        private readonly IMacAddressScanner _macAddressScanner;
 
         public IpScanner(int startHost, int endHost, ILazyResultProvider progressProvider)
         {
@@ -32,64 +34,39 @@ namespace IpScanner.Domain.Models
             return new IpScanner(startHostId, endHostId, progressProvider);
         }
 
-        public async Task Start(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await Task.Delay(1);
+            await Task.Run(() => StartScanning(cancellationToken));
+        }
 
-            using (var webClient = new WebClient())
+        private void StartScanning(CancellationToken cancellationToken)
+        {
+            for (int hostId = _startHostId; hostId <= _endHostId; hostId++)
             {
-                for (int i = _startHostId; i <= _endHostId; i++)
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        break;
-                    }
+                if (cancellationToken.IsCancellationRequested)
+                    break;
 
-                    var destination = IPAddress.Parse($"192.168.0.{i}");
-                    IPAddress source = null;
+                IPAddress destination = hostId.GetLocalIPAddress();
+                ScannedDevice scannedDevice = ScanDevice(destination);
 
-                    byte[] macAddr = new byte[6];
-                    uint macAddrLen = (uint)macAddr.Length;
-
-                    if (SendARP(BitConverter.ToInt32(destination.GetAddressBytes(), 0),
-                        source == null ? 0 : BitConverter.ToInt32(source.GetAddressBytes(), 0),
-                        macAddr, ref macAddrLen) != 0)
-                    {
-                        var scannedDevice = new ScannedDevice("Offline", destination.ToString(),
-                            destination, string.Empty, string.Empty, string.Empty);
-
-                        _resultProvider.Report(scannedDevice, i);
-                    }
-                    else
-                    {
-                        var address = new PhysicalAddress(macAddr);
-
-                        var mac = address.ToString();
-
-                        string oui = mac.Substring(0, 6);
-
-                        string url = $"https://api.macvendors.com/{oui}";
-                        string manufacturer = string.Empty;
-
-                        try
-                        {
-                            manufacturer = webClient.DownloadString(url);
-                        }
-                        catch (WebException)
-                        {
-                            manufacturer = string.Empty;
-                        }
-
-                        var scannedDevice = new ScannedDevice("Online", destination.ToString(),
-                            destination, manufacturer, mac, string.Empty);
-
-                        _resultProvider.Report(scannedDevice, i);
-                    }
-                }
+                _resultProvider.Report(scannedDevice, hostId);
             }
         }
 
-        [DllImport("iphlpapi.dll", ExactSpelling = true)]
-        public static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
+        private ScannedDevice ScanDevice(IPAddress destination)
+        {
+            try
+            {
+                PhysicalAddress macAddress = _macAddressScanner.GetMacAddress(destination);
+                string manufacturer = _manufactorReceiver.GetManufacturerOrEmptyString(macAddress);
+
+                return new ScannedDevice(DeviceStatus.Online, destination.ToString(), destination, 
+                    manufacturer, macAddress, string.Empty);
+            }
+            catch (MacAddressNotFoundException)
+            {
+                return new ScannedDevice(destination);
+            }
+        }
     }
 }

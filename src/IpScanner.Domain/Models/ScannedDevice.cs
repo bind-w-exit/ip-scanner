@@ -1,10 +1,23 @@
-﻿using System.Net;
+﻿using IpScanner.Domain.Enums;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace IpScanner.Domain.Models
 {
     public class ScannedDevice
     {
-        public ScannedDevice(string status, string name, IPAddress ip, string manufactor, string macAddress, string comments)
+        public ScannedDevice(IPAddress ipAddress)
+        {
+            Status = DeviceStatus.Unknown;
+            Name = ipAddress.ToString();
+            Ip = ipAddress;
+            Manufactor = string.Empty;
+            MacAddress = PhysicalAddress.None;
+            Comments = string.Empty;
+        }
+
+        public ScannedDevice(DeviceStatus status, string name, IPAddress ip, 
+            string manufactor, PhysicalAddress macAddress, string comments)
         {
             Status = status;
             Name = name;
@@ -14,11 +27,11 @@ namespace IpScanner.Domain.Models
             Comments = comments;
         }
 
-        public string Status { get; private set; }
+        public DeviceStatus Status { get; private set; }
         public string Name { get; private set; }
         public IPAddress Ip { get; private set; }
         public string Manufactor { get; private set; }
-        public string MacAddress { get; private set; }
+        public PhysicalAddress MacAddress { get; private set; }
         public string Comments { get; private set; }
 
         public override string ToString()
