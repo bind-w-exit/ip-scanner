@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Threading;
 using IpScanner.Domain.UnitTests.Mocks;
-using System;
+using System.Net;
 
 namespace IpScanner.Domain.UnitTests
 {
@@ -27,20 +27,19 @@ namespace IpScanner.Domain.UnitTests
         public async Task Start_ShouldScanNetwork()
         {
             // Arrange
-            var maxHostId = 10;
-            var lazyResultProvider = new LazyResultProviderMock(); // You need to create this mock class
-            var ipScanner = new Models.IpScanner(maxHostId, lazyResultProvider);
+            var lazyResultProvider = new LazyResultProviderMock();
+
+            var from = IPAddress.Parse("192.168.0.104");
+            var to = IPAddress.Parse($"192.168.0.106");
+
+            var ipScanner = Models.IpScanner.Create(from, to, lazyResultProvider);
 
             // Act
             await ipScanner.Start(cts.Token);
 
             // Assert
-            foreach (var item in lazyResultProvider.ScannedDevices)
-            {
-                Console.WriteLine(item.ToString());
-            }
-
-            Assert.IsTrue(true);
+            int notExpectedScannedDevicesCount = 0;
+            Assert.AreNotSame(notExpectedScannedDevicesCount, lazyResultProvider.ScannedDevices.Count);
         }
     }
 }

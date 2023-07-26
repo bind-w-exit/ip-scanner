@@ -1,48 +1,95 @@
 ﻿using IpScanner.Domain.Interfaces;
-using System.Diagnostics;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Devices.WiFiDirect;
+
 
 namespace IpScanner.Domain.Models
 {
     public class IpScanner
     {
-        private readonly int _maxHostId;
+        private readonly int _startHostId;
+        private readonly int _endHostId;
         private readonly ILazyResultProvider _resultProvider;
 
-        public IpScanner(int maxHostId, ILazyResultProvider progressProvider)
+        public IpScanner(int startHost, int endHost, ILazyResultProvider progressProvider)
         {
-            _maxHostId = maxHostId;
+            _startHostId = startHost;
+            _endHostId = endHost;
+
             _resultProvider = progressProvider;
         }
 
-        public static IpScanner Create(string ip, ILazyResultProvider progressProvider)
+        public static IpScanner Create(IPAddress start, IPAddress end, ILazyResultProvider progressProvider)
         {
-            var maxHostId = int.Parse(ip.Split('.').Last());
-            return new IpScanner(maxHostId, progressProvider);
+            var startHostId = int.Parse(start.ToString().Split('.').Last());
+            var endHostId = int.Parse(end.ToString().Split('.').Last());
+
+            return new IpScanner(startHostId, endHostId, progressProvider);
         }
 
         public async Task Start(CancellationToken cancellationToken)
         {
-            var deviceSelector = Windows.Devices.WiFiDirect.WiFiDirectDevice.GetDeviceSelector(WiFiDirectDeviceSelectorType.AssociationEndpoint);
+            await Task.Delay(1);
 
-            var devices = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(deviceSelector);
-
-            foreach (var device in devices)
+            using (var webClient = new WebClient())
             {
-                var name = device.Name;
+                for (int i = _startHostId; i <= _endHostId; i++)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
 
-                var scannedDevice = new ScannedDevice("Online", name, IPAddress.Any, string.Empty, string.Empty, string.Empty);
+                    var destination = IPAddress.Parse($"192.168.0.{i}");
+                    IPAddress source = null;
 
-                _resultProvider.Report(scannedDevice, 10);
+                    byte[] macAddr = new byte[6];
+                    uint macAddrLen = (uint)macAddr.Length;
+
+                    if (SendARP(BitConverter.ToInt32(destination.GetAddressBytes(), 0),
+                        source == null ? 0 : BitConverter.ToInt32(source.GetAddressBytes(), 0),
+                        macAddr, ref macAddrLen) != 0)
+                    {
+                        var scannedDevice = new ScannedDevice("Offline", destination.ToString(),
+                            destination, string.Empty, string.Empty, string.Empty);
+
+                        _resultProvider.Report(scannedDevice, i);
+                    }
+                    else
+                    {
+                        var address = new PhysicalAddress(macAddr);
+
+                        var mac = address.ToString();
+
+                        string oui = mac.Substring(0, 6);
+
+                        string url = $"https://api.macvendors.com/{oui}";
+                        string manufacturer = string.Empty;
+
+                        try
+                        {
+                            manufacturer = webClient.DownloadString(url);
+                        }
+                        catch (WebException)
+                        {
+                            manufacturer = string.Empty;
+                        }
+
+                        var scannedDevice = new ScannedDevice("Online", destination.ToString(),
+                            destination, manufacturer, mac, string.Empty);
+
+                        _resultProvider.Report(scannedDevice, i);
+                    }
+                }
             }
-
         }
+
+        [DllImport("iphlpapi.dll", ExactSpelling = true)]
+        public static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
     }
 }
