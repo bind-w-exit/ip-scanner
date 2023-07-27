@@ -2,7 +2,7 @@
 using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Extensions;
 using IpScanner.Domain.Interfaces;
-using System.Linq;
+using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Domain.Models
 {
-    public class IpScanner
+    public class IpScanner : IDisposable
     {
         private readonly int _startHostId;
         private readonly int _endHostId;
@@ -18,28 +18,27 @@ namespace IpScanner.Domain.Models
         private readonly IManufactorReceiver _manufactorReceiver;
         private readonly IMacAddressScanner _macAddressScanner;
 
-        public IpScanner(int startHost, int endHost, ILazyResultProvider progressProvider)
+        public IpScanner(int startHost, int endHost, ILazyResultProvider progressProvider,
+            IManufactorReceiver manufactorReceiver, IMacAddressScanner macAddressScanner)
         {
             _startHostId = startHost;
             _endHostId = endHost;
 
             _resultProvider = progressProvider;
+            _manufactorReceiver = manufactorReceiver;
+            _macAddressScanner = macAddressScanner;
         }
 
-        public static IpScanner Create(IPAddress start, IPAddress end, ILazyResultProvider progressProvider)
+        public static IpScanner Create(IPAddress start, IPAddress end, ILazyResultProvider progressProvider, 
+            IManufactorReceiver manufactorReceiver, IMacAddressScanner macAddressScanner)
         {
-            var startHostId = int.Parse(start.ToString().Split('.').Last());
-            var endHostId = int.Parse(end.ToString().Split('.').Last());
+            int startHostId = start.GetHostId();
+            int endHostId = end.GetHostId();
 
-            return new IpScanner(startHostId, endHostId, progressProvider);
+            return new IpScanner(startHostId, endHostId, progressProvider, manufactorReceiver, macAddressScanner);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await Task.Run(() => StartScanning(cancellationToken));
-        }
-
-        private void StartScanning(CancellationToken cancellationToken)
         {
             for (int hostId = _startHostId; hostId <= _endHostId; hostId++)
             {
@@ -47,18 +46,18 @@ namespace IpScanner.Domain.Models
                     break;
 
                 IPAddress destination = hostId.GetLocalIPAddress();
-                ScannedDevice scannedDevice = ScanDevice(destination);
+                ScannedDevice scannedDevice = await ScanDeviceAsync(destination);
 
                 _resultProvider.Report(scannedDevice, hostId);
             }
         }
 
-        private ScannedDevice ScanDevice(IPAddress destination)
+        private async Task<ScannedDevice> ScanDeviceAsync(IPAddress destination)
         {
             try
             {
-                PhysicalAddress macAddress = _macAddressScanner.GetMacAddress(destination);
-                string manufacturer = _manufactorReceiver.GetManufacturerOrEmptyString(macAddress);
+                PhysicalAddress macAddress = await _macAddressScanner.GetMacAddressAsync(destination);
+                string manufacturer = await _manufactorReceiver.GetManufacturerOrEmptyStringAsync(macAddress);
 
                 return new ScannedDevice(DeviceStatus.Online, destination.ToString(), destination, 
                     manufacturer, macAddress, string.Empty);
@@ -67,6 +66,11 @@ namespace IpScanner.Domain.Models
             {
                 return new ScannedDevice(destination);
             }
+        }
+
+        public void Dispose()
+        {
+            _manufactorReceiver.Dispose();
         }
     }
 }

@@ -120,7 +120,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\DeviceStatus.cs" />
+    <Compile Include="Exceptions\MacAddressNotFoundException.cs" />
+    <Compile Include="Extensions\IPAddressExtensions.cs" />
     <Compile Include="Interfaces\ILazyResultProvider.cs" />
+    <Compile Include="Interfaces\IMacAddressScanner.cs" />
+    <Compile Include="Interfaces\IManufactorReceiver.cs" />
     <Compile Include="Models\IpScanner.cs" />
     <Compile Include="Models\ScannedDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,6 +10,7 @@
 
     <StackPanel Margin="30">
         <Button x:Name="ScanButton" Content="Scan" Click="ScanButton_Click"></Button>
+        <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click"></Button>
 
         <ListView x:Name="DevicesListView"></ListView>
     </StackPanel>

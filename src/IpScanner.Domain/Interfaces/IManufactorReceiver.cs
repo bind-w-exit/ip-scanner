@@ -1,9 +1,11 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace IpScanner.Domain.Interfaces
 {
-    public interface IManufactorReceiver
+    public interface IManufactorReceiver : IDisposable
     {
-        string GetManufacturerOrEmptyString(PhysicalAddress macAddress);
+        Task<string> GetManufacturerOrEmptyStringAsync(PhysicalAddress macAddress);
     }
 }

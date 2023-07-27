@@ -1,10 +1,11 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace IpScanner.Domain.Interfaces
 {
     public interface IMacAddressScanner
     {
-        PhysicalAddress GetMacAddress(IPAddress ipAddress);
+        Task<PhysicalAddress> GetMacAddressAsync(IPAddress destination);
     }
 }
