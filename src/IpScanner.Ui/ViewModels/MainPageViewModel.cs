@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using IpScanner.Domain.Args;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
@@ -14,17 +16,21 @@ namespace IpScanner.Ui.ViewModels
     {
         private int _progress;
         private string _ipRange;
+        private string _searchText;
         private readonly IIpScannerFactory _ipScannerFactory;
         private ObservableCollection<ScannedDevice> _scannedDevices;
+        private ObservableCollection<ScannedDevice> _temporaryCollection;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         public MainPageViewModel(IIpScannerFactory factory)
         {
             Progress = 0;
             IpRange = string.Empty;
+            SearchText = string.Empty;
             ScanCommand = new AsyncRelayCommand(ScanAsync);
             CancelCommand = new RelayCommand(Cancel);
             ScannedDevices = new ObservableCollection<ScannedDevice>();
+            _temporaryCollection = new ObservableCollection<ScannedDevice>();
 
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
@@ -34,6 +40,16 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _ipRange;
             set => SetProperty(ref _ipRange, value);
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                SetProperty(ref _searchText, value);
+                FilterDevices();
+            }
         }
         
         public int Progress
@@ -77,6 +93,37 @@ namespace IpScanner.Ui.ViewModels
                 ScannedDevices.Add(e.ScannedDevice);
                 Progress = e.CurrentProgress;
             });
+        }
+
+        private void FilterDevices()
+        {
+            if (ScannedDevices == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                ScannedDevices.Clear();
+                AddDivicesToView(_temporaryCollection);
+            }
+            else
+            {
+                var filteredDevices = _scannedDevices.Where(_scannedDevices => _scannedDevices.Name.Contains(SearchText)).ToList();
+                
+                _temporaryCollection = new ObservableCollection<ScannedDevice>(_scannedDevices);
+
+                ScannedDevices.Clear();
+                AddDivicesToView(filteredDevices);
+            }
+        }
+
+        private void AddDivicesToView(IEnumerable<ScannedDevice> scannedDevices)
+        {
+            foreach (var item in scannedDevices)
+            {
+                ScannedDevices.Add(item);
+            }
         }
     }
 }

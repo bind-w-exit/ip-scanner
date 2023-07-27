@@ -9,15 +9,26 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel>
+    <StackPanel Padding="6">
         <StackPanel Orientation="Horizontal">
             <Button x:Name="ScanButton" Content="Scan" Command="{Binding ScanCommand}"></Button>
             <Button x:Name="StopButton" Content="Stop" Command="{Binding CancelCommand}"></Button>
         </StackPanel>
 
-        <TextBox x:Name="IpTextBox" Text="{Binding IpRange, Mode=TwoWay}" PlaceholderText="Exaple: 192.168.0.1-100, 192.168.0.200"></TextBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices}" AutoGenerateColumns="False">
+            <TextBox x:Name="IpTextBox" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" 
+                     PlaceholderText="Exaple: 192.168.0.1-100, 192.168.0.200"></TextBox>
+            <TextBox x:Name="SearchTextBox" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" 
+                     PlaceholderText="Search" Width="250"></TextBox>
+        </Grid>
+
+        <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
+                           AutoGenerateColumns="False" MinHeight="600">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                 <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
