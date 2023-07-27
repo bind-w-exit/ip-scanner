@@ -21,10 +21,10 @@
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                 <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}" />
+                <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}"/>
                 <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
                 <controls:DataGridTextColumn Header="MAC Address" Binding="{Binding MacAddress}" />
-                <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+                <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" Width="*" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         

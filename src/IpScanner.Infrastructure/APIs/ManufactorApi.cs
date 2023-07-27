@@ -17,7 +17,9 @@ namespace IpScanner.Infrastructure.APIs
             try
             {
                 Uri uri = macAddress.GetUrlToFindManufacturer();
-                return await GetAsStringAsync(uri);
+                string manufacturer = await GetAsStringAsync(uri);
+
+                return manufacturer;
             }
             catch (HttpRequestException)
             {
