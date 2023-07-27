@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -9,14 +11,21 @@ namespace IpScanner.Ui
 {
     sealed partial class App : Application
     {
+        private readonly IServiceCollection _serviceCollection;
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            _serviceCollection = new ServiceCollection();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            Ioc.Default.ConfigureServices(_serviceCollection.ConfigureServices()
+                .BuildServiceProvider());
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)

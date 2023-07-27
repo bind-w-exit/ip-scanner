@@ -120,15 +120,20 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Args\ScannedDeviceEventArgs.cs" />
     <Compile Include="Enums\DeviceStatus.cs" />
+    <Compile Include="Exceptions\IpValidationException.cs" />
     <Compile Include="Exceptions\MacAddressNotFoundException.cs" />
     <Compile Include="Extensions\IPAddressExtensions.cs" />
-    <Compile Include="Interfaces\ILazyResultProvider.cs" />
+    <Compile Include="Factories\IIpScannerFactory.cs" />
+    <Compile Include="Factories\IpScannerFactory.cs" />
     <Compile Include="Interfaces\IMacAddressScanner.cs" />
     <Compile Include="Interfaces\IManufactorReceiver.cs" />
     <Compile Include="Models\IpScanner.cs" />
     <Compile Include="Models\ScannedDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\IpRangeValidator.cs" />
+    <Compile Include="Validators\IValidator.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Domain.rd.xml" />
   </ItemGroup>
   <ItemGroup>

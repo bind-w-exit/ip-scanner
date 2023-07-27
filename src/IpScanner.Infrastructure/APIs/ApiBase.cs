@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure.APIs
@@ -16,15 +16,16 @@ namespace IpScanner.Infrastructure.APIs
 
         protected async Task<T> GetAsync<T>(Uri uri)
         {
+            string content = await GetAsStringAsync(uri);
+            return JsonSerializer.Deserialize<T>(content);
+        }
+
+        protected async Task<string> GetAsStringAsync(Uri uri)
+        {
             HttpResponseMessage response = await _httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsAsync<T>();
-        }
-
-        public virtual void Dispose()
-        {
-            _httpClient.Dispose();
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

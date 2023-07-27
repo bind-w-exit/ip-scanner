@@ -9,7 +9,7 @@ namespace IpScanner.Infrastructure.APIs
 {
     public class ManufactorApi : ApiBase, IManufactorReceiver
     {
-        public ManufactorApi() : base(new HttpClient())
+        public ManufactorApi(HttpClient httpClient) : base(httpClient)
         { }
 
         public async Task<string> GetManufacturerOrEmptyStringAsync(PhysicalAddress macAddress)
@@ -17,7 +17,7 @@ namespace IpScanner.Infrastructure.APIs
             try
             {
                 Uri uri = macAddress.GetUrlToFindManufacturer();
-                return await GetAsync<string>(uri);
+                return await GetAsStringAsync(uri);
             }
             catch (HttpRequestException)
             {

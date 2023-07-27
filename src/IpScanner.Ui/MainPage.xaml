@@ -5,13 +5,29 @@
     xmlns:local="using:IpScanner.Ui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Margin="30">
-        <Button x:Name="ScanButton" Content="Scan" Click="ScanButton_Click"></Button>
-        <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click"></Button>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="ScanButton" Content="Scan" Command="{Binding ScanCommand}"></Button>
+            <Button x:Name="StopButton" Content="Stop" Command="{Binding CancelCommand}"></Button>
+        </StackPanel>
 
-        <ListView x:Name="DevicesListView"></ListView>
+        <TextBox x:Name="IpTextBox" Text="{Binding IpRange, Mode=TwoWay}" PlaceholderText="Exaple: 192.168.0.1-100, 192.168.0.200"></TextBox>
+
+        <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices}" AutoGenerateColumns="False">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}" />
+                <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
+                <controls:DataGridTextColumn Header="MAC Address" Binding="{Binding MacAddress}" />
+                <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        
+        <ProgressBar x:Name="ScanProgressBar" Value="{Binding Progress, Mode=TwoWay}"></ProgressBar>
     </StackPanel>
 </Page>

@@ -119,6 +119,8 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IpRangeValidatorUnitTests.cs" />
+    <Compile Include="IpScannerFactoryUnitTests.cs" />
     <Compile Include="IpScannerIntegrationTests.cs" />
     <Compile Include="Mocks\LazyResultProviderMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,6 +158,9 @@
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
       <Version>2.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="NSubstitute">
+      <Version>5.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
