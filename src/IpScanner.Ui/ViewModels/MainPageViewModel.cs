@@ -17,12 +17,11 @@ using Windows.System;
 
 namespace IpScanner.Ui.ViewModels
 {
-    public class MainPageViewModel : ObservableValidator, IDisposable
+    public class MainPageViewModel : ValidationViewModel, IDisposable
     {
         private int _progress;
         private string _ipRange;
         private string _searchText;
-        private string _validationMessage;
         private readonly IIpScannerFactory _ipScannerFactory;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
@@ -37,7 +36,6 @@ namespace IpScanner.Ui.ViewModels
             SearchText = string.Empty;
             ScannedDevices = new ObservableCollection<ScannedDevice>();
             _temporaryCollection = new ObservableCollection<ScannedDevice>();
-            _validationMessage = string.Empty;
 
             _ipScannerFactory = factory;
             _navigationService = navigationService;
@@ -80,12 +78,6 @@ namespace IpScanner.Ui.ViewModels
         public AsyncRelayCommand ScanCommand { get => new AsyncRelayCommand(ScanAsync); }
 
         public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
-
-        public string ValidationMessage
-        {
-            get => _validationMessage;
-            set => SetProperty(ref _validationMessage, value);
-        }
 
         public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
 
