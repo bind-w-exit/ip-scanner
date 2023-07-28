@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IpScanner.Domain.Args;
+using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
 using IpScanner.Ui.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +17,12 @@ using Windows.System;
 
 namespace IpScanner.Ui.ViewModels
 {
-    public class MainPageViewModel : ObservableObject
+    public class MainPageViewModel : ObservableValidator, IDisposable
     {
         private int _progress;
         private string _ipRange;
         private string _searchText;
+        private string _validationMessage;
         private readonly IIpScannerFactory _ipScannerFactory;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
@@ -33,17 +37,22 @@ namespace IpScanner.Ui.ViewModels
             SearchText = string.Empty;
             ScannedDevices = new ObservableCollection<ScannedDevice>();
             _temporaryCollection = new ObservableCollection<ScannedDevice>();
+            _validationMessage = string.Empty;
 
             _ipScannerFactory = factory;
             _navigationService = navigationService;
-            _cancellationTokenSource = new CancellationTokenSource();
             _localizationService = localizationService;
+            _cancellationTokenSource = new CancellationTokenSource();
         }
 
         public string IpRange
         {
             get => _ipRange;
-            set => SetProperty(ref _ipRange, value);
+            set
+            {
+                ValidationMessage = string.Empty;
+                SetProperty(ref _ipRange, value);
+            }
         }
 
         public string SearchText
@@ -72,19 +81,27 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
 
-        public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
-
-        public void Dispose()
+        public string ValidationMessage
         {
-            _cancellationTokenSource.Dispose();
+            get => _validationMessage;
+            set => SetProperty(ref _validationMessage, value);
         }
+
+        public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
 
         private async Task ScanAsync()
         {
-            var scanner = _ipScannerFactory.CreateBasedOnIpRange(IpRange);
-            scanner.DeviceScanned += DeviceScannedHandler;
+            try
+            {
+                var scanner = _ipScannerFactory.CreateBasedOnIpRange(IpRange);
+                scanner.DeviceScanned += DeviceScannedHandler;
 
-            await scanner.StartAsync(_cancellationTokenSource.Token);
+                await scanner.StartAsync(_cancellationTokenSource.Token);
+            }
+            catch (IpValidationException e)
+            {
+                ValidationMessage = e.Message;
+            }
         }
 
         private void CancelScanning()
@@ -136,6 +153,11 @@ namespace IpScanner.Ui.ViewModels
             {
                 ScannedDevices.Add(item);
             }
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
     }
 }
