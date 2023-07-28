@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -11,15 +11,21 @@ namespace IpScanner.Ui
 {
     sealed partial class App : Application
     {
+        private readonly IServiceCollection _serviceCollection;
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            _serviceCollection = new ServiceCollection();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            _serviceCollection.ConfigureServices();
+
+            var rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)
             {
@@ -29,6 +35,9 @@ namespace IpScanner.Ui
 
                 Window.Current.Content = rootFrame;
             }
+
+            _serviceCollection.AddSingleton(rootFrame);
+            ConfigureIoc();
 
             if (e.PrelaunchActivated == false)
             {
@@ -50,6 +59,11 @@ namespace IpScanner.Ui
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             deferral.Complete();
+        }
+
+        private void ConfigureIoc()
+        {
+             Ioc.Default.ConfigureServices(_serviceCollection.BuildServiceProvider());
         }
     }
 }

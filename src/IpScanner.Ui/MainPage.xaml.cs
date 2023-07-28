@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using IpScanner.Ui.ViewModels;
+using Windows.UI.Xaml.Controls;
 
 namespace IpScanner.Ui
 {
@@ -7,6 +9,7 @@ namespace IpScanner.Ui
         public MainPage()
         {
             this.InitializeComponent();
+            DataContext = Ioc.Default.GetService<MainPageViewModel>();
         }
     }
 }

@@ -5,10 +5,216 @@
     xmlns:local="using:IpScanner.Ui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
+    xmlns:convertors="using:IpScanner.Ui.Convertors"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <convertors:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <convertors:ValidationErrorToColorConverter x:Key="ValidationErrorToColorConverter" />
+    </Page.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!-- Menu bar -->
+        <MenuBar Grid.Row="0">
+            <MenuBarItem x:Uid="File">
+                <MenuFlyoutItem x:Uid="ScanFromFile"></MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="LoadFavorites">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xF12B;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="SaveAs">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE74E;" />
+                    </MenuFlyoutItem.Icon>
+
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="PrintPreview">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE956;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="Print">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE749;" />
+                    </MenuFlyoutItem.Icon>
+
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="P"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="Exit">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="F4"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem x:Uid="View">
+                <MenuFlyoutItem x:Uid="ExpandAll">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xEB91;" />
+                    </MenuFlyoutItem.Icon>
+
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="NumberPad9"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="CollapseAll">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xF165;" />
+                    </MenuFlyoutItem.Icon>
+
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="NumberPad8"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="ShowAlive">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="ShowDead">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="ShowUnknown">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Collapsed"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="ShowActionToolbar">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="ShowTheDetailsPane">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem x:Uid="Settings">
+                <MenuFlyoutItem x:Uid="Options">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutSubItem x:Uid="Language">
+                    <MenuFlyoutItem  x:Uid="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
+                    <MenuFlyoutItem  x:Uid="Ukranian" Command="{Binding ChangeLanguageCommand}" CommandParameter="uk-UA"/>
+                </MenuFlyoutSubItem>
+            </MenuBarItem>
+
+            <MenuBarItem x:Uid="Help">
+                <MenuFlyoutItem x:Uid="Contents">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="F1"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="ReportBug"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="RequestFeature"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="Community"></MenuFlyoutItem>
+
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+                <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
+            </MenuBarItem>
+        </MenuBar>
+
+        <!-- Action bar -->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Padding="5">
+            <Button x:Name="ScanButton" Command="{Binding ScanCommand}" Margin="0 0 5 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE768;" Foreground="Green"/>
+                    <TextBlock x:Uid="Scan" Margin="5 0 0 0" ></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5 0 5 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE769;" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Input bar -->
+        <Grid Grid.Row="2" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox x:Uid="IpRangeInput" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" Margin="0,0,2,0"
+                     BorderBrush="{Binding ValidationMessage, Converter={StaticResource ValidationErrorToColorConverter}}"></TextBox>
+            <TextBox x:Uid="Search" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" 
+                     Margin="2,0,5,0"></TextBox>
+        </Grid>
+
+        <!-- Devices list -->
+        <StackPanel Padding="5" Grid.Row="3">
+            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
+                           AutoGenerateColumns="False">
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                    <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                    <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}"/>
+                    <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
+                    <controls:DataGridTextColumn Header="MAC Address" Binding="{Binding MacAddress}" />
+                    <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" Width="*" />
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </StackPanel>
+
+        <!-- Progress bar -->
+        <ProgressBar x:Name="ScanProgressBar" Value="{Binding Progress, Mode=TwoWay}" Grid.Row="4" Padding="5"></ProgressBar>
     </Grid>
 </Page>
