@@ -3,11 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using IpScanner.Domain.Args;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
+using IpScanner.Ui.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Globalization;
 using Windows.System;
 
 namespace IpScanner.Ui.ViewModels
@@ -18,22 +20,24 @@ namespace IpScanner.Ui.ViewModels
         private string _ipRange;
         private string _searchText;
         private readonly IIpScannerFactory _ipScannerFactory;
+        private readonly INavigationService _navigationService;
+        private readonly ILocalizationService _localizationService;
         private ObservableCollection<ScannedDevice> _scannedDevices;
         private ObservableCollection<ScannedDevice> _temporaryCollection;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public MainPageViewModel(IIpScannerFactory factory)
+        public MainPageViewModel(IIpScannerFactory factory, INavigationService navigationService, ILocalizationService localizationService)
         {
             Progress = 0;
             IpRange = string.Empty;
             SearchText = string.Empty;
-            ScanCommand = new AsyncRelayCommand(ScanAsync);
-            CancelCommand = new RelayCommand(Cancel);
             ScannedDevices = new ObservableCollection<ScannedDevice>();
             _temporaryCollection = new ObservableCollection<ScannedDevice>();
 
             _ipScannerFactory = factory;
+            _navigationService = navigationService;
             _cancellationTokenSource = new CancellationTokenSource();
+            _localizationService = localizationService;
         }
 
         public string IpRange
@@ -51,7 +55,7 @@ namespace IpScanner.Ui.ViewModels
                 FilterDevices();
             }
         }
-        
+
         public int Progress
         {
             get => _progress;
@@ -64,9 +68,11 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _scannedDevices, value);
         }
 
-        public AsyncRelayCommand ScanCommand { get; }
+        public AsyncRelayCommand ScanCommand { get => new AsyncRelayCommand(ScanAsync); }
 
-        public RelayCommand CancelCommand { get; }
+        public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
+
+        public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
 
         public void Dispose()
         {
@@ -81,9 +87,15 @@ namespace IpScanner.Ui.ViewModels
             await scanner.StartAsync(_cancellationTokenSource.Token);
         }
 
-        private void Cancel()
+        private void CancelScanning()
         {
             _cancellationTokenSource.Cancel();
+        }
+
+        private async Task ChangeLanguageAsync(string language)
+        {
+            await _localizationService.SetLanguageAsync(new Language(language));
+            _navigationService.ReloadMainPage();
         }
 
         private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
@@ -110,7 +122,7 @@ namespace IpScanner.Ui.ViewModels
             else
             {
                 var filteredDevices = _scannedDevices.Where(_scannedDevices => _scannedDevices.Name.Contains(SearchText)).ToList();
-                
+
                 _temporaryCollection = new ObservableCollection<ScannedDevice>(_scannedDevices);
 
                 ScannedDevices.Clear();

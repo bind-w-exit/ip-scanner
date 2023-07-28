@@ -4,6 +4,7 @@ using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure;
 using IpScanner.Infrastructure.APIs;
 using IpScanner.Infrastructure.APIs.Cached;
+using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,9 @@ namespace IpScanner.Ui
             services.AddTransient<IIpScannerFactory, IpScannerFactory>();
 
             services.AddSingleton<MainPageViewModel>();
+
+            services.AddTransient<INavigationService, NavigationService>();
+            services.AddTransient<ILocalizationService, LocalizationService>();
 
             return services;
         }

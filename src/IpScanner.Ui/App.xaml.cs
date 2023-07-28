@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -23,10 +24,9 @@ namespace IpScanner.Ui
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Ioc.Default.ConfigureServices(_serviceCollection.ConfigureServices()
-                .BuildServiceProvider());
+            _serviceCollection.ConfigureServices();
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)
             {
@@ -36,6 +36,9 @@ namespace IpScanner.Ui
 
                 Window.Current.Content = rootFrame;
             }
+
+            _serviceCollection.AddSingleton(rootFrame);
+            ConfigureIoc();
 
             if (e.PrelaunchActivated == false)
             {
@@ -57,6 +60,11 @@ namespace IpScanner.Ui
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             deferral.Complete();
+        }
+
+        private void ConfigureIoc()
+        {
+             Ioc.Default.ConfigureServices(_serviceCollection.BuildServiceProvider());
         }
     }
 }

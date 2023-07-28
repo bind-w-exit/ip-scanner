@@ -9,23 +9,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <Style x:Key="MenuFlyoutItemCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="CheckBox">
-                        <Grid>
-                            <CheckBox IsChecked="{TemplateBinding IsChecked}" Visibility="Collapsed"/>
-                            <SymbolIcon Symbol="Accept" Visibility="{Binding IsChecked, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <ContentPresenter Margin="32,0,0,0"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -35,19 +18,20 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <!-- Menu bar -->
         <MenuBar Grid.Row="0">
-            <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="Scan from file ..."></MenuFlyoutItem>
+            <MenuBarItem x:Uid="File">
+                <MenuFlyoutItem x:Uid="ScanFromFile"></MenuFlyoutItem>
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Load favorites ...">
+                <MenuFlyoutItem x:Uid="LoadFavorites">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xF12B;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Save">
+                <MenuFlyoutItem x:Uid="SaveAs">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE74E;" />
                     </MenuFlyoutItem.Icon>
@@ -59,13 +43,13 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Print preview ...">
+                <MenuFlyoutItem x:Uid="PrintPreview">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE956;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Print">
+                <MenuFlyoutItem x:Uid="Print">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE749;" />
                     </MenuFlyoutItem.Icon>
@@ -77,15 +61,15 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Exit">
+                <MenuFlyoutItem x:Uid="Exit">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="F4"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
 
-            <MenuBarItem Title="View">
-                <MenuFlyoutItem Text="Expand all">
+            <MenuBarItem x:Uid="View">
+                <MenuFlyoutItem x:Uid="ExpandAll">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xEB91;" />
                     </MenuFlyoutItem.Icon>
@@ -95,7 +79,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Collapse all">
+                <MenuFlyoutItem x:Uid="CollapseAll">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xF165;" />
                     </MenuFlyoutItem.Icon>
@@ -107,19 +91,19 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Show alive">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-                
-                <MenuFlyoutItem Text="Show dead">
+                <MenuFlyoutItem x:Uid="ShowAlive">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Show unknown">
+                <MenuFlyoutItem x:Uid="ShowDead">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="ShowUnknown">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE73E;" Visibility="Collapsed"/>
                     </MenuFlyoutItem.Icon>
@@ -127,13 +111,13 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Show miscellaneous toolbar">
+                <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Show action toolbar">
+                <MenuFlyoutItem x:Uid="ShowActionToolbar">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
                     </MenuFlyoutItem.Icon>
@@ -141,15 +125,15 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Show the details pane">
+                <MenuFlyoutItem x:Uid="ShowTheDetailsPane">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
             </MenuBarItem>
 
-            <MenuBarItem Title="Settings">
-                <MenuFlyoutItem Text="Options">
+            <MenuBarItem x:Uid="Settings">
+                <MenuFlyoutItem x:Uid="Options">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE713;" />
                     </MenuFlyoutItem.Icon>
@@ -157,35 +141,36 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutSubItem Text="Language">
-                    <ToggleMenuFlyoutItem Text="English" IsChecked="True"/>
-                    <ToggleMenuFlyoutItem Text="Ukrainian"/>
+                <MenuFlyoutSubItem x:Uid="Language">
+                    <MenuFlyoutItem  x:Uid="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
+                    <MenuFlyoutItem  x:Uid="Ukranian" Command="{Binding ChangeLanguageCommand}" CommandParameter="uk-UA"/>
                 </MenuFlyoutSubItem>
             </MenuBarItem>
 
-            <MenuBarItem Title="Help">
-                <MenuFlyoutItem Text="Contents">
+            <MenuBarItem x:Uid="Help">
+                <MenuFlyoutItem x:Uid="Contents">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="F1"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Report a bug"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="Request a feature"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="Community"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="ReportBug"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="RequestFeature"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="Community"></MenuFlyoutItem>
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem Text="Check for updates"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="About"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
 
+        <!-- Action bar -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Padding="5">
             <Button x:Name="ScanButton" Command="{Binding ScanCommand}" Margin="0 0 5 0">
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE768;"/>
-                    <TextBlock Text="Scan" Margin="5 0 0 0"></TextBlock>
+                    <FontIcon Glyph="&#xE768;" Foreground="Green"/>
+                    <TextBlock x:Uid="Scan" Margin="5 0 0 0" ></TextBlock>
                 </StackPanel>
             </Button>
             <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5 0 5 0">
@@ -195,18 +180,21 @@
             </Button>
         </StackPanel>
 
+        <!-- Input bar -->
         <Grid Grid.Row="2" Padding="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="40*"></ColumnDefinition>
+                <ColumnDefinition Width="979*"/>
                 <ColumnDefinition Width="250"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="IpTextBox" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" 
-                     PlaceholderText="Exaple: 192.168.0.1-100, 192.168.0.200"></TextBox>
-            <TextBox x:Name="SearchTextBox" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" 
-                     PlaceholderText="Search" Width="250"></TextBox>
+            <TextBox x:Uid="IpRangeInput" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" 
+                     Margin="5,5,247,4" Grid.ColumnSpan="3"></TextBox>
+            <TextBox x:Name="SearchTextBox" x:Uid="Search" Grid.Column="2" Text="{Binding SearchText, Mode=TwoWay}" 
+                     Margin="7,5,-5,4"></TextBox>
         </Grid>
 
+        <!-- Devices list -->
         <StackPanel Padding="5" Grid.Row="3">
             <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
                            AutoGenerateColumns="False">
@@ -221,6 +209,7 @@
             </controls:DataGrid>
         </StackPanel>
 
+        <!-- Progress bar -->
         <ProgressBar x:Name="ScanProgressBar" Value="{Binding Progress, Mode=TwoWay}" Grid.Row="4" Padding="5"></ProgressBar>
     </Grid>
 </Page>

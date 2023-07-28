@@ -124,6 +124,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfigurator.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\LocalizationService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +178,11 @@
       <Version>4.2.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IpScanner.Domain\IpScanner.Domain.csproj">
       <Project>{41bd8b5f-4cd5-4686-9e20-b21cdb18eb7d}</Project>
@@ -184,6 +192,9 @@
       <Project>{1b9dc7d3-0763-4f6f-9ea9-9ed5a608d273}</Project>
       <Name>IpScanner.Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\uk-UA\Resources.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
