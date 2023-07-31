@@ -119,6 +119,7 @@
         </Grid>
 
         <!-- Progress bar -->
-        <ProgressBar Grid.Row="3" Value="{Binding Progress, Mode=TwoWay}" Padding="5"></ProgressBar>
+        <ProgressBar Grid.Row="3" Value="{Binding Progress, Mode=TwoWay}" Maximum="{Binding CountOfScannedIps, Mode=TwoWay}" 
+                     IsIndeterminate="True"></ProgressBar>
     </Grid>
 </Page>

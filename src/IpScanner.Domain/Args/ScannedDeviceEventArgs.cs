@@ -5,13 +5,11 @@ namespace IpScanner.Domain.Args
 {
     public class ScannedDeviceEventArgs : EventArgs
     {
-        public ScannedDeviceEventArgs(ScannedDevice device, int currentProgress)
+        public ScannedDeviceEventArgs(ScannedDevice device)
         {
             ScannedDevice = device;
-            CurrentProgress = currentProgress;
         }
 
         public ScannedDevice ScannedDevice { get; }
-        public int CurrentProgress { get; }
     }
 }

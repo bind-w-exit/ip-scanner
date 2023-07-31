@@ -18,6 +18,7 @@ namespace IpScanner.Ui.ViewModels
         private int _progress;
         private string _ipRange;
         private string _searchText;
+        private int _countOfScannedIps;
         private readonly IIpScannerFactory _ipScannerFactory;
         private ObservableCollection<ScannedDevice> _scannedDevices;
         private ObservableCollection<ScannedDevice> _temporaryCollection;
@@ -26,6 +27,7 @@ namespace IpScanner.Ui.ViewModels
         public ScanPageViewModel(IIpScannerFactory factory)
         {
             Progress = 0;
+            CountOfScannedIps = 100;
             IpRange = string.Empty;
             SearchText = string.Empty;
             ScannedDevices = new ObservableCollection<ScannedDevice>();
@@ -61,6 +63,12 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _progress, value);
         }
 
+        public int CountOfScannedIps
+        {
+            get => _countOfScannedIps;
+            set => SetProperty(ref _countOfScannedIps, value);
+        }
+
         public ObservableCollection<ScannedDevice> ScannedDevices
         {
             get => _scannedDevices;
@@ -86,6 +94,7 @@ namespace IpScanner.Ui.ViewModels
             {
                 var scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
                 scanner.DeviceScanned += DeviceScannedHandler;
+                CountOfScannedIps = scanner.ScannedIps.Count;
 
                 await scanner.StartAsync(_cancellationTokenSource.Token);
             }
@@ -95,17 +104,14 @@ namespace IpScanner.Ui.ViewModels
             }
         }
 
-        private void CancelScanning()
-        {
-            _cancellationTokenSource.Cancel();
-        }
+        private void CancelScanning() => _cancellationTokenSource.Cancel();
 
         private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
         {
             DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
                 ScannedDevices.Add(e.ScannedDevice);
-                Progress = e.CurrentProgress;
+                Progress = ScannedDevices.Count;
             });
         }
 

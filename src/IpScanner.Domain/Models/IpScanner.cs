@@ -32,15 +32,13 @@ namespace IpScanner.Domain.Models
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            int progress = 0;
-
-            var tasks = _ipsToScan.Select(async destination =>
+            IEnumerable<Task> tasks = _ipsToScan.Select(async destination =>
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
                 ScannedDevice scannedDevice = await ScanSpecificIpAsync(destination);
-                DeviceScanned?.Invoke(this, new ScannedDeviceEventArgs(scannedDevice, progress++));
+                DeviceScanned?.Invoke(this, new ScannedDeviceEventArgs(scannedDevice));
             });
 
             await Task.WhenAll(tasks);
