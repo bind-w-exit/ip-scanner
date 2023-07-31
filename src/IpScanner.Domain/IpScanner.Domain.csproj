@@ -129,6 +129,7 @@
     <Compile Include="Factories\IpScannerFactory.cs" />
     <Compile Include="Interfaces\IMacAddressScanner.cs" />
     <Compile Include="Interfaces\IManufactorReceiver.cs" />
+    <Compile Include="Models\IpRange.cs" />
     <Compile Include="Models\IpScanner.cs" />
     <Compile Include="Models\ScannedDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,7 +147,6 @@
       <Version>6.2.14</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

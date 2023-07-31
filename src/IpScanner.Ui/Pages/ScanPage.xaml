@@ -103,9 +103,10 @@
         </Grid>
 
         <!-- Devices list -->
-        <StackPanel Grid.Row="2" Padding="5">
+        <Grid Grid.Row="2" Padding="5">
             <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
-                           AutoGenerateColumns="False">
+                           AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.IsVerticalRailEnabled="True"
+                           ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode ="Enabled">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                     <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
@@ -115,7 +116,7 @@
                     <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" Width="*" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
-        </StackPanel>
+        </Grid>
 
         <!-- Progress bar -->
         <ProgressBar Grid.Row="3" Value="{Binding Progress, Mode=TwoWay}" Padding="5"></ProgressBar>

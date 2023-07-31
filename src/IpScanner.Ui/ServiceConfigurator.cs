@@ -1,9 +1,8 @@
 ﻿using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
+using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure;
-using IpScanner.Infrastructure.APIs;
-using IpScanner.Infrastructure.APIs.Cached;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,13 +13,11 @@ namespace IpScanner.Ui
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddSingleton<IManufactorReceiver, ManufactorApi>();
-            services.AddHttpClient<IManufactorReceiver, ManufactorApi>();
-            services.Decorate<IManufactorReceiver, ManufactorApiCached>();
+            services.AddSingleton<IManufactorReceiver, ManufacturerFileRepository>();
 
             services.AddSingleton<IMacAddressScanner, ArpMacAddressScanner>();
 
-            services.AddTransient<IValidator<string>, IpRangeValidator>();
+            services.AddTransient<IValidator<IpRange>, IpRangeValidator>();
 
             services.AddTransient<IIpScannerFactory, IpScannerFactory>();
 
