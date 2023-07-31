@@ -1,5 +1,6 @@
 ﻿using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
+using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure;
 using IpScanner.Ui.Services;
@@ -16,7 +17,7 @@ namespace IpScanner.Ui
 
             services.AddSingleton<IMacAddressScanner, ArpMacAddressScanner>();
 
-            services.AddTransient<IValidator<string>, IpRangeValidator>();
+            services.AddTransient<IValidator<IpRange>, IpRangeValidator>();
 
             services.AddTransient<IIpScannerFactory, IpScannerFactory>();
 

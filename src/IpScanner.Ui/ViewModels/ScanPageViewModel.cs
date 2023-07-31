@@ -84,7 +84,7 @@ namespace IpScanner.Ui.ViewModels
         {
             try
             {
-                var scanner = _ipScannerFactory.CreateBasedOnIpRange(IpRange);
+                var scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
                 scanner.DeviceScanned += DeviceScannedHandler;
 
                 await scanner.StartAsync(_cancellationTokenSource.Token);

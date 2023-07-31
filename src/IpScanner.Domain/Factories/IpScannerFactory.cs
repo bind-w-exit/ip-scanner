@@ -5,6 +5,7 @@ using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Validators;
 using System;
+using IpScanner.Domain.Models;
 
 namespace IpScanner.Domain.Factories
 {
@@ -12,24 +13,24 @@ namespace IpScanner.Domain.Factories
     {
         private readonly IMacAddressScanner _macAddressScanner;
         private readonly IManufactorReceiver _manufactorReceiver;
-        private readonly IValidator<string> _ipRangeValidator;
+        private readonly IValidator<IpRange> _ipRangeValidator;
 
         public IpScannerFactory(IMacAddressScanner macAddressScanner, 
-            IManufactorReceiver manufactorReceiver, IValidator<string> ipRangeValidator)
+            IManufactorReceiver manufactorReceiver, IValidator<IpRange> ipRangeValidator)
         {
             _macAddressScanner = macAddressScanner;
             _manufactorReceiver = manufactorReceiver;
             _ipRangeValidator = ipRangeValidator;
         }
 
-        public Models.IpScanner CreateBasedOnIpRange(string ipRange)
+        public Models.IpScanner CreateBasedOnIpRange(IpRange range)
         {
-            if (_ipRangeValidator.Validate(ipRange) == false)
+            if (_ipRangeValidator.Validate(range) == false)
             {
                 throw new IpValidationException();
             }
 
-            var ips = GenerateIPAddresses(ipRange);
+            var ips = GenerateIPAddresses(range.Range);
             return new Models.IpScanner(ips, _manufactorReceiver, _macAddressScanner);
         }
 

@@ -105,11 +105,8 @@
         <!-- Devices list -->
         <Grid Grid.Row="2" Padding="5">
             <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
-                           AutoGenerateColumns="False" 
-                               CanBeScrollAnchor="True"
-                               ScrollViewer.IsVerticalRailEnabled="True"
-                               ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                           ScrollViewer.VerticalScrollMode ="Enabled">
+                           AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.IsVerticalRailEnabled="True"
+                           ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode ="Enabled">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                     <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />

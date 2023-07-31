@@ -1,7 +1,9 @@
-﻿namespace IpScanner.Domain.Factories
+﻿using IpScanner.Domain.Models;
+
+namespace IpScanner.Domain.Factories
 {
     public interface IIpScannerFactory
     {
-        Models.IpScanner CreateBasedOnIpRange(string ipRange);
+        Models.IpScanner CreateBasedOnIpRange(IpRange range);
     }
 }
