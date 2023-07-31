@@ -4,16 +4,16 @@ namespace IpScanner.Ui.Services
 {
     public class NavigationService : INavigationService
     {
-        private readonly Frame _frame;
+        private readonly Frame _mainFrame;
 
         public NavigationService(Frame frame)
         {
-            _frame = frame;
+            _mainFrame = frame;
         }
 
         public void ReloadMainPage()
         {
-            _frame.Navigate(_frame.Content.GetType());
+            _mainFrame.Navigate(_mainFrame.Content.GetType());
         }
     }
 }

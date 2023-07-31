@@ -5,23 +5,13 @@
     xmlns:local="using:IpScanner.Ui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    xmlns:convertors="using:IpScanner.Ui.Convertors"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Page.Resources>
-        <convertors:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-        <convertors:ValidationErrorToColorConverter x:Key="ValidationErrorToColorConverter" />
-    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!-- Menu bar -->
@@ -170,51 +160,8 @@
                 <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
-
-        <!-- Action bar -->
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Padding="5">
-            <Button x:Name="ScanButton" Command="{Binding ScanCommand}" Margin="0 0 5 0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE768;" Foreground="Green"/>
-                    <TextBlock x:Uid="Scan" Margin="5 0 0 0" ></TextBlock>
-                </StackPanel>
-            </Button>
-            <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5 0 5 0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE769;" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
-
-        <!-- Input bar -->
-        <Grid Grid.Row="2" Padding="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <TextBox x:Uid="IpRangeInput" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" Margin="0,0,2,0"
-                     BorderBrush="{Binding ValidationMessage, Converter={StaticResource ValidationErrorToColorConverter}}"></TextBox>
-            <TextBox x:Uid="Search" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" 
-                     Margin="2,0,5,0"></TextBox>
-        </Grid>
-
-        <!-- Devices list -->
-        <StackPanel Padding="5" Grid.Row="3">
-            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
-                           AutoGenerateColumns="False">
-                <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
-                    <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}"/>
-                    <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
-                    <controls:DataGridTextColumn Header="MAC Address" Binding="{Binding MacAddress}" />
-                    <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" Width="*" />
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
-        </StackPanel>
-
-        <!-- Progress bar -->
-        <ProgressBar x:Name="ScanProgressBar" Value="{Binding Progress, Mode=TwoWay}" Grid.Row="4" Padding="5"></ProgressBar>
+        
+        <!-- Main content -->
+        <Frame x:Name="ContentFrame" Grid.Row="1"/>
     </Grid>
 </Page>
