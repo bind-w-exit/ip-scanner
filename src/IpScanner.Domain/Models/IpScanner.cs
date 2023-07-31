@@ -50,13 +50,26 @@ namespace IpScanner.Domain.Models
             {
                 PhysicalAddress macAddress = await _macAddressScanner.GetMacAddressAsync(destination);
                 string manufacturer = await _manufactorReceiver.GetManufacturerOrEmptyStringAsync(macAddress);
+                string name = await GetHostnameOrIpAddress(destination);
 
-                return new ScannedDevice(DeviceStatus.Online, destination.ToString(), destination, 
-                    manufacturer, macAddress, string.Empty);
+                return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
             }
             catch (MacAddressNotFoundException)
             {
                 return new ScannedDevice(destination);
+            }
+        }
+
+        private async Task<string> GetHostnameOrIpAddress(IPAddress destination)
+        {
+            try
+            {
+                IPHostEntry hostEntry = await Dns.GetHostEntryAsync(destination);
+                return hostEntry.HostName;
+            }
+            catch (Exception)
+            {
+                return destination.ToString();
             }
         }
     }
