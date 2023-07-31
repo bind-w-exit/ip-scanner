@@ -71,6 +71,10 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
 
+        public RelayCommand SetSubnetMask { get => new RelayCommand(EnableSubnetMask); }
+
+        public RelayCommand SetSubnetClassCMask { get => new RelayCommand(EnableSubnetClassCMask); }
+
         public void Dispose()
         {
             _cancellationTokenSource.Dispose();
@@ -134,6 +138,16 @@ namespace IpScanner.Ui.ViewModels
             {
                 ScannedDevices.Add(item);
             }
+        }
+
+        private void EnableSubnetMask()
+        {
+            IpRange = "192.168.0.1-254, 26.0.0.1-26.255.255.254";
+        }
+
+        private void EnableSubnetClassCMask()
+        {
+            IpRange = "192.168.0.1-254, 26.0.0.1-254";
         }
     }
 }
