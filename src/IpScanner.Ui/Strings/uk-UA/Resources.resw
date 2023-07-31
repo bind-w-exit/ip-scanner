@@ -150,6 +150,9 @@
   <data name="IpRangeInput.PlaceholderText" xml:space="preserve">
     <value>Приклад: 192.168.0.1-100, 192.168.0.200</value>
   </data>
+  <data name="IpRangeValidationMessage.Text" xml:space="preserve">
+    <value>Неправильний формат вводу діапазону IP</value>
+  </data>
   <data name="Language.Text" xml:space="preserve">
     <value>Мова</value>
   </data>

@@ -10,7 +10,7 @@ namespace IpScanner.Ui.Convertors
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return string.IsNullOrEmpty((string)value) ? new SolidColorBrush(Colors.Transparent) : new SolidColorBrush(Colors.Red);
+            return string.IsNullOrEmpty((string)value) ? new SolidColorBrush(Colors.Gray) : new SolidColorBrush(Colors.Tomato);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

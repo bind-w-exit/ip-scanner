@@ -40,7 +40,7 @@ namespace IpScanner.Ui.ViewModels
             get => _ipRange;
             set
             {
-                ValidationMessage = string.Empty;
+                HasValidationError = false;
                 SetProperty(ref _ipRange, value);
             }
         }
@@ -87,7 +87,7 @@ namespace IpScanner.Ui.ViewModels
             }
             catch (IpValidationException e)
             {
-                ValidationMessage = e.Message;
+                HasValidationError = true;
             }
         }
 

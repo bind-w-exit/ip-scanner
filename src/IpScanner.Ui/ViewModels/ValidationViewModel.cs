@@ -4,17 +4,17 @@ namespace IpScanner.Ui.ViewModels
 {
     public abstract class ValidationViewModel : ObservableValidator
     {
-        private string _validationMessage;
+        private bool _hasValidationError;
 
         public ValidationViewModel()
         {
-            _validationMessage = string.Empty;
+            _hasValidationError = false;
         }
 
-        public string ValidationMessage
+        public bool HasValidationError
         {
-            get => _validationMessage;
-            set => SetProperty(ref _validationMessage, value);
+            get => _hasValidationError;
+            set => SetProperty(ref _hasValidationError, value);
         }
     }
 }

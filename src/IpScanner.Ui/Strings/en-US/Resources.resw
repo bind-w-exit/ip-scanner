@@ -150,6 +150,9 @@
   <data name="IpRangeInput.PlaceholderText" xml:space="preserve">
     <value>Example: 192.168.0.1-100, 192.168.0.200</value>
   </data>
+  <data name="IpRangeValidationMessage.Text" xml:space="preserve">
+    <value>IP range input format is incorrect</value>
+  </data>
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
