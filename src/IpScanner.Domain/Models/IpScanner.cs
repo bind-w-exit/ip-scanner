@@ -34,14 +34,16 @@ namespace IpScanner.Domain.Models
         {
             int progress = 0;
 
-            foreach (var destination in _ipsToScan)
+            var tasks = _ipsToScan.Select(async destination =>
             {
                 if (cancellationToken.IsCancellationRequested)
-                    break;
+                    return;
 
                 ScannedDevice scannedDevice = await ScanSpecificIpAsync(destination);
                 DeviceScanned?.Invoke(this, new ScannedDeviceEventArgs(scannedDevice, progress++));
-            }
+            });
+
+            await Task.WhenAll(tasks);
         }
 
         private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination)
