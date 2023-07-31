@@ -61,7 +61,7 @@ namespace IpScanner.Domain.UnitTests
             var expectedIpAddresses = new List<IPAddress> { IPAddress.Parse("192.168.0.1"), IPAddress.Parse("192.168.0.2")};
             
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.ScannedIps.Count());
+            Assert.AreEqual(2, result.ScannedIps.Count);
             CollectionAssert.AreEqual(expectedIpAddresses, result.ScannedIps.ToList());
         }
 

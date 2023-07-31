@@ -85,7 +85,7 @@ namespace IpScanner.Ui.ViewModels
 
                 await scanner.StartAsync(_cancellationTokenSource.Token);
             }
-            catch (IpValidationException e)
+            catch (IpValidationException)
             {
                 HasValidationError = true;
             }
