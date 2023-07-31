@@ -124,11 +124,16 @@
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
     <Compile Include="ArpMacAddressScanner.cs" />
+    <Compile Include="Entities\MacAddressEntity.cs" />
     <Compile Include="Extensions\PhysicalAddressExtensions.cs" />
+    <Compile Include="ManufacturerFileRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Infrastructure.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CsvHelper">
+      <Version>30.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
       <Version>5.2.9</Version>
     </PackageReference>
@@ -149,6 +154,11 @@
       <Project>{41bd8b5f-4cd5-4686-9e20-b21cdb18eb7d}</Project>
       <Name>IpScanner.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\oui.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
