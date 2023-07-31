@@ -123,6 +123,9 @@
   <data name="CheckForUpdates.Text" xml:space="preserve">
     <value>Перевірити оновлення</value>
   </data>
+  <data name="Collapse.Content" xml:space="preserve">
+    <value>Згорнути все</value>
+  </data>
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Згорнути все</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Exit.Text" xml:space="preserve">
     <value>Вийти</value>
+  </data>
+  <data name="Expand.Content" xml:space="preserve">
+    <value>Розгорнути все</value>
   </data>
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Розгорнути все</value>
@@ -206,6 +212,12 @@
   </data>
   <data name="ShowUnknown.Text" xml:space="preserve">
     <value>Показати невідомі</value>
+  </data>
+  <data name="Subnet.Content" xml:space="preserve">
+    <value>Підмережа цього комп’ютера буде просканована</value>
+  </data>
+  <data name="SubnetC.Content" xml:space="preserve">
+    <value>Буде скановано підмережу класу 'C'</value>
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Український (uk-UA)</value>

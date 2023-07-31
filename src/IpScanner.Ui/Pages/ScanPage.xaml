@@ -24,17 +24,61 @@
         </Grid.RowDefinitions>
 
         <!-- Action bar -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Padding="5">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Padding="5,0,5,0" Margin="0">
             <Button x:Name="ScanButton" Command="{Binding ScanCommand}" Margin="0 0 5 0">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE768;" Foreground="Green"/>
-                    <TextBlock x:Uid="Scan" Margin="5 0 0 0" ></TextBlock>
+                    <TextBlock x:Uid="Scan" Margin="5,0,0,0" ></TextBlock>
                 </StackPanel>
             </Button>
-            <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5 0 5 0">
+            <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5,0,5,0">
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE769;" />
+                    <FontIcon Glyph="&#xE769;"/>
                 </StackPanel>
+            </Button>
+
+            <StackPanel Orientation="Vertical">
+                <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+            </StackPanel>
+
+            <Button Margin="5,0,5,0" Command="{Binding SetSubnetMask}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue"/>
+                </StackPanel>
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Uid="Subnet"/>
+                </ToolTipService.ToolTip>
+            </Button>
+
+            <Button Margin="5,0,5,0" Command="{Binding SetSubnetClassCMask}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
+                </StackPanel>
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Uid="SubnetC"/>
+                </ToolTipService.ToolTip>
+            </Button>
+
+            <StackPanel Orientation="Vertical">
+                <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+            </StackPanel>
+
+            <Button Margin="5,0,5,0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xEC8F;" />
+                </StackPanel>
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Uid="Expand"/>
+                </ToolTipService.ToolTip>
+            </Button>
+
+            <Button Margin="5,0,5,0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xF165;" />
+                </StackPanel>
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Uid="Collapse"/>
+                </ToolTipService.ToolTip>
             </Button>
         </StackPanel>
 

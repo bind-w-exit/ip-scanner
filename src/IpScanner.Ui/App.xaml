@@ -10,6 +10,12 @@
             <controls:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ErrorColorBrush" Color="Tomato" />
+                    <Style x:Key="GraySeparatorStyle" TargetType="AppBarSeparator">
+                        <Setter Property="Foreground" Value="Gray" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Height" Value="Auto"/>
+                    </Style>
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

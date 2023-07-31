@@ -123,6 +123,9 @@
   <data name="CheckForUpdates.Text" xml:space="preserve">
     <value>Check for updates</value>
   </data>
+  <data name="Collapse.Content" xml:space="preserve">
+    <value>Collapse all</value>
+  </data>
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Collapse all</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Exit.Text" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="Expand.Content" xml:space="preserve">
+    <value>Expand all</value>
   </data>
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Expand all</value>
@@ -206,6 +212,12 @@
   </data>
   <data name="ShowUnknown.Text" xml:space="preserve">
     <value>Show unknown</value>
+  </data>
+  <data name="Subnet.Content" xml:space="preserve">
+    <value>Subnet of this machine will be scanned</value>
+  </data>
+  <data name="SubnetC.Content" xml:space="preserve">
+    <value>Subnet of class 'C' will be scanned</value>
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Ukrainian (uk-UA)</value>
