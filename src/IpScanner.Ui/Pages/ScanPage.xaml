@@ -110,7 +110,7 @@
                 ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTemplateColumn Header="Status">
+                    <controls:DataGridTemplateColumn x:Uid="Status">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
@@ -122,11 +122,11 @@
                         </controls:DataGridTemplateColumn.CellTemplate>
                     </controls:DataGridTemplateColumn>
                     
-                    <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}"/>
-                    <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
-                    <controls:DataGridTextColumn Header="MAC Address" Binding="{Binding MacAddress}" />
-                    <controls:DataGridTextColumn Header="Comments" Binding="{Binding Comments}" Width="*" />
+                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufactor}" />
+                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
