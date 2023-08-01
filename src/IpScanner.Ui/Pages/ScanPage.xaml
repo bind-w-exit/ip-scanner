@@ -13,6 +13,7 @@
     <Page.Resources>
         <convertors:BoolToVisibilityConvertor x:Key="BoolToVisibilityConvertor" />
         <convertors:ValidationErrorToColorConverter x:Key="ValidationErrorToColorConverter" />
+        <convertors:DeviceStatusToGlyphConverter x:Key="DeviceStatusToGlyphConverter" />
     </Page.Resources>
 
     <Grid>
@@ -105,10 +106,22 @@
         <!-- Devices list -->
         <Grid Grid.Row="2" Padding="5">
             <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
-                           AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.IsVerticalRailEnabled="True"
-                           ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode ="Enabled">
+                AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
+                ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                    <controls:DataGridTemplateColumn Header="Status">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip Content="{Binding Status}"/>
+                                    </ToolTipService.ToolTip>
+                                </FontIcon>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
+                    
                     <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                     <controls:DataGridTextColumn Header="IP Address" Binding="{Binding Ip}"/>
                     <controls:DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufactor}" />
