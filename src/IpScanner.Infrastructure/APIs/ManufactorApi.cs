@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure.APIs
 {
-    public class ManufactorApi : ApiBase, IManufactorReceiver
+    public class ManufactorApi : ApiBase, IManufactorRepository
     {
         public ManufactorApi(HttpClient httpClient) : base(httpClient)
         { }

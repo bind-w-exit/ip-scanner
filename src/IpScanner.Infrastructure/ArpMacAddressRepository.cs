@@ -8,7 +8,7 @@ using IpScanner.Domain.Interfaces;
 
 namespace IpScanner.Infrastructure
 {
-    public class ArpMacAddressScanner : IMacAddressScanner
+    public class ArpMacAddressRepository : IMacAddressRepository
     {
         public async Task<PhysicalAddress> GetMacAddressAsync(IPAddress destination)
         {

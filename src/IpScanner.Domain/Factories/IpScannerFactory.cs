@@ -11,19 +11,19 @@ namespace IpScanner.Domain.Factories
 {
     public class IpScannerFactory : IIpScannerFactory
     {
-        private readonly IMacAddressScanner _macAddressScanner;
-        private readonly IManufactorReceiver _manufactorReceiver;
+        private readonly IMacAddressRepository _macAddressScanner;
+        private readonly IManufactorRepository _manufactorReceiver;
         private readonly IValidator<IpRange> _ipRangeValidator;
 
-        public IpScannerFactory(IMacAddressScanner macAddressScanner, 
-            IManufactorReceiver manufactorReceiver, IValidator<IpRange> ipRangeValidator)
+        public IpScannerFactory(IMacAddressRepository macAddressScanner, 
+            IManufactorRepository manufactorReceiver, IValidator<IpRange> ipRangeValidator)
         {
             _macAddressScanner = macAddressScanner;
             _manufactorReceiver = manufactorReceiver;
             _ipRangeValidator = ipRangeValidator;
         }
 
-        public Models.IpScanner CreateBasedOnIpRange(IpRange range)
+        public Models.NetworkScanner CreateBasedOnIpRange(IpRange range)
         {
             if (_ipRangeValidator.Validate(range) == false)
             {
@@ -31,7 +31,7 @@ namespace IpScanner.Domain.Factories
             }
 
             var ips = GenerateIPAddresses(range.Range);
-            return new Models.IpScanner(ips, _manufactorReceiver, _macAddressScanner);
+            return new Models.NetworkScanner(ips, _manufactorReceiver, _macAddressScanner);
         }
 
         public List<IPAddress> GenerateIPAddresses(string ipRange)

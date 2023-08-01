@@ -13,15 +13,15 @@ namespace IpScanner.Domain.UnitTests
     [TestClass]
     public class IpScannerFactoryUnitTests
     {
-        private readonly IMacAddressScanner _macAddressScanner;
-        private readonly IManufactorReceiver _manufactorReceiver;
+        private readonly IMacAddressRepository _macAddressScanner;
+        private readonly IManufactorRepository _manufactorReceiver;
         private readonly IValidator<string> _ipRangeValidator;
         private readonly IpScannerFactory _sut;
 
         public IpScannerFactoryUnitTests()
         {
-            _macAddressScanner = Substitute.For<IMacAddressScanner>();
-            _manufactorReceiver = Substitute.For<IManufactorReceiver>();
+            _macAddressScanner = Substitute.For<IMacAddressRepository>();
+            _manufactorReceiver = Substitute.For<IManufactorRepository>();
             _ipRangeValidator = Substitute.For<IValidator<string>>();
 
 
@@ -55,7 +55,7 @@ namespace IpScanner.Domain.UnitTests
             _ipRangeValidator.Validate(ipRange).Returns(true);
 
             // Act
-            Models.IpScanner result = _sut.CreateBasedOnIpRange(ipRange);
+            Models.NetworkScanner result = _sut.CreateBasedOnIpRange(ipRange);
 
             // Assert
             var expectedIpAddresses = new List<IPAddress> { IPAddress.Parse("192.168.0.1"), IPAddress.Parse("192.168.0.2")};

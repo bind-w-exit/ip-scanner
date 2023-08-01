@@ -12,18 +12,20 @@ using IpScanner.Domain.Args;
 
 namespace IpScanner.Domain.Models
 {
-    public class IpScanner
+    public class NetworkScanner
     {
         private readonly IEnumerable<IPAddress> _ipsToScan;
-        private readonly IManufactorReceiver _manufactorReceiver;
-        private readonly IMacAddressScanner _macAddressScanner;
+        private readonly IManufactorRepository _manufactorRepository;
+        private readonly IMacAddressRepository _macAddressRepository;
+        private readonly IHostRepository _hostRepository;
 
-        public IpScanner(IEnumerable<IPAddress> toScan, IManufactorReceiver manufactorReceiver, IMacAddressScanner macAddressScanner)
+        public NetworkScanner(IEnumerable<IPAddress> toScan, IManufactorRepository manufactorReceiver,
+            IMacAddressRepository macAddressScanner, IHostRepository hostRepository)
         {
             _ipsToScan = toScan;
-
-            _manufactorReceiver = manufactorReceiver;
-            _macAddressScanner = macAddressScanner;
+            _manufactorRepository = manufactorReceiver;
+            _macAddressRepository = macAddressScanner;
+            _hostRepository = hostRepository;
         }
 
         public IReadOnlyCollection<IPAddress> ScannedIps { get => _ipsToScan.ToList(); }
@@ -46,30 +48,40 @@ namespace IpScanner.Domain.Models
 
         private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination)
         {
-            try
-            {
-                PhysicalAddress macAddress = await _macAddressScanner.GetMacAddressAsync(destination);
-                string manufacturer = await _manufactorReceiver.GetManufacturerOrEmptyStringAsync(macAddress);
-                string name = await GetHostnameOrIpAddress(destination);
-
-                return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
-            }
-            catch (MacAddressNotFoundException)
+            PhysicalAddress macAddress = await GetMacAddressAsync(destination);
+            if (macAddress == PhysicalAddress.None)
             {
                 return new ScannedDevice(destination);
             }
+
+            string manufacturer = await _manufactorRepository.GetManufacturerOrEmptyStringAsync(macAddress);
+            string name = await GetHostnameOrIpAddress(destination);
+
+            return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
         }
 
         private async Task<string> GetHostnameOrIpAddress(IPAddress destination)
         {
             try
             {
-                IPHostEntry hostEntry = await Dns.GetHostEntryAsync(destination);
+                IPHostEntry hostEntry = await _hostRepository.GetHostAsync(destination);
                 return hostEntry.HostName;
             }
-            catch (Exception)
+            catch (HostNotFoundException)
             {
                 return destination.ToString();
+            }
+        }
+
+        private async Task<PhysicalAddress> GetMacAddressAsync(IPAddress destination)
+        {
+            try
+            {
+                return await _macAddressRepository.GetMacAddressAsync(destination);
+            }
+            catch (MacAddressNotFoundException)
+            {
+                return PhysicalAddress.None;
             }
         }
     }

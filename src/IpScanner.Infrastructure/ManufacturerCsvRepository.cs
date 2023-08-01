@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure
 {
-    public class ManufacturerFileRepository : IManufactorReceiver
+    public class ManufacturerCsvRepository : IManufactorRepository
     {
         private readonly string _path = "Assets/oui.csv";
-        private readonly Dictionary<string, string> _assignmentsAndManufacturers;
+        private readonly Dictionary<string, MacAddressEntity> _assignmentsAndManufacturers;
 
-        public ManufacturerFileRepository()
+        public ManufacturerCsvRepository()
         {
             using(var reader = new StreamReader(_path))
             {
@@ -25,7 +25,7 @@ namespace IpScanner.Infrastructure
                     _assignmentsAndManufacturers = csv.GetRecords<MacAddressEntity>()
                        .GroupBy(x => x.Assignment)
                        .Select(grp => grp.First())
-                       .ToDictionary(mac => mac.Assignment, manufacturer => manufacturer.OrganizationName);
+                       .ToDictionary(mac => mac.Assignment, macAddress => macAddress);
                 }
             }
         }
@@ -38,9 +38,9 @@ namespace IpScanner.Infrastructure
         private string GetManufacturerOrEmptyString(PhysicalAddress macAddress)
         {
             string assignment = macAddress.GetAssignment();
-            if (_assignmentsAndManufacturers.TryGetValue(assignment, out string manufacturer))
+            if (_assignmentsAndManufacturers.TryGetValue(assignment, out MacAddressEntity entity))
             {
-                return manufacturer;
+                return entity.OrganizationName;
             }
 
             return string.Empty;
