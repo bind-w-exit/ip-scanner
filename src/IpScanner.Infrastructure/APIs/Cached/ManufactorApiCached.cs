@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure.APIs.Cached
 {
-    public class ManufactorApiCached : IManufactorReceiver
+    public class ManufactorApiCached : IManufactorRepository
     {
-        private readonly IManufactorReceiver _manufactorReceiver;
+        private readonly IManufactorRepository _manufactorReceiver;
         private readonly Dictionary<PhysicalAddress, string> _cache;
 
-        public ManufactorApiCached(IManufactorReceiver manufactorReceiver)
+        public ManufactorApiCached(IManufactorRepository manufactorReceiver)
         {
             _cache = new Dictionary<PhysicalAddress, string>();
             _manufactorReceiver = manufactorReceiver;

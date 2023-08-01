@@ -13,13 +13,13 @@ namespace IpScanner.Ui
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddSingleton<IManufactorReceiver, ManufacturerFileRepository>();
-
-            services.AddSingleton<IMacAddressScanner, ArpMacAddressScanner>();
+            services.AddSingleton<IManufactorRepository, ManufacturerCsvRepository>();
+            services.AddSingleton<IMacAddressRepository, MacAddressArpRepository>();
+            services.AddSingleton<IHostRepository, HostDnsRepository>();
 
             services.AddTransient<IValidator<IpRange>, IpRangeValidator>();
 
-            services.AddTransient<IIpScannerFactory, IpScannerFactory>();
+            services.AddTransient<INetworkScannerFactory, NetworkScannerFactory>();
 
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();

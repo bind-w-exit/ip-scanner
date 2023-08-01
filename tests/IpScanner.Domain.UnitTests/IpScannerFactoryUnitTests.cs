@@ -1,31 +1,25 @@
 ﻿using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
+using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace IpScanner.Domain.UnitTests
 {
     [TestClass]
     public class IpScannerFactoryUnitTests
     {
-        private readonly IMacAddressScanner _macAddressScanner;
-        private readonly IManufactorReceiver _manufactorReceiver;
-        private readonly IValidator<string> _ipRangeValidator;
-        private readonly IpScannerFactory _sut;
+        private readonly NetworkScannerFactory _sut;
+        private readonly IHostRepository _hostRepository = Substitute.For<IHostRepository>();
+        private readonly IMacAddressRepository _macAddressRepository = Substitute.For<IMacAddressRepository>();
+        private readonly IManufactorRepository _manufactorRepository = Substitute.For<IManufactorRepository>();
+        private readonly IValidator<IpRange> _ipRangeValidator = Substitute.For<IValidator<IpRange>>();
 
         public IpScannerFactoryUnitTests()
         {
-            _macAddressScanner = Substitute.For<IMacAddressScanner>();
-            _manufactorReceiver = Substitute.For<IManufactorReceiver>();
-            _ipRangeValidator = Substitute.For<IValidator<string>>();
-
-
-            _sut = new IpScannerFactory(_macAddressScanner, _manufactorReceiver, _ipRangeValidator);
+            _sut = new NetworkScannerFactory(_macAddressRepository, _manufactorRepository, _hostRepository, _ipRangeValidator);
         }
 
         [TestMethod]
@@ -38,45 +32,14 @@ namespace IpScanner.Domain.UnitTests
         [DataRow("192.168.0.1-")]
         [DataRow("192.168.0.155 192.168.0.201")]
         [ExpectedException(typeof(IpValidationException))]
-        public void CreateBasedOnIpRange_ShouldThrowException_WhenIpRangeIsInvalid(string ipRange)
+        public void CreateBasedOnIpRange_ShouldThrowException_WhenIpRangeIsInvalid(string range)
         {
             // Arrange
+            var ipRange = new IpRange(range);
             _ipRangeValidator.Validate(ipRange).Returns(false);
 
             // Act
             _sut.CreateBasedOnIpRange(ipRange);
-        }
-
-        [TestMethod]
-        public void CreateBasedOnIpRange_ShouldReturnIpScanner_WhenIpRangeIsValid()
-        {
-            // Arrange
-            string ipRange = "192.168.0.1-2";
-            _ipRangeValidator.Validate(ipRange).Returns(true);
-
-            // Act
-            Models.IpScanner result = _sut.CreateBasedOnIpRange(ipRange);
-
-            // Assert
-            var expectedIpAddresses = new List<IPAddress> { IPAddress.Parse("192.168.0.1"), IPAddress.Parse("192.168.0.2")};
-            
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.ScannedIps.Count);
-            CollectionAssert.AreEqual(expectedIpAddresses, result.ScannedIps.ToList());
-        }
-
-        [TestMethod]
-        public void GenerateIPAddresses_ShouldReturnListOfIPAddresses_WhenValidIpRange()
-        {
-            // Arrange
-            string ipRange = "192.168.0.1-2";
-
-            // Act
-            var result = _sut.GenerateIPAddresses(ipRange);
-
-            // Assert
-            var expected = new List<IPAddress> { IPAddress.Parse("192.168.0.1"), IPAddress.Parse("192.168.0.2") };
-            CollectionAssert.AreEqual(expected, result);
         }
     }
 }

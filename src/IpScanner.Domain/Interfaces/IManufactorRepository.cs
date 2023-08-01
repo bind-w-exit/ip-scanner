@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Domain.Interfaces
 {
-    public interface IManufactorReceiver
+    public interface IManufactorRepository
     {
         Task<string> GetManufacturerOrEmptyStringAsync(PhysicalAddress macAddress);
     }

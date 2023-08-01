@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Domain.Interfaces
 {
-    public interface IMacAddressScanner
+    public interface IMacAddressRepository
     {
         Task<PhysicalAddress> GetMacAddressAsync(IPAddress destination);
     }

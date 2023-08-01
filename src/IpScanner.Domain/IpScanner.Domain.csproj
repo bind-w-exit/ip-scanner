@@ -122,15 +122,17 @@
   <ItemGroup>
     <Compile Include="Args\ScannedDeviceEventArgs.cs" />
     <Compile Include="Enums\DeviceStatus.cs" />
+    <Compile Include="Exceptions\HostNotFoundException.cs" />
     <Compile Include="Exceptions\IpValidationException.cs" />
     <Compile Include="Exceptions\MacAddressNotFoundException.cs" />
     <Compile Include="Extensions\IPAddressExtensions.cs" />
-    <Compile Include="Factories\IIpScannerFactory.cs" />
-    <Compile Include="Factories\IpScannerFactory.cs" />
-    <Compile Include="Interfaces\IMacAddressScanner.cs" />
-    <Compile Include="Interfaces\IManufactorReceiver.cs" />
+    <Compile Include="Factories\INetworkScannerFactory.cs" />
+    <Compile Include="Factories\NetworkScannerFactory.cs" />
+    <Compile Include="Interfaces\IHostRepository.cs" />
+    <Compile Include="Interfaces\IMacAddressRepository.cs" />
+    <Compile Include="Interfaces\IManufactorRepository.cs" />
     <Compile Include="Models\IpRange.cs" />
-    <Compile Include="Models\IpScanner.cs" />
+    <Compile Include="Models\NetworkScanner.cs" />
     <Compile Include="Models\ScannedDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\IpRangeValidator.cs" />
