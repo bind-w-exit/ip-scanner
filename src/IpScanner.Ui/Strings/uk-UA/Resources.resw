@@ -129,6 +129,9 @@
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Згорнути все</value>
   </data>
+  <data name="Comments.Header" xml:space="preserve">
+    <value>Коментарі</value>
+  </data>
   <data name="Community.Text" xml:space="preserve">
     <value>Спільнота</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="Help.Title" xml:space="preserve">
     <value>Допомога</value>
   </data>
+  <data name="IPAddress.Header" xml:space="preserve">
+    <value>IP Адреса</value>
+  </data>
   <data name="IpRangeInput.PlaceholderText" xml:space="preserve">
     <value>Приклад: 192.168.0.1-100, 192.168.0.200</value>
   </data>
@@ -164,6 +170,15 @@
   </data>
   <data name="LoadFavorites.Text" xml:space="preserve">
     <value>Завантажити обране</value>
+  </data>
+  <data name="MACAddress.Header" xml:space="preserve">
+    <value>MAC Адреса</value>
+  </data>
+  <data name="Manufacturer.Header" xml:space="preserve">
+    <value>Виробник</value>
+  </data>
+  <data name="Name.Header" xml:space="preserve">
+    <value>Назва</value>
   </data>
   <data name="Options.Text" xml:space="preserve">
     <value>Опції ...</value>
@@ -212,6 +227,9 @@
   </data>
   <data name="ShowUnknown.Text" xml:space="preserve">
     <value>Показати невідомі</value>
+  </data>
+  <data name="Status.Header" xml:space="preserve">
+    <value>Статус</value>
   </data>
   <data name="Subnet.Content" xml:space="preserve">
     <value>Підмережа цього комп’ютера буде просканована</value>

@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
+    <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
