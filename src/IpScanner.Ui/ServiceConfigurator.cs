@@ -14,8 +14,8 @@ namespace IpScanner.Ui
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             services.AddSingleton<IManufactorRepository, ManufacturerCsvRepository>();
-
-            services.AddSingleton<IMacAddressRepository, ArpMacAddressRepository>();
+            services.AddSingleton<IMacAddressRepository, MacAddressArpRepository>();
+            services.AddSingleton<IHostRepository, HostDnsRepository>();
 
             services.AddTransient<IValidator<IpRange>, IpRangeValidator>();
 

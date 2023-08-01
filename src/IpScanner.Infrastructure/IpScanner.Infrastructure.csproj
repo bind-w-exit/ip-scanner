@@ -123,8 +123,8 @@
     <Compile Include="APIs\ApiBase.cs" />
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
-    <Compile Include="ArpMacAddressRepository.cs" />
-    <Compile Include="DnsHostRepository.cs" />
+    <Compile Include="MacAddressArpRepository.cs" />
+    <Compile Include="HostDnsRepository.cs" />
     <Compile Include="Entities\MacAddressEntity.cs" />
     <Compile Include="Extensions\PhysicalAddressExtensions.cs" />
     <Compile Include="ManufacturerCsvRepository.cs" />

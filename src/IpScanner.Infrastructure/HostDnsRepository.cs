@@ -6,7 +6,7 @@ using IpScanner.Domain.Interfaces;
 
 namespace IpScanner.Infrastructure
 {
-    public class DnsHostRepository : IHostRepository
+    public class HostDnsRepository : IHostRepository
     {
         public async Task<IPHostEntry> GetHostAsync(IPAddress address)
         {
