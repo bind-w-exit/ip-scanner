@@ -14,9 +14,9 @@ namespace IpScanner.Domain.Models
 
         public string Range { get; }
 
-        public List<IPAddress> GenerateIPAddresses(IpRange ipRange)
+        public List<IPAddress> GenerateIPAddresses()
         {
-            return ipRange.Range.Split(',')
+            return Range.Split(',')
                 .SelectMany(range => GenerateIPAddressesForRange(range.Trim()))
                 .ToList();
         }

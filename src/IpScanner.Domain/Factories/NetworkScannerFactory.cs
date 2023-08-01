@@ -7,14 +7,14 @@ using IpScanner.Domain.Validators;
 
 namespace IpScanner.Domain.Factories
 {
-    public class IpScannerFactory : IIpScannerFactory
+    public class NetworkScannerFactory : INetworkScannerFactory
     {
         private readonly IHostRepository _hostRepository;
         private readonly IMacAddressRepository _macAddressRepository;
         private readonly IManufactorRepository _manufactorRepository;
         private readonly IValidator<IpRange> _ipRangeValidator;
 
-        public IpScannerFactory(IMacAddressRepository macAddressScanner, IManufactorRepository manufactorReceiver,
+        public NetworkScannerFactory(IMacAddressRepository macAddressScanner, IManufactorRepository manufactorReceiver,
             IHostRepository hostRepository, IValidator<IpRange> ipRangeValidator)
         {
             _hostRepository = hostRepository;

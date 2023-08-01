@@ -19,7 +19,7 @@ namespace IpScanner.Ui
 
             services.AddTransient<IValidator<IpRange>, IpRangeValidator>();
 
-            services.AddTransient<IIpScannerFactory, IpScannerFactory>();
+            services.AddTransient<INetworkScannerFactory, NetworkScannerFactory>();
 
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();

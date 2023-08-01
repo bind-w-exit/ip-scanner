@@ -123,10 +123,11 @@
     <Compile Include="APIs\ApiBase.cs" />
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
-    <Compile Include="ArpMacAddressScanner.cs" />
+    <Compile Include="ArpMacAddressRepository.cs" />
+    <Compile Include="DnsHostRepository.cs" />
     <Compile Include="Entities\MacAddressEntity.cs" />
     <Compile Include="Extensions\PhysicalAddressExtensions.cs" />
-    <Compile Include="ManufacturerFileRepository.cs" />
+    <Compile Include="ManufacturerCsvRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Infrastructure.rd.xml" />
   </ItemGroup>

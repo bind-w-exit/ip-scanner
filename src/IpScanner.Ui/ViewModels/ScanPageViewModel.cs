@@ -19,12 +19,12 @@ namespace IpScanner.Ui.ViewModels
         private string _ipRange;
         private string _searchText;
         private int _countOfScannedIps;
-        private readonly IIpScannerFactory _ipScannerFactory;
+        private readonly INetworkScannerFactory _ipScannerFactory;
         private ObservableCollection<ScannedDevice> _scannedDevices;
         private ObservableCollection<ScannedDevice> _temporaryCollection;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public ScanPageViewModel(IIpScannerFactory factory)
+        public ScanPageViewModel(INetworkScannerFactory factory)
         {
             Progress = 0;
             CountOfScannedIps = 100;
