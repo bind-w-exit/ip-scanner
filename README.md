@@ -9,7 +9,7 @@ IP Scanner is a planned network scanner application for analyzing LAN. The aim i
 - ✅ Detecting MAC addresses
 - ❌ Enabling switching on/off computers remotely
 - ✅ Supporting scanning of different IP address ranges
-- ❌ Analyzing and recognizing different classes of IP addresses (Class A, B, C)
+- ✅ Analyzing and recognizing different classes of IP addresses (Class A, B, C)
 
 ## Note on Usage
 Unauthorized network scanning can be considered illegal and unethical activity, and can cause substantial disruptions in network operation. Always obtain the necessary permissions and comply with relevant laws and guidelines when performing network scanning.
