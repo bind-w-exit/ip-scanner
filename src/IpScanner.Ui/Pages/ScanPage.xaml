@@ -105,7 +105,7 @@
 
         <!-- Devices list -->
         <Grid Grid.Row="2" Padding="5">
-            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices, Mode=TwoWay}" 
+            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" 
                 AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                 ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 
