@@ -53,6 +53,12 @@ namespace IpScanner.Ui.ObjectModels
             }
         }
 
+        protected override void ClearItems()
+        {
+            _filteredItems.Clear();
+            base.ClearItems();
+        }
+
         private bool ItemSutisfiesFilters(T item)
         {
             foreach (var filter in _filters)
