@@ -34,28 +34,35 @@ namespace IpScanner.Domain.Models
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            IEnumerable<Task> tasks = _ipsToScan.Select(async destination =>
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    return;
-
-                ScannedDevice scannedDevice = await ScanSpecificIpAsync(destination);
-                DeviceScanned?.Invoke(this, new ScannedDeviceEventArgs(scannedDevice));
-            });
-
+            IEnumerable<Task> tasks = _ipsToScan.Select(async destination => await ScanAndHandleCancellationAsync(destination, cancellationToken));
             await Task.WhenAll(tasks);
         }
 
-        private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination)
+        private async Task ScanAndHandleCancellationAsync(IPAddress destination, CancellationToken cancellationToken)
+        {
+            try
+            {
+                ScannedDevice scannedDevice = await ScanSpecificIpAsync(destination, cancellationToken);
+                DeviceScanned?.Invoke(this, new ScannedDeviceEventArgs(scannedDevice));
+            }
+            catch (OperationCanceledException)
+            { }
+        }
+
+        private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination, CancellationToken cancellationToken)
         {
             PhysicalAddress macAddress = await GetMacAddressAsync(destination);
+            cancellationToken.ThrowIfCancellationRequested();
             if (macAddress == PhysicalAddress.None)
             {
                 return new ScannedDevice(destination);
             }
 
             string manufacturer = await _manufactorRepository.GetManufacturerOrEmptyStringAsync(macAddress);
+            cancellationToken.ThrowIfCancellationRequested();
+
             string name = await GetHostnameOrIpAddress(destination);
+            cancellationToken.ThrowIfCancellationRequested();
 
             return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
         }

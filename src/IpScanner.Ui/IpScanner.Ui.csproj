@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Convertors\BooleanInvertConverter.cs" />
     <Compile Include="Convertors\BoolToColumnSpanConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />

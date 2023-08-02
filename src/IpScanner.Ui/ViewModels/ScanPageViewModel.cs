@@ -21,13 +21,14 @@ namespace IpScanner.Ui.ViewModels
         private string _searchText;
         private int _countOfScannedIps;
         private bool _showDetails;
+        private bool _currentlyScanning;
         private int _countOfUnknownDevices;
         private int _countOfOnlineDevices;
         private int _countOfOfflineDevices;
         private ScannedDevice _selectedDevice;
         private readonly INetworkScannerFactory _ipScannerFactory;
         private FilteredCollection<ScannedDevice> _filteredDevices;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
         private readonly IMessenger _messanger;
 
         public ScanPageViewModel(INetworkScannerFactory factory, IMessenger messenger)
@@ -37,6 +38,7 @@ namespace IpScanner.Ui.ViewModels
             CountOfScannedIps = 0;
             TotalCountOfIps = int.MaxValue;
             ShowDetails = false;
+            CurrentlyScanning = false;
             IpRange = string.Empty;
             SearchText = string.Empty;
             SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
@@ -86,6 +88,12 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _showDetails;
             set => SetProperty(ref _showDetails, value);
+        }
+
+        public bool CurrentlyScanning
+        {
+            get => _currentlyScanning;
+            set => SetProperty(ref _currentlyScanning, value);
         }
 
         public int CountOfUnknownDevices
@@ -147,28 +155,54 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand SetSubnetClassCMask { get => new RelayCommand(EnableSubnetClassCMask); }
 
-        public void Dispose()
-        {
-            _cancellationTokenSource.Dispose();
-        }
-
         private async Task ScanAsync()
         {
             try
             {
-                ScannedDevices.Clear();
-                ResetProgress();
-
-                NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
-                scanner.DeviceScanned += DeviceScannedHandler;
-                TotalCountOfIps = scanner.ScannedIps.Count;
-
-                await scanner.StartAsync(_cancellationTokenSource.Token);
+                await TryScanningAsync();
             }
             catch (IpValidationException)
             {
-                HasValidationError = true;
+                OnValidationError();
             }
+        }
+
+        private async Task TryScanningAsync()
+        {
+            InitiateScanning();
+
+            NetworkScanner scanner = CreateScanner();
+            TotalCountOfIps = scanner.ScannedIps.Count;
+
+            await scanner.StartAsync(_cancellationTokenSource.Token);
+
+            FinishScanning();
+        }
+
+        private void InitiateScanning()
+        {
+            ResetProgress();
+            ScannedDevices.Clear();
+            CurrentlyScanning = true;
+        }
+
+        private NetworkScanner CreateScanner()
+        {
+            NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
+            scanner.DeviceScanned += DeviceScannedHandler;
+
+            return scanner;
+        }
+
+        private void FinishScanning()
+        {
+            CurrentlyScanning = false;
+        }
+
+        private void OnValidationError()
+        {
+            HasValidationError = true;
+            CurrentlyScanning = false;
         }
 
         private void ResetProgress()
@@ -180,7 +214,24 @@ namespace IpScanner.Ui.ViewModels
             TotalCountOfIps = int.MaxValue;
         }
 
-        private void CancelScanning() => _cancellationTokenSource.Cancel();
+        private void CancelScanning()
+        {
+            CancelCurrentTask();
+            ResetCancellationTokenSource();
+        }
+
+        private void CancelCurrentTask()
+        {
+            _cancellationTokenSource.Cancel();
+            CurrentlyScanning = false;
+        }
+
+        private void ResetCancellationTokenSource()
+        {
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
+
 
         private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
         {
@@ -251,6 +302,11 @@ namespace IpScanner.Ui.ViewModels
             }
 
             return Math.Round(((double)CountOfScannedIps / TotalCountOfIps) * 100, 2);
-        }   
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
+        }
     }
 }
