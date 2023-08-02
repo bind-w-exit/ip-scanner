@@ -14,6 +14,7 @@
         <convertors:BoolToVisibilityConvertor x:Key="BoolToVisibilityConvertor" />
         <convertors:ValidationErrorToColorConverter x:Key="ValidationErrorToColorConverter" />
         <convertors:DeviceStatusToGlyphConverter x:Key="DeviceStatusToGlyphConverter" />
+        <convertors:BoolToColumnSpanConvertor x:Key="BoolToColumnSpanConvertor" />
     </Page.Resources>
 
     <Grid>
@@ -95,40 +96,49 @@
             </Grid.ColumnDefinitions>
 
             <TextBox x:Uid="IpRangeInput" Grid.Column="0" Text="{Binding IpRange, Mode=TwoWay}" Margin="0,0,2,0"></TextBox>
-            <TextBox x:Uid="Search" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" 
-                     Margin="2,0,5,0"></TextBox>
+            <TextBox x:Uid="Search" Grid.Column="1" Text="{Binding SearchText, Mode=TwoWay}" Margin="2,0,5,0"></TextBox>
 
             <TextBlock x:Uid="IpRangeValidationMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{StaticResource ErrorColorBrush}"
-                    Visibility="{Binding HasValidationError, Converter={StaticResource BoolToVisibilityConvertor}}"
-                    Margin="2,0,5,0"/>
+                    Visibility="{Binding HasValidationError, Converter={StaticResource BoolToVisibilityConvertor}}" Margin="2,0,5,0"/>
         </Grid>
 
         <!-- Devices list -->
         <Grid Grid.Row="2" Padding="5">
-            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                          Grid.ColumnSpan="{Binding ShowDetails, Converter={StaticResource BoolToColumnSpanConvertor}}">
+                <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" 
                 AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                 ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                
-                <controls:DataGrid.Columns>
-                    <controls:DataGridTemplateColumn x:Uid="Status">
-                        <controls:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip Content="{Binding Status}"/>
-                                    </ToolTipService.ToolTip>
-                                </FontIcon>
-                            </DataTemplate>
-                        </controls:DataGridTemplateColumn.CellTemplate>
-                    </controls:DataGridTemplateColumn>
-                    
-                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufactor}" />
-                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
+
+                    <controls:DataGrid.Columns>
+                        <controls:DataGridTemplateColumn x:Uid="Status">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip Content="{Binding Status}"/>
+                                        </ToolTipService.ToolTip>
+                                    </FontIcon>
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                        </controls:DataGridTemplateColumn>
+
+                        <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                        <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                        <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufactor}" />
+                        <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                        <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                    </controls:DataGrid.Columns>
+                </controls:DataGrid>
+            </ScrollViewer>
+
+            <!-- Device details -->
+            <Frame Grid.Column="1" x:Name="DetailsFrame" Visibility="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConvertor}}"></Frame>
         </Grid>
 
         <!-- Progress bar -->

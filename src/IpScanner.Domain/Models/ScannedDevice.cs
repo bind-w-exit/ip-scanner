@@ -9,7 +9,7 @@ namespace IpScanner.Domain.Models
         public ScannedDevice(IPAddress ipAddress)
         {
             Status = DeviceStatus.Unknown;
-            Name = ipAddress.ToString();
+            Name = string.Empty;
             Ip = ipAddress;
             Manufactor = string.Empty;
             MacAddress = PhysicalAddress.None;

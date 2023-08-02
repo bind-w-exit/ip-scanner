@@ -126,9 +126,9 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowTheDetailsPane">
+                <MenuFlyoutItem x:Uid="ShowTheDetailsPane" Command="{Binding ShowDetailsPageCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
             </MenuBarItem>

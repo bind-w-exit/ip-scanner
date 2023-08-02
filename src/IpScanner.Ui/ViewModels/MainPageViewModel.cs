@@ -15,6 +15,7 @@ namespace IpScanner.Ui.ViewModels
         private bool _showUnknown;
         private bool _showOnline;
         private bool _showOffline;
+        private bool _showDetails;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
         private readonly IMessenger _messenger;
@@ -27,9 +28,10 @@ namespace IpScanner.Ui.ViewModels
         {
             _messenger = messenger;
 
-            ShowUnknown = true;
+            ShowUnknown = false;
             ShowOnline = true;
             ShowOffline = true;
+            ShowDetails = false;
 
             _navigationService = navigationService;
             _localizationService = localizationService;
@@ -65,6 +67,16 @@ namespace IpScanner.Ui.ViewModels
             }
         }
 
+        public bool ShowDetails
+        {
+            get => _showDetails;
+            set
+            {
+                _messenger.Send(new DetailsPageVisibilityMessage(value));
+                SetProperty(ref _showDetails, value);
+            }
+        }
+
         public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
 
         public RelayCommand ShowOnlineCommand { get => new RelayCommand(() => ShowOnline = !ShowOnline); }
@@ -72,6 +84,8 @@ namespace IpScanner.Ui.ViewModels
         public RelayCommand ShowOfflineCommand { get => new RelayCommand(() => ShowOffline = !ShowOffline); }
 
         public RelayCommand ShowUnknownCommand { get => new RelayCommand(() => ShowUnknown = !ShowUnknown); }
+
+        public RelayCommand ShowDetailsPageCommand { get => new RelayCommand(() => ShowDetails = !ShowDetails); }
 
         private async Task ChangeLanguageAsync(string language)
         {

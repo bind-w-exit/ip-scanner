@@ -19,6 +19,7 @@ namespace IpScanner.Ui.ViewModels
         private string _ipRange;
         private string _searchText;
         private int _countOfScannedIps;
+        private bool _showDetails;
         private readonly INetworkScannerFactory _ipScannerFactory;
         private FilteredCollection<ScannedDevice> _filteredDevices;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -26,6 +27,7 @@ namespace IpScanner.Ui.ViewModels
         public ScanPageViewModel(INetworkScannerFactory factory, IMessenger messenger)
         {
             Progress = 0;
+            ShowDetails = false;
             IpRange = string.Empty;
             SearchText = string.Empty;
             ScannedDevices = new FilteredCollection<ScannedDevice>();
@@ -33,7 +35,7 @@ namespace IpScanner.Ui.ViewModels
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
 
-            messenger.Register<FilterMessage>(this, OnFilterMessage);
+            RegisterMessages(messenger);
         }
 
         public string IpRange
@@ -62,6 +64,12 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _countOfScannedIps;
             set => SetProperty(ref _countOfScannedIps, value);
+        }
+
+        public bool ShowDetails
+        {
+            get => _showDetails;
+            set => SetProperty(ref _showDetails, value);
         }
 
         public FilteredCollection<ScannedDevice> ScannedDevices
@@ -120,6 +128,12 @@ namespace IpScanner.Ui.ViewModels
             IpRange = "192.168.0.1-254, 26.0.0.1-254";
         }
 
+        private void RegisterMessages(IMessenger messenger)
+        {
+            messenger.Register<FilterMessage>(this, OnFilterMessage);
+            messenger.Register<DetailsPageVisibilityMessage>(this, OnDetailsPageVisibilityMessage);
+        }
+
         private void OnFilterMessage(object sender, FilterMessage message)
         {
             if(message.FilterStatus)
@@ -132,6 +146,11 @@ namespace IpScanner.Ui.ViewModels
             }
 
             ScannedDevices.RefreshFilteredItems();
+        }
+
+        private void OnDetailsPageVisibilityMessage(object sender, DetailsPageVisibilityMessage message)
+        {
+            ShowDetails = message.Visible;
         }
     }
 }

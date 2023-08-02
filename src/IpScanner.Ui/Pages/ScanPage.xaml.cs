@@ -10,6 +10,8 @@ namespace IpScanner.Ui.Pages
         {
             this.InitializeComponent();
             DataContext = Ioc.Default.GetService<ScanPageViewModel>();
+
+            DetailsFrame.Navigate(typeof(DetailsPage));
         }
     }
 }
