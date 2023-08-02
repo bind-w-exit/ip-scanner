@@ -4,14 +4,13 @@ using Windows.UI.Xaml.Controls;
 
 namespace IpScanner.Ui.Pages
 {
-    public sealed partial class ScanPage : Page
+    public sealed partial class DetailsPage : Page
     {
-        public ScanPage()
+        public DetailsPage()
         {
             this.InitializeComponent();
-            DataContext = Ioc.Default.GetService<ScanPageViewModel>();
 
-            DetailsFrame.Navigate(typeof(DetailsPage));
+            DataContext = Ioc.Default.GetService<DetailsPageViewModel>();
         }
     }
 }

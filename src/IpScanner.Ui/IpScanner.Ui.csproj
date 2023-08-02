@@ -119,11 +119,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Convertors\BoolToColumnSpanConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Messages\DetailsPageVisibilityMessage.cs" />
+    <Compile Include="Messages\DeviceSelectedMessage.cs" />
+    <Compile Include="Messages\FilterMessage.cs" />
+    <Compile Include="ObjectModels\ItemFilter.cs" />
+    <Compile Include="ObjectModels\FilteredCollection.cs" />
+    <Compile Include="Pages\DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
@@ -134,6 +144,7 @@
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
+    <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
     <Compile Include="ViewModels\ValidationViewModel.cs" />
@@ -161,6 +172,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ScanPage.xaml">
       <SubType>Designer</SubType>

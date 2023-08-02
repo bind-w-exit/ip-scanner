@@ -9,9 +9,9 @@ namespace IpScanner.Domain.Models
         public ScannedDevice(IPAddress ipAddress)
         {
             Status = DeviceStatus.Unknown;
-            Name = ipAddress.ToString();
+            Name = string.Empty;
             Ip = ipAddress;
-            Manufactor = string.Empty;
+            Manufacturer = string.Empty;
             MacAddress = PhysicalAddress.None;
             Comments = string.Empty;
         }
@@ -22,7 +22,7 @@ namespace IpScanner.Domain.Models
             Status = status;
             Name = name;
             Ip = ip;
-            Manufactor = manufactor;
+            Manufacturer = manufactor;
             MacAddress = macAddress;
             Comments = comments;
         }
@@ -30,13 +30,13 @@ namespace IpScanner.Domain.Models
         public DeviceStatus Status { get; private set; }
         public string Name { get; private set; }
         public IPAddress Ip { get; private set; }
-        public string Manufactor { get; private set; }
+        public string Manufacturer { get; private set; }
         public PhysicalAddress MacAddress { get; private set; }
         public string Comments { get; private set; }
 
         public override string ToString()
         {
-            return $"{Status} {Name} {Ip} {Manufactor} {MacAddress} {Comments}";
+            return $"{Status} {Name} {Ip} {Manufacturer} {MacAddress} {Comments}";
         }
     }
 }

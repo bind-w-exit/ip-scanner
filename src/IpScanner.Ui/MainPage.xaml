@@ -5,8 +5,13 @@
     xmlns:local="using:IpScanner.Ui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:convertors="using:IpScanner.Ui.Convertors"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <convertors:BoolToVisibilityConvertor x:Key="BoolToVisibilityConverter"></convertors:BoolToVisibilityConvertor>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -87,21 +92,21 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowAlive">
+                <MenuFlyoutItem x:Uid="ShowAlive" Command="{Binding ShowOnlineCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowOnline, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowDead">
+                <MenuFlyoutItem x:Uid="ShowDead" Command="{Binding ShowOfflineCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowOffline, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowUnknown">
+                <MenuFlyoutItem x:Uid="ShowUnknown" Command="{Binding ShowUnknownCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Collapsed"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowUnknown, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
@@ -121,9 +126,9 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowTheDetailsPane">
+                <MenuFlyoutItem x:Uid="ShowTheDetailsPane" Command="{Binding ShowDetailsPageCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
             </MenuBarItem>

@@ -10,9 +10,13 @@ namespace IpScanner.Ui
         public MainPage()
         {
             this.InitializeComponent();
+            InitializeScanPageViewModelForMessanger();
+
             DataContext = Ioc.Default.GetService<MainPageViewModel>();
 
             ContentFrame.Navigate(typeof(ScanPage));
         }
+
+        private void InitializeScanPageViewModelForMessanger() => Ioc.Default.GetService<ScanPageViewModel>();
     }
 }

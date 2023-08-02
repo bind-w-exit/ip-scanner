@@ -1,4 +1,5 @@
-﻿using IpScanner.Domain.Factories;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
@@ -23,9 +24,12 @@ namespace IpScanner.Ui
 
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
+            services.AddSingleton<DetailsPageViewModel>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
+
+            services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 
             return services;
         }

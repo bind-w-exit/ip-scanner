@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Args;
 using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
+using IpScanner.Ui.Messages;
+using IpScanner.Ui.ObjectModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
@@ -19,22 +19,28 @@ namespace IpScanner.Ui.ViewModels
         private string _ipRange;
         private string _searchText;
         private int _countOfScannedIps;
+        private bool _showDetails;
+        private ScannedDevice _selectedDevice;
         private readonly INetworkScannerFactory _ipScannerFactory;
-        private ObservableCollection<ScannedDevice> _scannedDevices;
-        private ObservableCollection<ScannedDevice> _temporaryCollection;
+        private FilteredCollection<ScannedDevice> _filteredDevices;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly IMessenger _messanger;
 
-        public ScanPageViewModel(INetworkScannerFactory factory)
+        public ScanPageViewModel(INetworkScannerFactory factory, IMessenger messenger)
         {
+            _messanger = messenger;
+
             Progress = 0;
-            CountOfScannedIps = 100;
+            ShowDetails = false;
             IpRange = string.Empty;
             SearchText = string.Empty;
-            ScannedDevices = new ObservableCollection<ScannedDevice>();
-            _temporaryCollection = new ObservableCollection<ScannedDevice>();
+            SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
+            ScannedDevices = new FilteredCollection<ScannedDevice>();
 
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
+
+            RegisterMessages(messenger);
         }
 
         public string IpRange
@@ -50,11 +56,7 @@ namespace IpScanner.Ui.ViewModels
         public string SearchText
         {
             get => _searchText;
-            set
-            {
-                SetProperty(ref _searchText, value);
-                FilterDevices();
-            }
+            set => SetProperty(ref _searchText, value);
         }
 
         public int Progress
@@ -69,10 +71,26 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _countOfScannedIps, value);
         }
 
-        public ObservableCollection<ScannedDevice> ScannedDevices
+        public bool ShowDetails
         {
-            get => _scannedDevices;
-            set => SetProperty(ref _scannedDevices, value);
+            get => _showDetails;
+            set => SetProperty(ref _showDetails, value);
+        }
+
+        public ScannedDevice SelectedDevice
+        {
+            get => _selectedDevice;
+            set
+            {
+                _messanger.Send(new DeviceSelectedMessage(value));
+                SetProperty(ref _selectedDevice, value);
+            }
+        }
+
+        public FilteredCollection<ScannedDevice> ScannedDevices
+        {
+            get => _filteredDevices;
+            set => SetProperty(ref _filteredDevices, value);
         }
 
         public AsyncRelayCommand ScanCommand { get => new AsyncRelayCommand(ScanAsync); }
@@ -110,40 +128,9 @@ namespace IpScanner.Ui.ViewModels
         {
             DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
-                ScannedDevices.Add(e.ScannedDevice);
+                ScannedDevices.AddItem(e.ScannedDevice);
                 Progress = ScannedDevices.Count;
             });
-        }
-
-        private void FilterDevices()
-        {
-            if (ScannedDevices == null)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(SearchText))
-            {
-                ScannedDevices.Clear();
-                AddDivicesToView(_temporaryCollection);
-            }
-            else
-            {
-                var filteredDevices = _scannedDevices.Where(_scannedDevices => _scannedDevices.Name.Contains(SearchText)).ToList();
-
-                _temporaryCollection = new ObservableCollection<ScannedDevice>(_scannedDevices);
-
-                ScannedDevices.Clear();
-                AddDivicesToView(filteredDevices);
-            }
-        }
-
-        private void AddDivicesToView(IEnumerable<ScannedDevice> scannedDevices)
-        {
-            foreach (var item in scannedDevices)
-            {
-                ScannedDevices.Add(item);
-            }
         }
 
         private void EnableSubnetMask()
@@ -154,6 +141,31 @@ namespace IpScanner.Ui.ViewModels
         private void EnableSubnetClassCMask()
         {
             IpRange = "192.168.0.1-254, 26.0.0.1-254";
+        }
+
+        private void RegisterMessages(IMessenger messenger)
+        {
+            messenger.Register<FilterMessage>(this, OnFilterMessage);
+            messenger.Register<DetailsPageVisibilityMessage>(this, OnDetailsPageVisibilityMessage);
+        }
+
+        private void OnFilterMessage(object sender, FilterMessage message)
+        {
+            if(message.FilterStatus)
+            {
+                ScannedDevices.AddFilter(message.Filter);
+            }
+            else
+            {
+                ScannedDevices.RemoveFilter(message.Filter);
+            }
+
+            ScannedDevices.RefreshFilteredItems();
+        }
+
+        private void OnDetailsPageVisibilityMessage(object sender, DetailsPageVisibilityMessage message)
+        {
+            ShowDetails = message.Visible;
         }
     }
 }
