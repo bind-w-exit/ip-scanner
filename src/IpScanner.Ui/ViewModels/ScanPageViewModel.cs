@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Args;
+using IpScanner.Domain.Enums;
 using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
@@ -20,6 +21,9 @@ namespace IpScanner.Ui.ViewModels
         private string _searchText;
         private int _countOfScannedIps;
         private bool _showDetails;
+        private int _countOfUnknownDevices;
+        private int _countOfOnlineDevices;
+        private int _countOfOfflineDevices;
         private ScannedDevice _selectedDevice;
         private readonly INetworkScannerFactory _ipScannerFactory;
         private FilteredCollection<ScannedDevice> _filteredDevices;
@@ -30,7 +34,8 @@ namespace IpScanner.Ui.ViewModels
         {
             _messanger = messenger;
 
-            Progress = 0;
+            CountOfScannedIps = 0;
+            TotalCountOfIps = int.MaxValue;
             ShowDetails = false;
             IpRange = string.Empty;
             SearchText = string.Empty;
@@ -59,13 +64,19 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _searchText, value);
         }
 
-        public int Progress
+        public int CountOfScannedIps
         {
             get => _progress;
-            set => SetProperty(ref _progress, value);
+            set
+            {
+                if(SetProperty(ref _progress, value))
+                {
+                    OnPropertyChanged(nameof(ProgressString));
+                }
+            }
         }
 
-        public int CountOfScannedIps
+        public int TotalCountOfIps
         {
             get => _countOfScannedIps;
             set => SetProperty(ref _countOfScannedIps, value);
@@ -75,6 +86,41 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _showDetails;
             set => SetProperty(ref _showDetails, value);
+        }
+
+        public int CountOfUnknownDevices
+        {
+            get => _countOfUnknownDevices;
+            set
+            {
+                if(SetProperty(ref _countOfUnknownDevices, value))
+                {
+                    OnPropertyChanged(nameof(ProgressString));
+                }   
+            }
+        }
+
+        public int CountOfOnlineDevices
+        {
+            get => _countOfOnlineDevices;
+            set => SetProperty(ref _countOfOnlineDevices, value);
+        }
+
+        public int CountOfOfflineDevices
+        {
+            get => _countOfOfflineDevices;
+            set
+            {
+                if(SetProperty(ref _countOfOfflineDevices, value))
+                {
+                    OnPropertyChanged(nameof(ProgressString));
+                }
+            }
+        }
+
+        public string ProgressString
+        {
+            get => $"{CalculateProgress()}%, {CountOfOfflineDevices} dead, {CountOfUnknownDevices} unknown";
         }
 
         public ScannedDevice SelectedDevice
@@ -110,9 +156,12 @@ namespace IpScanner.Ui.ViewModels
         {
             try
             {
-                var scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
+                ScannedDevices.Clear();
+                ResetProgress();
+
+                NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
                 scanner.DeviceScanned += DeviceScannedHandler;
-                CountOfScannedIps = scanner.ScannedIps.Count;
+                TotalCountOfIps = scanner.ScannedIps.Count;
 
                 await scanner.StartAsync(_cancellationTokenSource.Token);
             }
@@ -122,6 +171,15 @@ namespace IpScanner.Ui.ViewModels
             }
         }
 
+        private void ResetProgress()
+        {
+            CountOfScannedIps = 0;
+            CountOfUnknownDevices = 0;
+            CountOfOnlineDevices = 0;
+            CountOfOfflineDevices = 0;
+            TotalCountOfIps = int.MaxValue;
+        }
+
         private void CancelScanning() => _cancellationTokenSource.Cancel();
 
         private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
@@ -129,8 +187,25 @@ namespace IpScanner.Ui.ViewModels
             DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
                 ScannedDevices.AddItem(e.ScannedDevice);
-                Progress = ScannedDevices.Count;
+                CountOfScannedIps = ScannedDevices.Count;
+                IncreaseCountOfSpecificDevices(e.ScannedDevice.Status);
             });
+        }
+
+        private void IncreaseCountOfSpecificDevices(DeviceStatus status)
+        {
+            switch(status)
+            {
+                case DeviceStatus.Unknown:
+                    CountOfUnknownDevices++;
+                    break;
+                case DeviceStatus.Online:
+                    CountOfOnlineDevices++;
+                    break;
+                case DeviceStatus.Offline:
+                    CountOfOfflineDevices++;
+                    break;
+            }
         }
 
         private void EnableSubnetMask()
@@ -167,5 +242,15 @@ namespace IpScanner.Ui.ViewModels
         {
             ShowDetails = message.Visible;
         }
+
+        private double CalculateProgress()
+        {
+            if(TotalCountOfIps == 0)
+            {
+                return 0;
+            }
+
+            return Math.Round(((double)CountOfScannedIps / TotalCountOfIps) * 100, 2);
+        }   
     }
 }
