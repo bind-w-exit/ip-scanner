@@ -159,23 +159,50 @@ namespace IpScanner.Ui.ViewModels
         {
             try
             {
-                ResetProgress();
-                ScannedDevices.Clear();
-                CurrentlyScanning = true;
-
-                NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
-                scanner.DeviceScanned += DeviceScannedHandler;
-                TotalCountOfIps = scanner.ScannedIps.Count;
-
-                await scanner.StartAsync(_cancellationTokenSource.Token);
-
-                CurrentlyScanning = false;
+                await TryScanningAsync();
             }
             catch (IpValidationException)
             {
-                HasValidationError = true;
-                CurrentlyScanning = false;
+                OnValidationError();
             }
+        }
+
+        private async Task TryScanningAsync()
+        {
+            InitiateScanning();
+
+            NetworkScanner scanner = CreateScanner();
+            TotalCountOfIps = scanner.ScannedIps.Count;
+
+            await scanner.StartAsync(_cancellationTokenSource.Token);
+
+            FinishScanning();
+        }
+
+        private void InitiateScanning()
+        {
+            ResetProgress();
+            ScannedDevices.Clear();
+            CurrentlyScanning = true;
+        }
+
+        private NetworkScanner CreateScanner()
+        {
+            NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(IpRange));
+            scanner.DeviceScanned += DeviceScannedHandler;
+
+            return scanner;
+        }
+
+        private void FinishScanning()
+        {
+            CurrentlyScanning = false;
+        }
+
+        private void OnValidationError()
+        {
+            HasValidationError = true;
+            CurrentlyScanning = false;
         }
 
         private void ResetProgress()
@@ -189,12 +216,22 @@ namespace IpScanner.Ui.ViewModels
 
         private void CancelScanning()
         {
+            CancelCurrentTask();
+            ResetCancellationTokenSource();
+        }
+
+        private void CancelCurrentTask()
+        {
             _cancellationTokenSource.Cancel();
             CurrentlyScanning = false;
+        }
 
+        private void ResetCancellationTokenSource()
+        {
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
         }
+
 
         private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
         {
