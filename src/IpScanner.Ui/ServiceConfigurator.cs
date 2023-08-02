@@ -24,6 +24,7 @@ namespace IpScanner.Ui
 
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
+            services.AddSingleton<DetailsPageViewModel>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();

@@ -20,16 +20,21 @@ namespace IpScanner.Ui.ViewModels
         private string _searchText;
         private int _countOfScannedIps;
         private bool _showDetails;
+        private ScannedDevice _selectedDevice;
         private readonly INetworkScannerFactory _ipScannerFactory;
         private FilteredCollection<ScannedDevice> _filteredDevices;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly IMessenger _messanger;
 
         public ScanPageViewModel(INetworkScannerFactory factory, IMessenger messenger)
         {
+            _messanger = messenger;
+
             Progress = 0;
             ShowDetails = false;
             IpRange = string.Empty;
             SearchText = string.Empty;
+            SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
             ScannedDevices = new FilteredCollection<ScannedDevice>();
 
             _ipScannerFactory = factory;
@@ -70,6 +75,16 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _showDetails;
             set => SetProperty(ref _showDetails, value);
+        }
+
+        public ScannedDevice SelectedDevice
+        {
+            get => _selectedDevice;
+            set
+            {
+                _messanger.Send(new DeviceSelectedMessage(value));
+                SetProperty(ref _selectedDevice, value);
+            }
         }
 
         public FilteredCollection<ScannedDevice> ScannedDevices

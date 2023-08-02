@@ -128,6 +128,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\DetailsPageVisibilityMessage.cs" />
+    <Compile Include="Messages\DeviceSelectedMessage.cs" />
     <Compile Include="Messages\FilterMessage.cs" />
     <Compile Include="Messages\FilterMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
+    <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
     <Compile Include="ViewModels\ValidationViewModel.cs" />

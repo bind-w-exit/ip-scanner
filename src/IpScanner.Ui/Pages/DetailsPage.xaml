@@ -8,7 +8,52 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Details" Margin="10" FontSize="24"></TextBlock>
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <FontIcon Glyph="&#xE749;" Margin="5,0,5,0" FontSize="22"/>
+                <FontIcon Glyph="&#xE74E;" Margin="5,0,5,0" FontSize="22"/>
+            </StackPanel>
+            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="10,12" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="{Binding Device.Name}" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
+            <TextBlock Text="Status: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="Operating system: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="IP: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="MAC: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="Manufacturer: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="NetBIOS: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="User: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="Type: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="Date: " FontWeight="Bold"></TextBlock>
+            <TextBlock Text="Comments: " FontWeight="Bold"></TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
+            <TextBlock Text=""></TextBlock>
+            
+            <TextBlock Text="{Binding Device.Status}"></TextBlock>
+            <TextBlock Text=""></TextBlock>
+            <TextBlock Text="{Binding Device.Ip}"></TextBlock>
+            <TextBlock Text="{Binding Device.MacAddress}"></TextBlock>
+            <TextBlock Text="{Binding Device.Manufacturer}"></TextBlock>
+            <TextBlock Text=""></TextBlock>
+            <TextBlock Text=""></TextBlock>
+            <TextBlock Text="Wireless access poing"></TextBlock>
+            <TextBlock Text=""></TextBlock>
+            <TextBlock Text="{Binding Device.Comments}"></TextBlock>
+        </StackPanel>
     </Grid>
 </Page>
