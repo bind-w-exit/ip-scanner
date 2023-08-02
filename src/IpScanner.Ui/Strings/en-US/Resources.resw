@@ -174,7 +174,7 @@
   <data name="IPAddress.Header" xml:space="preserve">
     <value>IP Address</value>
   </data>
-  <data name="IpRangeInput.PlaceholderText" xml:space="preserve">
+  <data name="IpRangeExample.Text" xml:space="preserve">
     <value>Example: 192.168.0.1-100, 192.168.0.200</value>
   </data>
   <data name="IpRangeValidationMessage.Text" xml:space="preserve">
