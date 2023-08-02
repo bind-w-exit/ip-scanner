@@ -130,7 +130,6 @@
     <Compile Include="Messages\DetailsPageVisibilityMessage.cs" />
     <Compile Include="Messages\DeviceSelectedMessage.cs" />
     <Compile Include="Messages\FilterMessage.cs" />
-    <Compile Include="Messages\FilterMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />
     <Compile Include="Pages\DetailsPage.xaml.cs">
