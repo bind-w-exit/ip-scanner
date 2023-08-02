@@ -132,11 +132,20 @@
   <data name="Comments.Header" xml:space="preserve">
     <value>Коментарі</value>
   </data>
+  <data name="CommentsDetails.Text" xml:space="preserve">
+    <value>Коментарі</value>
+  </data>
   <data name="Community.Text" xml:space="preserve">
     <value>Спільнота</value>
   </data>
   <data name="Contents.Text" xml:space="preserve">
     <value>Зміст</value>
+  </data>
+  <data name="Date.Text" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Details.Text" xml:space="preserve">
+    <value>Деталі</value>
   </data>
   <data name="English.Text" xml:space="preserve">
     <value>Англійська (en-US)</value>
@@ -150,11 +159,17 @@
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Розгорнути все</value>
   </data>
+  <data name="Favorites.Content" xml:space="preserve">
+    <value>Обране</value>
+  </data>
   <data name="File.Title" xml:space="preserve">
     <value>Файл</value>
   </data>
   <data name="Help.Title" xml:space="preserve">
     <value>Допомога</value>
+  </data>
+  <data name="IP.Text" xml:space="preserve">
+    <value>IP</value>
   </data>
   <data name="IPAddress.Header" xml:space="preserve">
     <value>IP Адреса</value>
@@ -171,19 +186,34 @@
   <data name="LoadFavorites.Text" xml:space="preserve">
     <value>Завантажити обране</value>
   </data>
+  <data name="Mac.Text" xml:space="preserve">
+    <value>MAC</value>
+  </data>
   <data name="MACAddress.Header" xml:space="preserve">
     <value>MAC Адреса</value>
   </data>
   <data name="Manufacturer.Header" xml:space="preserve">
     <value>Виробник</value>
   </data>
+  <data name="ManufacturerDetails.Text" xml:space="preserve">
+    <value>Виробник</value>
+  </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Назва</value>
+  </data>
+  <data name="NetBIOS.Text" xml:space="preserve">
+    <value>NetBIOS</value>
+  </data>
+  <data name="OperatingSystem.Text" xml:space="preserve">
+    <value>Операційна система</value>
   </data>
   <data name="Options.Text" xml:space="preserve">
     <value>Опції ...</value>
   </data>
   <data name="Print.Text" xml:space="preserve">
+    <value>Роздрукувати ...</value>
+  </data>
+  <data name="PrintDetails.Content" xml:space="preserve">
     <value>Роздрукувати ...</value>
   </data>
   <data name="PrintPreview.Text" xml:space="preserve">
@@ -195,7 +225,13 @@
   <data name="RequestFeature.Text" xml:space="preserve">
     <value>Замовити функцію</value>
   </data>
+  <data name="Results.Content" xml:space="preserve">
+    <value>Результати</value>
+  </data>
   <data name="SaveAs.Text" xml:space="preserve">
+    <value>Зберегти як ...</value>
+  </data>
+  <data name="SaveAsDetails.Content" xml:space="preserve">
     <value>Зберегти як ...</value>
   </data>
   <data name="Scan.Text" xml:space="preserve">
@@ -206,6 +242,9 @@
   </data>
   <data name="Search.PlaceholderText" xml:space="preserve">
     <value>Пошук</value>
+  </data>
+  <data name="Service.Text" xml:space="preserve">
+    <value>Сервіс</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>Налаштування</value>
@@ -231,14 +270,23 @@
   <data name="Status.Header" xml:space="preserve">
     <value>Статус</value>
   </data>
+  <data name="StatusDetails.Text" xml:space="preserve">
+    <value>Статус</value>
+  </data>
   <data name="Subnet.Content" xml:space="preserve">
     <value>Підмережа цього комп’ютера буде просканована</value>
   </data>
   <data name="SubnetC.Content" xml:space="preserve">
     <value>Буде скановано підмережу класу 'C'</value>
   </data>
+  <data name="Type.Text" xml:space="preserve">
+    <value>Тип</value>
+  </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Український (uk-UA)</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>Користувач</value>
   </data>
   <data name="View.Title" xml:space="preserve">
     <value>Вид</value>

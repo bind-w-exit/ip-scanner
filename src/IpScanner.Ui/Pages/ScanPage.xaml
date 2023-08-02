@@ -104,8 +104,8 @@
         </Grid>
 
         <StackPanel Grid.Row="2" Padding="5,5,5,0" Orientation="Horizontal">
-            <Button Content="Results" Margin="0,0,2,0"></Button>
-            <Button Content="Favorites" Margin="5,0,2,0" IsEnabled="False"></Button>
+            <Button x:Uid="Results" Margin="0,0,1,0"></Button>
+            <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
         </StackPanel>
 
         <!-- Devices list -->

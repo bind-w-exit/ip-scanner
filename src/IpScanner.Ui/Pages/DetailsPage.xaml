@@ -11,7 +11,8 @@
     <Grid Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -21,24 +22,42 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <FontIcon Glyph="&#xE749;" Margin="5,0,5,0" FontSize="22"/>
-                <FontIcon Glyph="&#xE74E;" Margin="5,0,5,0" FontSize="22"/>
+                <Button Background="Transparent" Margin="0,0,1,0" BorderThickness="0">
+                    <StackPanel>
+                        <FontIcon Glyph="&#xE749;" FontSize="22"/>
+                    </StackPanel>
+                    
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="PrintDetails"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button Background="Transparent" Margin="1,0,0,0" BorderThickness="0">
+                    <StackPanel>
+                        <FontIcon Glyph="&#xE74E;" FontSize="22"/>
+                    </StackPanel>
+
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="SaveAsDetails"/>
+                    </ToolTipService.ToolTip>
+                </Button>
             </StackPanel>
-            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="10,12" />
+            
+            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="2,10" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0">
             <TextBlock Text="{Binding Device.Name}" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
-            <TextBlock Text="Status: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="Operating system: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="IP: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="MAC: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="Manufacturer: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="NetBIOS: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="User: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="Type: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="Date: " FontWeight="Bold"></TextBlock>
-            <TextBlock Text="Comments: " FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="StatusDetails" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="OperatingSystem" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="IP" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="Mac" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="ManufacturerDetails" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="NetBIOS" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="User" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="Type" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="Date" FontWeight="Bold"></TextBlock>
+            <TextBlock x:Uid="CommentsDetails" FontWeight="Bold"></TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
@@ -54,6 +73,15 @@
             <TextBlock Text="Wireless access poing"></TextBlock>
             <TextBlock Text=""></TextBlock>
             <TextBlock Text="{Binding Device.Comments}"></TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,20,0,0">
+            <Border BorderBrush="{StaticResource SmokeFillColorDefaultBrush}" BorderThickness="1" Padding="5,3">
+                <TextBlock x:Uid="Service" FontWeight="Bold"></TextBlock>
+            </Border>
+            <Border BorderBrush="{StaticResource SmokeFillColorDefaultBrush}" BorderThickness="1" Padding="5,3">
+                <TextBlock x:Uid="Details" FontWeight="Bold"></TextBlock>
+            </Border>
         </StackPanel>
     </Grid>
 </Page>
