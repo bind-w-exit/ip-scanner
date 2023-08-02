@@ -4,17 +4,12 @@ using IpScanner.Domain.Args;
 using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
-using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
-using Windows.UI.Xaml.Data;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -38,7 +33,7 @@ namespace IpScanner.Ui.ViewModels
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
 
-            messenger.Register<UnknownFilterMessage>(this, OnUnknownFilterMessage);
+            messenger.Register<FilterMessage>(this, OnFilterMessage);
         }
 
         public string IpRange
@@ -125,7 +120,7 @@ namespace IpScanner.Ui.ViewModels
             IpRange = "192.168.0.1-254, 26.0.0.1-254";
         }
 
-        private void OnUnknownFilterMessage(object sender, UnknownFilterMessage message)
+        private void OnFilterMessage(object sender, FilterMessage message)
         {
             if(message.FilterStatus)
             {

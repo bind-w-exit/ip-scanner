@@ -19,6 +19,8 @@ namespace IpScanner.Ui.ViewModels
         private readonly ILocalizationService _localizationService;
         private readonly IMessenger _messenger;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
+        private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
+        private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
             IMessenger messenger)
@@ -38,7 +40,7 @@ namespace IpScanner.Ui.ViewModels
             get => _showUnknown;
             set
             {
-                _messenger.Send(new UnknownFilterMessage(_unknownFilter, !value));
+                _messenger.Send(new FilterMessage(_unknownFilter, !value));
                 SetProperty(ref _showUnknown, value);
             }
         }
@@ -46,13 +48,21 @@ namespace IpScanner.Ui.ViewModels
         public bool ShowOnline
         {
             get => _showOnline;
-            set => SetProperty(ref _showOnline, value);
+            set
+            {
+                _messenger.Send(new FilterMessage(_onlineFilter, !value));
+                SetProperty(ref _showOnline, value);
+            }
         }
 
         public bool ShowOffline
         {
             get => _showOffline;
-            set => SetProperty(ref _showOffline, value);
+            set
+            {
+                _messenger.Send(new FilterMessage(_offlineFilter, !value));
+                SetProperty(ref _showOffline, value);
+            }
         }
 
         public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }

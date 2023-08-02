@@ -126,7 +126,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\UnknownFilterMessage.cs" />
+    <Compile Include="Messages\FilterMessage.cs" />
+    <Compile Include="Messages\FilterMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />
     <Compile Include="Pages\ScanPage.xaml.cs">

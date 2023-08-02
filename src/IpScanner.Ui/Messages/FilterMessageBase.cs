@@ -3,15 +3,15 @@ using IpScanner.Ui.ObjectModels;
 
 namespace IpScanner.Ui.Messages
 {
-    public class UnknownFilterMessage
+    public abstract class FilterMessageBase<T>
     {
-        public UnknownFilterMessage(ItemFilter<ScannedDevice> filter, bool filterStatus)
+        protected FilterMessageBase(ItemFilter<T> filter, bool filterStatus)
         {
             Filter = filter;
             FilterStatus = filterStatus;
         }
 
-        public ItemFilter<ScannedDevice> Filter { get; }
+        public ItemFilter<T> Filter { get; }
         public bool FilterStatus { get; }
     }
 }
