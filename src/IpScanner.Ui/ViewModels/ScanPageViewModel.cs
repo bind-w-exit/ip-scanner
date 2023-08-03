@@ -30,6 +30,7 @@ namespace IpScanner.Ui.ViewModels
         private FilteredCollection<ScannedDevice> _filteredDevices;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IMessenger _messanger;
+        private readonly ItemFilter<ScannedDevice> _searchFilter;
 
         public ScanPageViewModel(INetworkScannerFactory factory, IMessenger messenger)
         {
@@ -47,6 +48,7 @@ namespace IpScanner.Ui.ViewModels
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
 
+            _searchFilter = new ItemFilter<ScannedDevice>(device => device.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
             RegisterMessages(messenger);
         }
 
@@ -63,7 +65,14 @@ namespace IpScanner.Ui.ViewModels
         public string SearchText
         {
             get => _searchText;
-            set => SetProperty(ref _searchText, value);
+            set
+            {
+                bool isValueSet = SetProperty(ref _searchText, value);
+                if (!isValueSet || ScannedDevices == null)
+                    return;
+
+                UpdateScannedDevicesSearchFilter();
+            }
         }
 
         public int CountOfScannedIps
@@ -302,6 +311,13 @@ namespace IpScanner.Ui.ViewModels
             }
 
             return Math.Round(((double)CountOfScannedIps / TotalCountOfIps) * 100, 2);
+        }
+
+        private void UpdateScannedDevicesSearchFilter()
+        {
+            ScannedDevices.RemoveFilter(_searchFilter);
+            ScannedDevices.AddFilter(_searchFilter);
+            ScannedDevices.RefreshFilteredItems();
         }
 
         public void Dispose()

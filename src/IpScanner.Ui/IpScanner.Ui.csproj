@@ -125,7 +125,6 @@
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
-    <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
