@@ -24,22 +24,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!-- Action bar -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Padding="5,0,5,0" Margin="0">
-            <Button x:Name="ScanButton" Command="{Binding ScanCommand}" Margin="0 0 5 0"
-                    IsEnabled="{Binding CurrentlyScanning, Converter={StaticResource BooleanInvertConverter}}">
+            <Button x:Name="ScanButton" Command="{Binding ScanningModule.ScanCommand}" Margin="0 0 5 0"
+                    IsEnabled="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BooleanInvertConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE768;" Foreground="Green"/>
                     <TextBlock x:Uid="Scan" Margin="5,0,0,0" ></TextBlock>
                 </StackPanel>
             </Button>
-            <Button x:Name="StopButton" Command="{Binding CancelCommand}" Margin="5,0,5,0" 
-                    IsEnabled="{Binding CurrentlyScanning}">
+            <Button x:Name="StopButton" Command="{Binding ScanningModule.CancelCommand}" Margin="5,0,5,0" 
+                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE769;"/>
                 </StackPanel>
@@ -49,7 +48,7 @@
                 <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
             </StackPanel>
 
-            <Button Margin="5,0,5,0" Command="{Binding SetSubnetMask}">
+            <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue"/>
                 </StackPanel>
@@ -58,7 +57,7 @@
                 </ToolTipService.ToolTip>
             </Button>
 
-            <Button Margin="5,0,5,0" Command="{Binding SetSubnetClassCMask}">
+            <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
                 </StackPanel>
@@ -102,63 +101,72 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Text="{Binding IpRange, Mode=TwoWay}"/>
+                <TextBox Text="{Binding IpRangeModule.IpRange, Mode=TwoWay}"/>
                 <TextBlock x:Uid="IpRangeExample" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,3" 
                     FontStyle="Italic" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" IsHitTestVisible="False"
-                    Visibility="{Binding IpRange, Converter={StaticResource StringContentToVisibility}}"/>
+                    Visibility="{Binding IpRangeModule.IpRange, Converter={StaticResource StringContentToVisibility}}"/>
             </Grid>
 
             <Grid Grid.Column="1">
-                <TextBox x:Uid="Search" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2,0,5,0" />
+                <TextBox x:Uid="Search" Text="{Binding SearchModule.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2,0,5,0" />
                 <FontIcon Glyph="&#xE721;" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,15,0" 
                     Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
                     Visibility="{Binding SearchText, Converter={StaticResource StringContentToVisibility}}"/>
             </Grid>
 
             <TextBlock x:Uid="IpRangeValidationMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Foreground="{StaticResource ErrorColorBrush}"
-                    Visibility="{Binding HasValidationError, Converter={StaticResource BoolToVisibilityConvertor}}" Margin="2,0,5,0"/>
+                    Visibility="{Binding IpRangeModule.ValidationModule.HasValidationError, Converter={StaticResource BoolToVisibilityConvertor}}" Margin="2,0,5,0"/>
         </Grid>
 
-        <StackPanel Grid.Row="2" Padding="5,5,5,0" Orientation="Horizontal">
-            <Button x:Uid="Results" Margin="0,0,1,0"></Button>
-            <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
-        </StackPanel>
-
-        <!-- Devices list -->
-        <Grid Grid.Row="3" Padding="5">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Padding="5,5,5,0" Orientation="Horizontal">
+                    <Button x:Uid="Results" Margin="0,0,1,0"></Button>
+                    <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
+                </StackPanel>
+
+                <!-- Devices list -->
+                <Grid Grid.Row="1" Padding="5">
+                    <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
                           Grid.ColumnSpan="{Binding ShowDetails, Converter={StaticResource BoolToColumnSpanConvertor}}">
-                <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                        <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                 AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                 ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
 
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTemplateColumn x:Uid="Status">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip Content="{Binding Status}"/>
-                                        </ToolTipService.ToolTip>
-                                    </FontIcon>
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
+                            <controls:DataGrid.Columns>
+                                <controls:DataGridTemplateColumn x:Uid="Status">
+                                    <controls:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{Binding Status}"/>
+                                                </ToolTipService.ToolTip>
+                                            </FontIcon>
+                                        </DataTemplate>
+                                    </controls:DataGridTemplateColumn.CellTemplate>
+                                </controls:DataGridTemplateColumn>
 
-                        <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                        <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                        <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                        <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                        <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-            </ScrollViewer>
-
+                                <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                            </controls:DataGrid.Columns>
+                        </controls:DataGrid>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+            
             <!-- Device details -->
             <Frame Grid.Column="1" x:Name="DetailsFrame" Margin="5,0,0,0" Visibility="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConvertor}}"></Frame>
         </Grid>
@@ -170,8 +178,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="{Binding ProgressString}" Margin="0,0,5,0"/>
-            <ProgressBar Grid.Column="1" Value="{Binding CountOfScannedIps, Mode=TwoWay}" Maximum="{Binding TotalCountOfIps, Mode=TwoWay}" IsIndeterminate="False" Height="6"/>
+            <TextBlock Grid.Column="0" Text="{Binding ProgressModule.ProgressString}" Margin="0,0,5,0"/>
+            <ProgressBar Grid.Column="1" Value="{Binding ProgressModule.CountOfScannedIps, Mode=TwoWay}" Maximum="{Binding ProgressModule.TotalCountOfIps, Mode=TwoWay}" IsIndeterminate="False" Height="6"/>
         </Grid>
     </Grid>
 </Page>

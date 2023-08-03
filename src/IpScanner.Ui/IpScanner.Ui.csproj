@@ -147,8 +147,12 @@
     <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\Modules\IpRangeModule.cs" />
+    <Compile Include="ViewModels\Modules\ProgressModule.cs" />
+    <Compile Include="ViewModels\Modules\ScanningModule.cs" />
+    <Compile Include="ViewModels\Modules\SearchModule.cs" />
+    <Compile Include="ViewModels\Modules\ValidationModule.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
-    <Compile Include="ViewModels\ValidationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

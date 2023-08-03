@@ -70,7 +70,7 @@
             <TextBlock Text="{Binding Device.Manufacturer}"></TextBlock>
             <TextBlock Text=""></TextBlock>
             <TextBlock Text=""></TextBlock>
-            <TextBlock Text="Wireless access poing"></TextBlock>
+            <TextBlock Text=""></TextBlock>
             <TextBlock Text=""></TextBlock>
             <TextBlock Text="{Binding Device.Comments}"></TextBlock>
         </StackPanel>

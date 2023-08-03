@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
@@ -10,7 +11,7 @@ using Windows.Globalization;
 
 namespace IpScanner.Ui.ViewModels
 {
-    public class MainPageViewModel : ValidationViewModel
+    public class MainPageViewModel : ObservableObject
     {
         private bool _showUnknown;
         private bool _showOnline;
