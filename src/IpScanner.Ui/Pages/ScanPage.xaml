@@ -24,7 +24,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
@@ -119,46 +118,55 @@
                     Visibility="{Binding IpRangeModule.ValidationModule.HasValidationError, Converter={StaticResource BoolToVisibilityConvertor}}" Margin="2,0,5,0"/>
         </Grid>
 
-        <StackPanel Grid.Row="2" Padding="5,5,5,0" Orientation="Horizontal">
-            <Button x:Uid="Results" Margin="0,0,1,0"></Button>
-            <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
-        </StackPanel>
-
-        <!-- Devices list -->
-        <Grid Grid.Row="3" Padding="5">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Padding="5,5,5,0" Orientation="Horizontal">
+                    <Button x:Uid="Results" Margin="0,0,1,0"></Button>
+                    <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
+                </StackPanel>
+
+                <!-- Devices list -->
+                <Grid Grid.Row="1" Padding="5">
+                    <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
                           Grid.ColumnSpan="{Binding ShowDetails, Converter={StaticResource BoolToColumnSpanConvertor}}">
-                <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                        <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                 AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                 ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
 
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTemplateColumn x:Uid="Status">
-                            <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip Content="{Binding Status}"/>
-                                        </ToolTipService.ToolTip>
-                                    </FontIcon>
-                                </DataTemplate>
-                            </controls:DataGridTemplateColumn.CellTemplate>
-                        </controls:DataGridTemplateColumn>
+                            <controls:DataGrid.Columns>
+                                <controls:DataGridTemplateColumn x:Uid="Status">
+                                    <controls:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{Binding Status}"/>
+                                                </ToolTipService.ToolTip>
+                                            </FontIcon>
+                                        </DataTemplate>
+                                    </controls:DataGridTemplateColumn.CellTemplate>
+                                </controls:DataGridTemplateColumn>
 
-                        <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                        <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                        <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                        <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                        <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-            </ScrollViewer>
-
+                                <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                            </controls:DataGrid.Columns>
+                        </controls:DataGrid>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+            
             <!-- Device details -->
             <Frame Grid.Column="1" x:Name="DetailsFrame" Margin="5,0,0,0" Visibility="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConvertor}}"></Frame>
         </Grid>
