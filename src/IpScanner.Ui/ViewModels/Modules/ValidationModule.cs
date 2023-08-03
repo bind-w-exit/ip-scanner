@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace IpScanner.Ui.ViewModels
+namespace IpScanner.Ui.ViewModels.Modules
 {
-    public abstract class ValidationViewModel : ObservableValidator
+    public class ValidationModule : ObservableObject
     {
         private bool _hasValidationError;
 
-        public ValidationViewModel()
+        public ValidationModule()
         {
             _hasValidationError = false;
         }
