@@ -33,10 +33,5 @@ namespace IpScanner.Domain.Models
         public string Manufacturer { get; private set; }
         public PhysicalAddress MacAddress { get; private set; }
         public string Comments { get; private set; }
-
-        public override string ToString()
-        {
-            return $"{Status} {Name} {Ip} {Manufacturer} {MacAddress} {Comments}";
-        }
     }
 }

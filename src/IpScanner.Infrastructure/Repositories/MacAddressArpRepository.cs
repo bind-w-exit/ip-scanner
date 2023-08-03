@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 
-namespace IpScanner.Infrastructure
+namespace IpScanner.Infrastructure.Repositories
 {
     public class MacAddressArpRepository : IMacAddressRepository
     {

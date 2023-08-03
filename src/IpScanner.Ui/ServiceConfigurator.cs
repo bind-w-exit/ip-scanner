@@ -3,7 +3,7 @@ using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
-using IpScanner.Infrastructure;
+using IpScanner.Infrastructure.Repositories;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +28,8 @@ namespace IpScanner.Ui
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
+
+            services.AddTransient<IDeviceRepository, FavoritesDevicesRepository>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 
