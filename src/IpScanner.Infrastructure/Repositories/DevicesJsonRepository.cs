@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure.Repositories
 {
-    public class FavoritesDevicesRepository : IDeviceRepository
+    public class DevicesJsonRepository : IDeviceRepository
     {
         private const string FilePath = "favorites.json";
 

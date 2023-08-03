@@ -29,7 +29,7 @@ namespace IpScanner.Ui
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
 
-            services.AddTransient<IDeviceRepository, FavoritesDevicesRepository>();
+            services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 
