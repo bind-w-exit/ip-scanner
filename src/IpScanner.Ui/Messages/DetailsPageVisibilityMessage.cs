@@ -1,12 +1,8 @@
 ﻿namespace IpScanner.Ui.Messages
 {
-    public class DetailsPageVisibilityMessage
+    public class DetailsPageVisibilityMessage : VisibilityMessageBase
     {
-        public DetailsPageVisibilityMessage(bool visible)
-        {
-            Visible = visible;
-        }
-
-        public bool Visible { get; }
+        public DetailsPageVisibilityMessage(bool isVisible) : base(isVisible)
+        { }
     }
 }
