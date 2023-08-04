@@ -13,28 +13,21 @@ namespace IpScanner.Infrastructure.Repositories
 {
     public class DevicesJsonRepository : IDeviceRepository
     {
-        private static readonly string FileName = "favorites.json";
+        private static readonly string FileName = "devices.json";
 
-        public async Task SaveFavoritesDevicesAsync(IEnumerable<ScannedDevice> devices)
+        public async Task SaveDevicesAsync(IEnumerable<ScannedDevice> devices)
         {
-            try
-            {
-                var deviceEntities = devices.Select(device => device.ToEntity()).ToList();
-                string jsonString = JsonSerializer.Serialize(deviceEntities);
+            var deviceEntities = devices.Select(device => device.ToEntity()).ToList();
+            string jsonString = JsonSerializer.Serialize(deviceEntities);
 
-                var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
-                var file = await localFolder.CreateFileAsync(FileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            var file = await localFolder.CreateFileAsync(FileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
-                await Windows.Storage.FileIO.WriteTextAsync(file, jsonString);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            await Windows.Storage.FileIO.WriteTextAsync(file, jsonString);
         }
 
-        public async Task<IEnumerable<ScannedDevice>> GetFavoritesDevicesAsync()
+        public async Task<IEnumerable<ScannedDevice>> GetDevicesAsync()
         {
             var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
@@ -55,6 +48,13 @@ namespace IpScanner.Infrastructure.Repositories
                 return Enumerable.Empty<ScannedDevice>();
             }
         }
-    }
 
+        public async Task AddDeviceAsync(ScannedDevice device)
+        {
+            List<ScannedDevice> currentDevices = (await GetDevicesAsync()).ToList();
+            currentDevices.Add(device);
+
+            await SaveDevicesAsync(currentDevices);
+        }
+    }
 }

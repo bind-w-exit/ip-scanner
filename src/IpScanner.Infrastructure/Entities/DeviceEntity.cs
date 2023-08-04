@@ -12,5 +12,6 @@ namespace IpScanner.Infrastructure.Entities
         public string Manufacturer { get; set; }
         public string MacAddress { get; set; }
         public string Comments { get; set; }
+        public bool Favorite { get; set; }
     }
 }

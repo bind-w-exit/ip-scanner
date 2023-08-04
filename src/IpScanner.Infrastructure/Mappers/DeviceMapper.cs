@@ -16,7 +16,8 @@ namespace IpScanner.Infrastructure.Mappers
                 Ip = domain.Ip.ToString(),
                 Manufacturer = domain.Manufacturer,
                 MacAddress = domain.MacAddress.ToString(),
-                Comments = domain.Comments
+                Comments = domain.Comments,
+                Favorite = domain.Favorite
             };
         }
 
@@ -25,7 +26,7 @@ namespace IpScanner.Infrastructure.Mappers
             PhysicalAddress macAddress = ParseMacAddress(entity.MacAddress);
 
             return new ScannedDevice(entity.Status, entity.Name, IPAddress.Parse(entity.Ip),
-                entity.Manufacturer, macAddress, entity.Comments);
+                entity.Manufacturer, macAddress, entity.Comments, entity.Favorite);
         }
 
         private static PhysicalAddress ParseMacAddress(string macAddress)

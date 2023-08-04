@@ -10,8 +10,8 @@ namespace IpScanner.Ui.ViewModels.Modules
 {
     public class FavoritesDevicesModule : ObservableObject
     {
-        private readonly IDeviceRepository _deviceRepository;
         private bool _displayFavorites;
+        private readonly IDeviceRepository _deviceRepository;
         private readonly FilteredCollection<ScannedDevice> _filteredDevices;
 
         public FavoritesDevicesModule(IDeviceRepository deviceRepository)
@@ -37,7 +37,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             DisplayFavorites = true;
 
-            IEnumerable<ScannedDevice> devices = await _deviceRepository.GetFavoritesDevicesAsync();
+            IEnumerable<ScannedDevice> devices = await _deviceRepository.GetDevicesAsync();
             foreach (var device in devices)
             {
                 FavoritesDevices.Add(device);

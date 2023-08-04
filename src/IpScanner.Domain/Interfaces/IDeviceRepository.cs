@@ -6,7 +6,8 @@ namespace IpScanner.Domain.Interfaces
 {
     public interface IDeviceRepository
     {
-        Task SaveFavoritesDevicesAsync(IEnumerable<ScannedDevice> devices);
-        Task<IEnumerable<ScannedDevice>> GetFavoritesDevicesAsync();
+        Task SaveDevicesAsync(IEnumerable<ScannedDevice> devices);
+        Task AddDeviceAsync(ScannedDevice device);
+        Task<IEnumerable<ScannedDevice>> GetDevicesAsync();
     }
 }
