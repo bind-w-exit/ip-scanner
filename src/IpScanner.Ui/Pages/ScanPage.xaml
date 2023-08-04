@@ -20,7 +20,7 @@
         <convertors:StringContentToVisibility x:Key="StringContentToVisibility" />
         <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
         <MenuFlyout x:Key="ResultsContextMenu">
-            <MenuFlyoutItem Text="Explore">
+            <MenuFlyoutItem x:Uid="Explore">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xED25;" />
                 </MenuFlyoutItem.Icon>
@@ -28,9 +28,9 @@
 
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-            <MenuFlyoutItem Text="Copy"></MenuFlyoutItem>
-            <MenuFlyoutItem Text="Rescan"></MenuFlyoutItem>
-            <MenuFlyoutItem Text="Save as ...">
+            <MenuFlyoutItem x:Uid="Copy"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Rescan"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="SaveAs">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE792;" />
                 </MenuFlyoutItem.Icon>
@@ -38,15 +38,16 @@
 
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-            <MenuFlyoutItem Text="Add to favorites" Command="{Binding FavoritesDevicesModule.AddToFavoritesCommand}" 
+            <MenuFlyoutItem x:Uid="FavoritesAdd" Command="{Binding FavoritesDevicesModule.AddToFavoritesCommand}" 
                 CommandParameter="{Binding}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE728;" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
+        
         <MenuFlyout x:Key="FavoritesContextMenu">
-            <MenuFlyoutItem Text="Explore">
+            <MenuFlyoutItem x:Uid="Explore">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xED25;" />
                 </MenuFlyoutItem.Icon>
@@ -54,9 +55,9 @@
 
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-            <MenuFlyoutItem Text="Copy"></MenuFlyoutItem>
-            <MenuFlyoutItem Text="Rescan"></MenuFlyoutItem>
-            <MenuFlyoutItem Text="Save as ...">
+            <MenuFlyoutItem x:Uid="Copy"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Rescan"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="SaveAs">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE792;" />
                 </MenuFlyoutItem.Icon>
@@ -64,7 +65,7 @@
 
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-            <MenuFlyoutItem Text="Remove from favorites" Command="{Binding FavoritesDevicesModule.RemoveFromFavoritesCommand}" 
+            <MenuFlyoutItem x:Uid="FavoritesRemove" Command="{Binding FavoritesDevicesModule.RemoveFromFavoritesCommand}" 
                 CommandParameter="{Binding}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xECC9;" />

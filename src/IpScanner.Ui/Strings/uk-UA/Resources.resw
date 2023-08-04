@@ -141,6 +141,9 @@
   <data name="Contents.Text" xml:space="preserve">
     <value>Зміст</value>
   </data>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>Скопіювати</value>
+  </data>
   <data name="Date.Text" xml:space="preserve">
     <value>Дата</value>
   </data>
@@ -159,8 +162,17 @@
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Розгорнути все</value>
   </data>
+  <data name="Explore.Text" xml:space="preserve">
+    <value>Дослідити</value>
+  </data>
   <data name="Favorites.Content" xml:space="preserve">
     <value>Обране</value>
+  </data>
+  <data name="FavoritesAdd.Text" xml:space="preserve">
+    <value>Додати в обране</value>
+  </data>
+  <data name="FavoritesRemove.Text" xml:space="preserve">
+    <value>Видалити з обраного</value>
   </data>
   <data name="File.Title" xml:space="preserve">
     <value>Файл</value>
@@ -224,6 +236,9 @@
   </data>
   <data name="RequestFeature.Text" xml:space="preserve">
     <value>Замовити функцію</value>
+  </data>
+  <data name="Rescan.Text" xml:space="preserve">
+    <value>Повторне сканування</value>
   </data>
   <data name="Results.Content" xml:space="preserve">
     <value>Результати</value>
