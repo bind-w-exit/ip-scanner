@@ -129,9 +129,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messages\ActionsBarVisibilityMessage.cs" />
     <Compile Include="Messages\DetailsPageVisibilityMessage.cs" />
     <Compile Include="Messages\DeviceSelectedMessage.cs" />
     <Compile Include="Messages\FilterMessage.cs" />
+    <Compile Include="Messages\MiscellaneousBarVisibilityMessage.cs" />
+    <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />
     <Compile Include="Pages\DetailsPage.xaml.cs">

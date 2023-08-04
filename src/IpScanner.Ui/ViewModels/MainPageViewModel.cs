@@ -17,6 +17,8 @@ namespace IpScanner.Ui.ViewModels
         private bool _showOnline;
         private bool _showOffline;
         private bool _showDetails;
+        private bool _showMiscellaneous;
+        private bool _showActions;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
         private readonly IMessenger _messenger;
@@ -33,6 +35,8 @@ namespace IpScanner.Ui.ViewModels
             ShowOnline = true;
             ShowOffline = true;
             ShowDetails = false;
+            ShowMiscellaneous = true;
+            ShowActions = true;
 
             _navigationService = navigationService;
             _localizationService = localizationService;
@@ -43,8 +47,10 @@ namespace IpScanner.Ui.ViewModels
             get => _showUnknown;
             set
             {
-                _messenger.Send(new FilterMessage(_unknownFilter, !value));
-                SetProperty(ref _showUnknown, value);
+                if(SetProperty(ref _showUnknown, value))
+                {
+                    _messenger.Send(new FilterMessage(_unknownFilter, !value));
+                }
             }
         }
 
@@ -53,8 +59,10 @@ namespace IpScanner.Ui.ViewModels
             get => _showOnline;
             set
             {
-                _messenger.Send(new FilterMessage(_onlineFilter, !value));
-                SetProperty(ref _showOnline, value);
+                if(SetProperty(ref _showOnline, value))
+                {
+                    _messenger.Send(new FilterMessage(_onlineFilter, !value));
+                }
             }
         }
 
@@ -73,8 +81,34 @@ namespace IpScanner.Ui.ViewModels
             get => _showDetails;
             set
             {
-                _messenger.Send(new DetailsPageVisibilityMessage(value));
-                SetProperty(ref _showDetails, value);
+                if(SetProperty(ref _showDetails, value))
+                {
+                    _messenger.Send(new DetailsPageVisibilityMessage(value));
+                }
+            }
+        }
+
+        public bool ShowMiscellaneous
+        {
+            get => _showMiscellaneous;
+            set
+            {
+                if(SetProperty(ref _showMiscellaneous, value))
+                {
+                    _messenger.Send(new MiscellaneousBarVisibilityMessage(value));
+                }
+            }
+        }
+
+        public bool ShowActions
+        {
+            get => _showActions;
+            set
+            {
+                if(SetProperty(ref _showActions, value))
+                {
+                    _messenger.Send(new ActionsBarVisibilityMessage(value));
+                }
             }
         }
 
@@ -87,6 +121,10 @@ namespace IpScanner.Ui.ViewModels
         public RelayCommand ShowUnknownCommand { get => new RelayCommand(() => ShowUnknown = !ShowUnknown); }
 
         public RelayCommand ShowDetailsPageCommand { get => new RelayCommand(() => ShowDetails = !ShowDetails); }
+
+        public RelayCommand ShowMiscellaneousCommand { get => new RelayCommand(() => ShowMiscellaneous = !ShowMiscellaneous); }
+
+        public RelayCommand ShowActionsCommand { get => new RelayCommand(() => ShowActions = !ShowActions); }
 
         private async Task ChangeLanguageAsync(string language)
         {

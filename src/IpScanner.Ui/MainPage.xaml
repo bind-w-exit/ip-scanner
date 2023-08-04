@@ -112,15 +112,15 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar">
+                <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar" Command="{Binding ShowMiscellaneousCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowMiscellaneous, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowActionToolbar">
+                <MenuFlyoutItem x:Uid="ShowActionToolbar" Command="{Binding ShowActionsCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="Visible"/>
+                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ShowActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 

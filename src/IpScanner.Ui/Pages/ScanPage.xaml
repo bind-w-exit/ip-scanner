@@ -98,49 +98,107 @@
                 </StackPanel>
             </Button>
 
-            <StackPanel Orientation="Vertical">
-                <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ShowMiscellaneous, Converter={StaticResource BoolToVisibilityConvertor}}">
+                <StackPanel Orientation="Vertical">
+                    <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+                </StackPanel>
+
+                <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue"/>
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="Subnet"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="SubnetC"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <StackPanel Orientation="Vertical">
+                    <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+                </StackPanel>
+
+                <Button Margin="5,0,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xEC8F;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="Expand"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+
+                <Button Margin="5,0,5,0">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xF165;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="Collapse"/>
+                    </ToolTipService.ToolTip>
+                </Button>
             </StackPanel>
 
-            <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue"/>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ShowActions, Converter={StaticResource BoolToVisibilityConvertor}}">
+                <StackPanel Orientation="Vertical">
+                    <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
                 </StackPanel>
-                <ToolTipService.ToolTip>
-                    <ToolTip x:Uid="Subnet"/>
-                </ToolTipService.ToolTip>
-            </Button>
 
-            <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
-                </StackPanel>
-                <ToolTipService.ToolTip>
-                    <ToolTip x:Uid="SubnetC"/>
-                </ToolTipService.ToolTip>
-            </Button>
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xF12B;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Explore"/>
+                    </ToolTipService.ToolTip>
+                </Button>
 
-            <StackPanel Orientation="Vertical">
-                <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE774;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Http"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE875;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Https"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xEC50;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Ftp"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE836;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Rdp"/>
+                    </ToolTipService.ToolTip>
+                </Button>
+                <Button Margin="5,0,5,0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE7E8;" />
+                    </StackPanel>
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Wake-On-LAN"/>
+                    </ToolTipService.ToolTip>
+                </Button>
             </StackPanel>
-
-            <Button Margin="5,0,5,0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xEC8F;" />
-                </StackPanel>
-                <ToolTipService.ToolTip>
-                    <ToolTip x:Uid="Expand"/>
-                </ToolTipService.ToolTip>
-            </Button>
-
-            <Button Margin="5,0,5,0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xF165;" />
-                </StackPanel>
-                <ToolTipService.ToolTip>
-                    <ToolTip x:Uid="Collapse"/>
-                </ToolTipService.ToolTip>
-            </Button>
         </StackPanel>
 
         <!-- Input bar -->

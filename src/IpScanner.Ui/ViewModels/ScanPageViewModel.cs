@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Factories;
-using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
@@ -13,6 +12,8 @@ namespace IpScanner.Ui.ViewModels
     public class ScanPageViewModel : ObservableObject, IDisposable
     {
         private bool _showDetails;
+        private bool _showMiscellaneous;
+        private bool _showActions;
         private ScannedDevice _selectedDevice;
         private FilteredCollection<ScannedDevice> _filteredDevices;
         private IpRangeModule _ipRangeModule;
@@ -22,12 +23,14 @@ namespace IpScanner.Ui.ViewModels
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
 
-        public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory, IDeviceRepository deviceRepository,
-            FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule, IpRangeModule ipRangeModule)
+        public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory, FavoritesDevicesModule favoritesDevicesModule, 
+            ProgressModule progressModule, IpRangeModule ipRangeModule)
         {
             _messanger = messenger;
 
             ShowDetails = false;
+            ShowMiscellaneous = true;
+            ShowActions = true;
             SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
             ScannedDevices = new FilteredCollection<ScannedDevice>();
 
@@ -45,6 +48,18 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _showDetails;
             set => SetProperty(ref _showDetails, value);
+        }
+
+        public bool ShowMiscellaneous
+        {
+            get => _showMiscellaneous;
+            set => SetProperty(ref _showMiscellaneous, value);
+        }
+
+        public bool ShowActions
+        {
+            get => _showActions;
+            set => SetProperty(ref _showActions, value);
         }
 
         public ScannedDevice SelectedDevice
@@ -93,15 +108,14 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _filteredDevices, value);
         }
 
-        public void Dispose()
-        {
-            ScanningModule.Dispose();
-        }
+        public void Dispose() => ScanningModule.Dispose();
 
         private void RegisterMessages(IMessenger messenger)
         {
             messenger.Register<FilterMessage>(this, OnFilterMessage);
             messenger.Register<DetailsPageVisibilityMessage>(this, OnDetailsPageVisibilityMessage);
+            messenger.Register<MiscellaneousBarVisibilityMessage>(this, OnMiscellaneousBarVisibilityMessage);
+            messenger.Register<ActionsBarVisibilityMessage>(this, OnActionsBarVisibilityMessage);
         }
 
         private void OnFilterMessage(object sender, FilterMessage message)
@@ -121,6 +135,16 @@ namespace IpScanner.Ui.ViewModels
         private void OnDetailsPageVisibilityMessage(object sender, DetailsPageVisibilityMessage message)
         {
             ShowDetails = message.Visible;
+        }
+
+        private void OnMiscellaneousBarVisibilityMessage(object sender, MiscellaneousBarVisibilityMessage message)
+        {
+            ShowMiscellaneous = message.Visible;
+        }
+
+        private void OnActionsBarVisibilityMessage(object sender, ActionsBarVisibilityMessage message)
+        {
+            ShowActions = message.Visible;
         }
     }
 }
