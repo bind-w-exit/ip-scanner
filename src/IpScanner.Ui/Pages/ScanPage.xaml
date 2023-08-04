@@ -148,6 +148,17 @@
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
+                                <controls:DataGrid.RowStyle>
+                                    <Style TargetType="controls:DataGridRow">
+                                        <Setter Property="controls:DataGridRow.ContextFlyout">
+                                            <Setter.Value>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem x:Name="MyMenuItem" Text="Do Things" />
+                                                </MenuFlyout>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </controls:DataGrid.RowStyle>
                                 <controls:DataGrid.Columns>
                                     <controls:DataGridTemplateColumn x:Uid="Status">
                                         <controls:DataGridTemplateColumn.CellTemplate>
