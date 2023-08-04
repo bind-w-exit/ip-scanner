@@ -6,6 +6,7 @@ using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
+using IpScanner.Ui.ViewModels.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IpScanner.Ui
@@ -25,6 +26,7 @@ namespace IpScanner.Ui
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();
+            services.AddSingleton<FavoritesDevicesModule>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();

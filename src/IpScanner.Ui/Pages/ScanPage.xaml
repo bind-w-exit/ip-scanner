@@ -19,6 +19,32 @@
         <convertors:BooleanInvertConverter x:Key="BooleanInvertConverter" />
         <convertors:StringContentToVisibility x:Key="StringContentToVisibility" />
         <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
+        <MenuFlyout x:Key="ContextMenu">
+            <MenuFlyoutItem Text="Explore">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon Glyph="&#xED25;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+
+            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+            <MenuFlyoutItem Text="Copy"></MenuFlyoutItem>
+            <MenuFlyoutItem Text="Rescan"></MenuFlyoutItem>
+            <MenuFlyoutItem Text="Save as ...">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon Glyph="&#xE792;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+
+            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+
+            <MenuFlyoutItem Text="Add to favorites" Command="{Binding FavoritesDevicesModule.AddToFavoritesCommand}" 
+                CommandParameter="{Binding}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon Glyph="&#xE728;" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
     </Page.Resources>
 
     <Grid>
@@ -147,18 +173,8 @@
                             <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
-                                <controls:DataGrid.RowStyle>
-                                    <Style TargetType="controls:DataGridRow">
-                                        <Setter Property="controls:DataGridRow.ContextFlyout">
-                                            <Setter.Value>
-                                                <MenuFlyout>
-                                                    <MenuFlyoutItem x:Name="MyMenuItem" Text="Do Things" />
-                                                </MenuFlyout>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </controls:DataGrid.RowStyle>
+                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}"
+                                               ContextFlyout="{StaticResource ContextMenu}">
                                 <controls:DataGrid.Columns>
                                     <controls:DataGridTemplateColumn x:Uid="Status">
                                         <controls:DataGridTemplateColumn.CellTemplate>
