@@ -26,7 +26,10 @@ namespace IpScanner.Ui
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();
+
             services.AddSingleton<FavoritesDevicesModule>();
+            services.AddSingleton<ProgressModule>();
+            services.AddSingleton<IpRangeModule>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();

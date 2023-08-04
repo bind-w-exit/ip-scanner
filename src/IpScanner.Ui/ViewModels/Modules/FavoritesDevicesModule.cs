@@ -40,6 +40,8 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public AsyncRelayCommand AddToFavoritesCommand { get => new AsyncRelayCommand(AddToFavorites); }
 
+        public AsyncRelayCommand RemoveFromFavoritesCommand { get => new AsyncRelayCommand(RemoveFromFavorites); }
+
         private async Task LoadFavorites()
         {
             DisplayFavorites = true;
@@ -60,6 +62,12 @@ namespace IpScanner.Ui.ViewModels.Modules
         private async Task AddToFavorites()
         {
             await _deviceRepository.AddDeviceAsync(_selectedDevice);
+        }
+
+        private async Task RemoveFromFavorites()
+        {
+            await _deviceRepository.RemoveDeviceAsync(_selectedDevice);
+            FavoritesDevices.Remove(_selectedDevice);
         }
 
         private void OnDeviceSelected(object sender, DeviceSelectedMessage message)
