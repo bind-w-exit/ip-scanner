@@ -3,9 +3,10 @@ using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
-using IpScanner.Infrastructure;
+using IpScanner.Infrastructure.Repositories;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
+using IpScanner.Ui.ViewModels.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IpScanner.Ui
@@ -26,8 +27,14 @@ namespace IpScanner.Ui
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();
 
+            services.AddSingleton<FavoritesDevicesModule>();
+            services.AddSingleton<ProgressModule>();
+            services.AddSingleton<IpRangeModule>();
+
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
+
+            services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 

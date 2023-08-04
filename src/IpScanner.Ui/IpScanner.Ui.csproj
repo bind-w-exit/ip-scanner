@@ -122,6 +122,7 @@
     <Compile Include="Convertors\BooleanInvertConverter.cs" />
     <Compile Include="Convertors\BoolToColumnSpanConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
+    <Compile Include="Convertors\BoolToVisibilityInvertConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\Modules\FavoritesDevicesModule.cs" />
     <Compile Include="ViewModels\Modules\IpRangeModule.cs" />
     <Compile Include="ViewModels\Modules\ProgressModule.cs" />
     <Compile Include="ViewModels\Modules\ScanningModule.cs" />

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
-namespace IpScanner.Infrastructure
+namespace IpScanner.Infrastructure.Repositories
 {
     public class ManufacturerCsvRepository : IManufactorRepository
     {

@@ -115,7 +115,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
-                _scannedDevices.AddItem(e.ScannedDevice);
+                _scannedDevices.Add(e.ScannedDevice);
                 _progressModule.UpdateProgress(_scannedDevices.Count, e.ScannedDevice.Status);
             });
         }

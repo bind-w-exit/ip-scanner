@@ -141,6 +141,9 @@
   <data name="Contents.Text" xml:space="preserve">
     <value>Contents</value>
   </data>
+  <data name="Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="Date.Text" xml:space="preserve">
     <value>Date</value>
   </data>
@@ -159,8 +162,17 @@
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Expand all</value>
   </data>
+  <data name="Explore.Text" xml:space="preserve">
+    <value>Explore</value>
+  </data>
   <data name="Favorites.Content" xml:space="preserve">
     <value>Favorites</value>
+  </data>
+  <data name="FavoritesAdd.Text" xml:space="preserve">
+    <value>Add to favorites</value>
+  </data>
+  <data name="FavoritesRemove.Text" xml:space="preserve">
+    <value>Remove from favorites</value>
   </data>
   <data name="File.Title" xml:space="preserve">
     <value>File</value>
@@ -224,6 +236,9 @@
   </data>
   <data name="RequestFeature.Text" xml:space="preserve">
     <value>Request a feature</value>
+  </data>
+  <data name="Rescan.Text" xml:space="preserve">
+    <value>Rescan</value>
   </data>
   <data name="Results.Content" xml:space="preserve">
     <value>Results</value>

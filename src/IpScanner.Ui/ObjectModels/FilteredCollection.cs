@@ -20,9 +20,9 @@ namespace IpScanner.Ui.ObjectModels
             get => _filteredItems;
         }
 
-        public void AddItem(T item)
+        protected override void InsertItem(int index, T item)
         {
-            Add(item);
+            base.InsertItem(index, item);
 
             if (ItemSutisfiesFilters(item))
             {
@@ -51,6 +51,12 @@ namespace IpScanner.Ui.ObjectModels
                     FilteredItems.Add(item);
                 }
             }
+        }
+
+        protected override void RemoveItem(int index)
+        {
+            base.RemoveItem(index);
+            FilteredItems.RemoveAt(index);
         }
 
         protected override void ClearItems()

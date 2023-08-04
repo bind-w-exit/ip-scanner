@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Factories;
+using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
@@ -18,9 +19,11 @@ namespace IpScanner.Ui.ViewModels
         private SearchModule _searchModule;
         private ProgressModule _progressModule;
         private ScanningModule _scanningModule;
+        private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
 
-        public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory)
+        public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory, IDeviceRepository deviceRepository,
+            FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule, IpRangeModule ipRangeModule)
         {
             _messanger = messenger;
 
@@ -28,9 +31,11 @@ namespace IpScanner.Ui.ViewModels
             SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
             ScannedDevices = new FilteredCollection<ScannedDevice>();
 
-            IpRangeModule = new IpRangeModule();
+            IpRangeModule = ipRangeModule;
+            ProgressModule = progressModule;
+            FavoritesDevicesModule = favoritesDevicesModule;
+
             SearchModule = new SearchModule(ScannedDevices);
-            ProgressModule = new ProgressModule();
             ScanningModule = new ScanningModule(ProgressModule, IpRangeModule, ScannedDevices, factory);
 
             RegisterMessages(messenger);
@@ -74,6 +79,12 @@ namespace IpScanner.Ui.ViewModels
         {
             get => _scanningModule;
             set => SetProperty(ref _scanningModule, value);
+        }
+
+        public FavoritesDevicesModule FavoritesDevicesModule
+        {
+            get => _favoritesDevicesModule;
+            set => SetProperty(ref _favoritesDevicesModule, value);
         }
 
         public FilteredCollection<ScannedDevice> ScannedDevices
