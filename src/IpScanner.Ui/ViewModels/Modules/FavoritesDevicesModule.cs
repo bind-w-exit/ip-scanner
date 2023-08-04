@@ -6,6 +6,7 @@ using IpScanner.Domain.Models;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IpScanner.Ui.ViewModels.Modules
@@ -47,7 +48,7 @@ namespace IpScanner.Ui.ViewModels.Modules
             DisplayFavorites = true;
 
             IEnumerable<ScannedDevice> devices = await _deviceRepository.GetDevicesAsync();
-            foreach (var device in devices)
+            foreach (var device in devices.Where(x => x.Favorite))
             {
                 FavoritesDevices.Add(device);
             }
@@ -61,12 +62,20 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private async Task AddToFavorites()
         {
+            if(_selectedDevice == null)
+            {
+                return;
+            }
+
+            _selectedDevice.MarkAsFavorite();
             await _deviceRepository.AddDeviceAsync(_selectedDevice);
         }
 
         private async Task RemoveFromFavorites()
         {
-            await _deviceRepository.RemoveDeviceAsync(_selectedDevice);
+            _selectedDevice.UnmarkAsFavorite();
+
+            await _deviceRepository.UpdateDeviceAsync(_selectedDevice);
             FavoritesDevices.Remove(_selectedDevice);
         }
 

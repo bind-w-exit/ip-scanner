@@ -10,5 +10,6 @@ namespace IpScanner.Domain.Interfaces
         Task AddDeviceAsync(ScannedDevice device);
         Task<IEnumerable<ScannedDevice>> GetDevicesAsync();
         Task RemoveDeviceAsync(ScannedDevice device);
+        Task UpdateDeviceAsync(ScannedDevice device);
     }
 }

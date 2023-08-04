@@ -70,5 +70,21 @@ namespace IpScanner.Infrastructure.Repositories
             currentDevices.Remove(deviceToRemove);
             await SaveDevicesAsync(currentDevices);
         }
+
+        public async Task UpdateDeviceAsync(ScannedDevice device)
+        {
+            List<ScannedDevice> currentDevices = (await GetDevicesAsync()).ToList();
+
+            ScannedDevice destination = currentDevices.FirstOrDefault(d => d.Ip.Equals(device.Ip));
+            if (destination == null)
+            {
+                throw new ArgumentException("Device not found");
+            }
+
+            currentDevices.Remove(destination);
+            currentDevices.Add(device);
+
+            await SaveDevicesAsync(currentDevices);
+        }
     }
 }
