@@ -123,11 +123,14 @@
     <Compile Include="APIs\ApiBase.cs" />
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
-    <Compile Include="MacAddressArpRepository.cs" />
-    <Compile Include="HostDnsRepository.cs" />
+    <Compile Include="Entities\DeviceEntity.cs" />
+    <Compile Include="Mappers\DeviceMapper.cs" />
+    <Compile Include="Repositories\DevicesJsonRepository.cs" />
+    <Compile Include="Repositories\MacAddressArpRepository.cs" />
+    <Compile Include="Repositories\HostDnsRepository.cs" />
     <Compile Include="Entities\MacAddressEntity.cs" />
     <Compile Include="Extensions\PhysicalAddressExtensions.cs" />
-    <Compile Include="ManufacturerCsvRepository.cs" />
+    <Compile Include="Repositories\ManufacturerCsvRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Infrastructure.rd.xml" />
   </ItemGroup>

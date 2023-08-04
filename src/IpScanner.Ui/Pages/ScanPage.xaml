@@ -8,7 +8,7 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    xmlns:convertors="using:IpScanner.Ui.Convertors" xmlns:viewmodels="using:IpScanner.Ui.ViewModels" 
+    xmlns:convertors="using:IpScanner.Ui.Convertors"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -18,6 +18,7 @@
         <convertors:BoolToColumnSpanConvertor x:Key="BoolToColumnSpanConvertor" />
         <convertors:BooleanInvertConverter x:Key="BooleanInvertConverter" />
         <convertors:StringContentToVisibility x:Key="StringContentToVisibility" />
+        <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
     </Page.Resources>
 
     <Grid>
@@ -129,39 +130,68 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                
+
                 <StackPanel Grid.Row="0" Padding="5,5,5,0" Orientation="Horizontal">
-                    <Button x:Uid="Results" Margin="0,0,1,0"></Button>
-                    <Button x:Uid="Favorites" Margin="1,0,2,0" IsEnabled="False"></Button>
+                    <Button x:Uid="Results" Margin="0,0,1,0" MinWidth="75"
+                            IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites}"
+                            Command="{Binding FavoritesDevicesModule.UnloadFavoritesCommand}"/>
+                    <Button x:Uid="Favorites" Margin="1,0,2,0" MinWidth="75"
+                            IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BooleanInvertConverter}}"
+                            Command="{Binding FavoritesDevicesModule.LoadFavoritesCommand}"/>
                 </StackPanel>
 
                 <!-- Devices list -->
                 <Grid Grid.Row="1" Padding="5">
                     <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
-                AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
-                ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <Grid>
+                            <controls:DataGrid ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                            AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
+                            ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
+                                <controls:DataGrid.Columns>
+                                    <controls:DataGridTemplateColumn x:Uid="Status">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                    <ToolTipService.ToolTip>
+                                                        <ToolTip Content="{Binding Status}"/>
+                                                    </ToolTipService.ToolTip>
+                                                </FontIcon>
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                                </controls:DataGrid.Columns>
+                            </controls:DataGrid>
 
-                            <controls:DataGrid.Columns>
-                                <controls:DataGridTemplateColumn x:Uid="Status">
-                                    <controls:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                                <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{Binding Status}"/>
-                                                </ToolTipService.ToolTip>
-                                            </FontIcon>
-                                        </DataTemplate>
-                                    </controls:DataGridTemplateColumn.CellTemplate>
-                                </controls:DataGridTemplateColumn>
-
-                                <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                                <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                                <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                                <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                            </controls:DataGrid.Columns>
-                        </controls:DataGrid>
+                            <controls:DataGrid ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                            AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
+                            ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}">
+                                <controls:DataGrid.Columns>
+                                    <controls:DataGridTemplateColumn x:Uid="Status">
+                                        <controls:DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                    <ToolTipService.ToolTip>
+                                                        <ToolTip Content="{Binding Status}"/>
+                                                    </ToolTipService.ToolTip>
+                                                </FontIcon>
+                                            </DataTemplate>
+                                        </controls:DataGridTemplateColumn.CellTemplate>
+                                    </controls:DataGridTemplateColumn>
+                                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                                </controls:DataGrid.Columns>
+                            </controls:DataGrid>
+                        </Grid>
                     </ScrollViewer>
                 </Grid>
             </Grid>
