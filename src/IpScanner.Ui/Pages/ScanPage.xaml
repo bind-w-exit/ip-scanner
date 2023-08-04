@@ -154,7 +154,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Text="{Binding IpRangeModule.IpRange, Mode=TwoWay}"/>
+                <TextBox Text="{Binding IpRangeModule.IpRange, Mode=TwoWay}" IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BooleanInvertConverter}}"/>
                 <TextBlock x:Uid="IpRangeExample" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,3" 
                     FontStyle="Italic" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" IsHitTestVisible="False"
                     Visibility="{Binding IpRangeModule.IpRange, Converter={StaticResource StringContentToVisibility}}"/>
