@@ -123,7 +123,9 @@
     <Compile Include="APIs\ApiBase.cs" />
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
+    <Compile Include="ContentCreators\DevicesJsonContentCreator.cs" />
     <Compile Include="Entities\DeviceEntity.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Mappers\DeviceMapper.cs" />
     <Compile Include="Repositories\DevicesJsonRepository.cs" />
     <Compile Include="Repositories\MacAddressArpRepository.cs" />
