@@ -3,9 +3,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Services;
+using IpScanner.Ui.ViewModels.Modules;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Globalization;
 
@@ -21,13 +25,15 @@ namespace IpScanner.Ui.ViewModels
         private bool _showActions;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
+        private readonly IFileService<ScannedDevice> _fileService;
+        private readonly ScanningModule _scanningModule;
         private readonly IMessenger _messenger;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
         private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
-            IMessenger messenger)
+            IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule)
         {
             _messenger = messenger;
 
@@ -40,6 +46,9 @@ namespace IpScanner.Ui.ViewModels
 
             _navigationService = navigationService;
             _localizationService = localizationService;
+            _fileService = fileService;
+
+            _scanningModule = scanningModule;
         }
 
         public bool ShowUnknown
@@ -126,10 +135,18 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand ShowActionsCommand { get => new RelayCommand(() => ShowActions = !ShowActions); }
 
+        public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
+
         private async Task ChangeLanguageAsync(string language)
         {
             await _localizationService.SetLanguageAsync(new Language(language));
             _navigationService.ReloadMainPage();
+        }
+
+        private async Task SaveDevicesAsync()
+        {
+            List<ScannedDevice> devices = _scanningModule.Devices;
+            await _fileService.SaveItemsAsync(devices);
         }
     }
 }

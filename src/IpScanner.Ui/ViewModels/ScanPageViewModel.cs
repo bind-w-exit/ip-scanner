@@ -24,7 +24,7 @@ namespace IpScanner.Ui.ViewModels
         private readonly IMessenger _messanger;
 
         public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory, FavoritesDevicesModule favoritesDevicesModule, 
-            ProgressModule progressModule, IpRangeModule ipRangeModule)
+            ProgressModule progressModule, IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
 
@@ -39,7 +39,9 @@ namespace IpScanner.Ui.ViewModels
             FavoritesDevicesModule = favoritesDevicesModule;
 
             SearchModule = new SearchModule(ScannedDevices);
-            ScanningModule = new ScanningModule(ProgressModule, IpRangeModule, ScannedDevices, factory);
+
+            ScanningModule = scanningModule;
+            ScanningModule.InitializeCollection(ScannedDevices);
 
             RegisterMessages(messenger);
         }

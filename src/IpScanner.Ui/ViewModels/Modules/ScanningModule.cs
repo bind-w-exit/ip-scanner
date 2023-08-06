@@ -9,6 +9,8 @@ using Windows.System;
 using System;
 using IpScanner.Domain.Factories;
 using IpScanner.Ui.ObjectModels;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
@@ -18,15 +20,13 @@ namespace IpScanner.Ui.ViewModels.Modules
         private readonly INetworkScannerFactory _ipScannerFactory;
         private readonly ProgressModule _progressModule;
         private readonly IpRangeModule _ipRangeModule;
-        private readonly FilteredCollection<ScannedDevice> _scannedDevices;
+        private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, FilteredCollection<ScannedDevice> scannedDevices, 
-            INetworkScannerFactory factory)
+        public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, INetworkScannerFactory factory)
         {
             _progressModule = progressModule;
             _ipRangeModule = ipRangeModule;
-            _scannedDevices = scannedDevices;
 
             _ipScannerFactory = factory;
             _cancellationTokenSource = new CancellationTokenSource();
@@ -40,6 +40,11 @@ namespace IpScanner.Ui.ViewModels.Modules
             set => SetProperty(ref _currentlyScanning, value);
         }
 
+        public List<ScannedDevice> Devices
+        {
+            get => _scannedDevices.ToList();
+        }
+
         public AsyncRelayCommand ScanCommand { get => new AsyncRelayCommand(ScanAsync); }
 
         public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
@@ -47,6 +52,11 @@ namespace IpScanner.Ui.ViewModels.Modules
         public void Dispose()
         {
             _cancellationTokenSource.Dispose();
+        }
+
+        public void InitializeCollection(FilteredCollection<ScannedDevice> scannedDevices)
+        {
+            _scannedDevices = scannedDevices;
         }
 
         private async Task ScanAsync()

@@ -18,7 +18,7 @@ namespace IpScanner.Infrastructure.ContentCreators
             }
 
             List<DeviceEntity> entities = items.Select(x => x.ToEntity()).ToList();
-            return entities.ToJson();
+            return entities.ToJson(true);
         }
     }
 }
