@@ -124,6 +124,7 @@
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
     <Compile Include="ContentCreators\DevicesJsonContentCreator.cs" />
+    <Compile Include="ContentCreators\DevicesXmlContentCreator.cs" />
     <Compile Include="Entities\DeviceEntity.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Factories\DeviceContentCreatorFactory.cs" />

@@ -41,7 +41,10 @@ namespace IpScanner.Ui
             services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
 
             services.AddTransient<IContentCreatorFactory<ScannedDevice>, DeviceContentCreatorFactory>();
-            services.AddTransient<IContentCreator<ScannedDevice>, DevicesJsonContentCreator>();
+
+            services.AddTransient<DevicesJsonContentCreator>();
+            services.AddTransient<DevicesXmlContentCreator>();
+
             services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();

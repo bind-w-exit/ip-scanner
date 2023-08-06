@@ -38,6 +38,7 @@ namespace IpScanner.Infrastructure.Services
             };
 
             savePicker.FileTypeChoices.Add("JSON", new List<string>() { ".json" });
+            savePicker.FileTypeChoices.Add("XML", new List<string>() { ".xml" });
             savePicker.SuggestedFileName = "devices";
 
             return await savePicker.PickSaveFileAsync();
@@ -51,6 +52,9 @@ namespace IpScanner.Infrastructure.Services
             {
                 case ".json":
                     contentCreator = _contentCreatorFactory.Create(ContentFormat.Json);
+                    break;
+                case ".xml":
+                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Xml);
                     break;
                 default:
                     throw new Exception("Unsupported file type");
