@@ -44,6 +44,8 @@ namespace IpScanner.Ui
 
             services.AddTransient<DevicesJsonContentCreator>();
             services.AddTransient<DevicesXmlContentCreator>();
+            services.AddTransient<DevicesCsvContentCreator>();
+            services.AddTransient<DevicesHtmlContentCreator>();
 
             services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
 

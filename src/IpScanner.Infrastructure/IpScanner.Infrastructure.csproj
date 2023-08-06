@@ -123,6 +123,8 @@
     <Compile Include="APIs\ApiBase.cs" />
     <Compile Include="APIs\Cached\ManufactorApiCached.cs" />
     <Compile Include="APIs\ManufactorApi.cs" />
+    <Compile Include="ContentCreators\DevicesCsvContentCreator.cs" />
+    <Compile Include="ContentCreators\DevicesHtmlContentCreator.cs" />
     <Compile Include="ContentCreators\DevicesJsonContentCreator.cs" />
     <Compile Include="ContentCreators\DevicesXmlContentCreator.cs" />
     <Compile Include="Entities\DeviceEntity.cs" />
