@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Provider;
 using Windows.Storage;
 using IpScanner.Domain.Enums;
+using Windows.Storage.Pickers;
 
 namespace IpScanner.Infrastructure.Services
 {
@@ -20,37 +21,53 @@ namespace IpScanner.Infrastructure.Services
 
         public async Task SaveItemsAsync(IEnumerable<ScannedDevice> devices)
         {
-            var savePicker = new Windows.Storage.Pickers.FileSavePicker
+            StorageFile file = await GetFileFromPickerAsync();
+            if (file == null) return;
+
+            CachedFileManager.DeferUpdates(file);
+
+            string content = GenerateFileContent(devices, file.FileType);
+            await WriteContentToFileAsync(file, content);
+        }
+
+        private async Task<StorageFile> GetFileFromPickerAsync()
+        {
+            var savePicker = new FileSavePicker
             {
-                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
 
             savePicker.FileTypeChoices.Add("JSON", new List<string>() { ".json" });
             savePicker.SuggestedFileName = "devices";
 
-            StorageFile file = await savePicker.PickSaveFileAsync();
-            if (file != null)
+            return await savePicker.PickSaveFileAsync();
+        }
+
+        private string GenerateFileContent(IEnumerable<ScannedDevice> devices, string fileType)
+        {
+            IContentCreator<ScannedDevice> contentCreator = null;
+
+            switch (fileType)
             {
-                CachedFileManager.DeferUpdates(file);
+                case ".json":
+                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Json);
+                    break;
+                default:
+                    throw new Exception("Unsupported file type");
+            }
 
-                IContentCreator<ScannedDevice> contentCreator = null;
-                switch (file.FileType)
-                {
-                    case ".json":
-                        contentCreator = _contentCreatorFactory.Create(ContentFormat.Json);
-                        break;
-                    default:
-                        throw new Exception("Unsupported file type");
-                }
+            return contentCreator.CreateContent(devices);
+        }
 
-                string content = contentCreator.CreateContent(devices);
-                await FileIO.WriteTextAsync(file, content);
+        private async Task WriteContentToFileAsync(StorageFile file, string content)
+        {
+            CachedFileManager.DeferUpdates(file);
+            await FileIO.WriteTextAsync(file, content);
 
-                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
-                if (status != FileUpdateStatus.Complete)
-                {
-                    throw new OperationCanceledException("Can not complete file saving");
-                }
+            FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+            if (status != FileUpdateStatus.Complete)
+            {
+                throw new OperationCanceledException("Cannot complete file saving");
             }
         }
     }
