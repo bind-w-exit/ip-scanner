@@ -136,10 +136,15 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task SaveDeviceAsync()
         {
-            StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
-            IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
+            try
+            {
+                StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
+                IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
 
-            await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
+                await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
+            }
+            catch (OperationCanceledException)
+            { } 
         }
 
         private void RegisterMessages(IMessenger messenger)

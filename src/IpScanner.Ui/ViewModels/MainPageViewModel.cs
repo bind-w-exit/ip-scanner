@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Exceptions;
 using IpScanner.Infrastructure.Extensions;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
@@ -11,6 +12,7 @@ using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -148,7 +150,7 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
 
-        public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadFavoritesAsync); }
+        public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
 
         public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
 
@@ -156,10 +158,15 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task ScanFromFileAsync()
         {
-            StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
+            try
+            {
+                StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
 
-            string content = await file.ReadTextAsync();
-            _messenger.Send(new ScanFromFileMessage(content));
+                string content = await file.ReadTextAsync();
+                _messenger.Send(new ScanFromFileMessage(content));
+            }
+            catch (OperationCanceledException)
+            { }
         }
 
         private async Task ChangeLanguageAsync(string language)
@@ -172,19 +179,26 @@ namespace IpScanner.Ui.ViewModels
         {
             List<ScannedDevice> devices = _scanningModule.Devices;
 
-            StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
-            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-            await deviceRepository.SaveDevicesAsync(devices);
+            try
+            {
+                StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
+                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+                await deviceRepository.SaveDevicesAsync(devices);
+            }
+            catch (OperationCanceledException)
+            { }
         }
 
-        private async Task LoadFavoritesAsync()
+        private async Task LoadDevicesAsync()
         {
             try
             {
                 StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
                 _messenger.Send(new DevicesLoadedMessage(file));
             }
-            catch (JsonException)
+            catch (OperationCanceledException)
+            { }
+            catch (ContentFormatException)
             {
                 string message = _localizationService.GetLocalizedString("WrongFile");
                 await _dialogService.ShowMessageAsync("Error", message);
