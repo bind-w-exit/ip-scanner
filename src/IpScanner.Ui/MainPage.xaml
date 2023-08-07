@@ -26,7 +26,7 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="LoadFavorites">
+                <MenuFlyoutItem x:Uid="LoadDevices" Command="{Binding LoadDevicesCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xF12B;" />
                     </MenuFlyoutItem.Icon>

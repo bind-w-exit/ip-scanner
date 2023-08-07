@@ -53,6 +53,14 @@ namespace IpScanner.Ui.ObjectModels
             }
         }
 
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
+            }
+        }
+
         protected override void RemoveItem(int index)
         {
             base.RemoveItem(index);

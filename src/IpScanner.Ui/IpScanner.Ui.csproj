@@ -133,6 +133,7 @@
     <Compile Include="Messages\DetailsPageVisibilityMessage.cs" />
     <Compile Include="Messages\DeviceSelectedMessage.cs" />
     <Compile Include="Messages\FilterMessage.cs" />
+    <Compile Include="Messages\DevicesLoadedMessage.cs" />
     <Compile Include="Messages\MiscellaneousBarVisibilityMessage.cs" />
     <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />

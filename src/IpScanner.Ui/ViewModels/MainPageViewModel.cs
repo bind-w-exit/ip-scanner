@@ -137,6 +137,8 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
 
+        public AsyncRelayCommand LoadDevicesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
+
         private async Task ChangeLanguageAsync(string language)
         {
             await _localizationService.SetLanguageAsync(new Language(language));
@@ -147,6 +149,12 @@ namespace IpScanner.Ui.ViewModels
         {
             List<ScannedDevice> devices = _scanningModule.Devices;
             await _fileService.SaveItemsAsync(devices);
+        }
+
+        private async Task LoadDevicesAsync()
+        {
+            IEnumerable<ScannedDevice> devices = await _fileService.GetItemsAsync();
+            _messenger.Send(new DevicesLoadedMessage(devices));
         }
     }
 }

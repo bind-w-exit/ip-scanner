@@ -159,11 +159,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\IpScanner.Domain\IpScanner.Domain.csproj">
+    <ProjectReference Include="..\..\src\IpScanner.Domain\IpScanner.Domain.csproj">
       <Project>{41bd8b5f-4cd5-4686-9e20-b21cdb18eb7d}</Project>
       <Name>IpScanner.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\IpScanner.Infrastructure\IpScanner.Infrastructure.csproj">
+    <ProjectReference Include="..\..\src\IpScanner.Infrastructure\IpScanner.Infrastructure.csproj">
       <Project>{1b9dc7d3-0763-4f6f-9ea9-9ed5a608d273}</Project>
       <Name>IpScanner.Infrastructure</Name>
     </ProjectReference>
