@@ -4,6 +4,8 @@ using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure.ContentCreators;
+using IpScanner.Infrastructure.ContentFormatters.Factories;
+using IpScanner.Infrastructure.Entities;
 using IpScanner.Infrastructure.Factories;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Services;
@@ -44,6 +46,7 @@ namespace IpScanner.Ui
             services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
 
             services.AddTransient<IContentCreatorFactory<ScannedDevice>, DeviceContentCreatorFactory>();
+            services.AddTransient<IContentFormatterFactory<DeviceEntity>, ContentFormatterFactory<DeviceEntity>>();
 
             services.AddTransient<DevicesJsonContentCreator>();
             services.AddTransient<DevicesXmlContentCreator>();

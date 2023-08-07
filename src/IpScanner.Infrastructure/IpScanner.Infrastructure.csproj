@@ -127,7 +127,14 @@
     <Compile Include="ContentCreators\DevicesHtmlContentCreator.cs" />
     <Compile Include="ContentCreators\DevicesJsonContentCreator.cs" />
     <Compile Include="ContentCreators\DevicesXmlContentCreator.cs" />
+    <Compile Include="ContentFormatters\Factories\ContentFormatterFactory.cs" />
+    <Compile Include="ContentFormatters\Factories\IContentFormatterFactory.cs" />
+    <Compile Include="ContentFormatters\IContentFormatter.cs" />
+    <Compile Include="ContentFormatters\JsonContentFormatter.cs" />
+    <Compile Include="ContentFormatters\XmlContentFormatter.cs" />
     <Compile Include="Entities\DeviceEntity.cs" />
+    <Compile Include="Exceptions\ContentFormatException.cs" />
+    <Compile Include="Extensions\ContentFormatExtensions.cs" />
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Factories\DeviceContentCreatorFactory.cs" />
     <Compile Include="Mappers\DeviceMapper.cs" />

@@ -9,11 +9,9 @@ using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
-using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
 {

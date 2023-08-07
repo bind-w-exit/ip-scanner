@@ -10,17 +10,22 @@ using Windows.Storage.Pickers;
 using System.Linq;
 using IpScanner.Infrastructure.Entities;
 using IpScanner.Infrastructure.Mappers;
-using System.Text.Json;
+using IpScanner.Infrastructure.ContentFormatters.Factories;
+using IpScanner.Infrastructure.ContentFormatters;
+using IpScanner.Infrastructure.Extensions;
 
 namespace IpScanner.Infrastructure.Services
 {
     public class DevicesFileService : IFileService<ScannedDevice>
     {
         private readonly IContentCreatorFactory<ScannedDevice> _contentCreatorFactory;
+        private readonly IContentFormatterFactory<DeviceEntity> _contentFormatterFactory;
 
-        public DevicesFileService(IContentCreatorFactory<ScannedDevice> contentCreatorFactory)
+        public DevicesFileService(IContentCreatorFactory<ScannedDevice> contentCreatorFactory,
+            IContentFormatterFactory<DeviceEntity> contentFormatterFactory)
         {
             _contentCreatorFactory = contentCreatorFactory;
+            _contentFormatterFactory = contentFormatterFactory;
         }
 
         public async Task<string> GetStringAsync()
@@ -36,14 +41,16 @@ namespace IpScanner.Infrastructure.Services
 
         public async Task<IEnumerable<ScannedDevice>> GetItemsAsync()
         {
-            StorageFile file = await GetFileFromOpenPickerAsync(".json");
+            StorageFile file = await GetFileFromOpenPickerAsync(".xml", ".json");
             if (file == null)
             {
                 return Enumerable.Empty<ScannedDevice>();
             }
 
             string content = await ReadContentFromFileAsync(file);
-            return DeserializeContent(content);
+            IContentFormatter<DeviceEntity> formatter = CreateContentFormatter(file.FileType);
+
+            return DeserializeContent(content, formatter);
         }
 
         public async Task SaveItemsAsync(IEnumerable<ScannedDevice> devices)
@@ -76,25 +83,8 @@ namespace IpScanner.Infrastructure.Services
 
         private string GenerateFileContent(IEnumerable<ScannedDevice> devices, string fileType)
         {
-            IContentCreator<ScannedDevice> contentCreator = null;
-
-            switch (fileType)
-            {
-                case ".json":
-                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Json);
-                    break;
-                case ".xml":
-                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Xml);
-                    break;
-                case ".csv":
-                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Csv);
-                    break;
-                case ".html":
-                    contentCreator = _contentCreatorFactory.Create(ContentFormat.Html);
-                    break;
-                default:
-                    throw new Exception("Unsupported file type");
-            }
+            ContentFormat format = fileType.GetContentFormatFromString();
+            IContentCreator<ScannedDevice> contentCreator = _contentCreatorFactory.Create(format);
 
             return contentCreator.CreateContent(devices);
         }
@@ -132,9 +122,17 @@ namespace IpScanner.Infrastructure.Services
             return await FileIO.ReadTextAsync(file);
         }
 
-        private IEnumerable<ScannedDevice> DeserializeContent(string content)
+        private IContentFormatter<DeviceEntity> CreateContentFormatter(string fileType)
         {
-            var scannedDevices = JsonSerializer.Deserialize<IEnumerable<DeviceEntity>>(content);
+            ContentFormat format = fileType.GetContentFormatFromString();
+            IContentFormatter<DeviceEntity> formatter = _contentFormatterFactory.Create(format);
+
+            return formatter;
+        }
+
+        private IEnumerable<ScannedDevice> DeserializeContent(string content, IContentFormatter<DeviceEntity> contentFormatter)
+        {
+            IEnumerable<DeviceEntity> scannedDevices = contentFormatter.FormatContentAsCollection(content);
             return scannedDevices.Select(x => x.ToDomain());
         }
     }
