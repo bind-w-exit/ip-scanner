@@ -1,15 +1,14 @@
-﻿using IpScanner.Domain.Models;
-using System.Collections.Generic;
+﻿using Windows.Storage;
 
 namespace IpScanner.Ui.Messages
 {
     public class DevicesLoadedMessage
     {
-        public DevicesLoadedMessage(IEnumerable<ScannedDevice> devices)
+        public DevicesLoadedMessage(StorageFile storageFile)
         {
-            Devices = devices;
+            StorageFile = storageFile;
         }
 
-        public IEnumerable<ScannedDevice> Devices { get; }
+        public StorageFile StorageFile { get; set; }
     }
 }

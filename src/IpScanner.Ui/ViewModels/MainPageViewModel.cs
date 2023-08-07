@@ -3,16 +3,21 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Exceptions;
+using IpScanner.Infrastructure.Extensions;
+using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
+using Windows.Storage;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -26,17 +31,19 @@ namespace IpScanner.Ui.ViewModels
         private bool _showActions;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
-        private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
-        private readonly ScanningModule _scanningModule;
+        private readonly IApplicationService _applicationService;
         private readonly IMessenger _messenger;
+        private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly ScanningModule _scanningModule;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
         private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
-            IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule, 
-            IDialogService dialogService)
+            IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory,
+            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule)
         {
             _messenger = messenger;
 
@@ -50,9 +57,11 @@ namespace IpScanner.Ui.ViewModels
             _navigationService = navigationService;
             _localizationService = localizationService;
             _fileService = fileService;
+            _deviceRepositoryFactory = deviceRepositoryFactory;
 
             _scanningModule = scanningModule;
             _dialogService = dialogService;
+            _applicationService = applicationService;
         }
 
         public bool ShowUnknown
@@ -137,9 +146,28 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand ShowActionsCommand { get => new RelayCommand(() => ShowActions = !ShowActions); }
 
+        public AsyncRelayCommand ScanFromFileCommand { get => new AsyncRelayCommand(ScanFromFileAsync); }
+
         public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
 
-        public AsyncRelayCommand LoadDevicesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
+        public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
+
+        public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
+
+        public RelayCommand PrintPreviewCommand { get => new RelayCommand(ShowPrintPreview); }
+
+        private async Task ScanFromFileAsync()
+        {
+            try
+            {
+                StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
+
+                string content = await file.ReadTextAsync();
+                _messenger.Send(new ScanFromFileMessage(content));
+            }
+            catch (OperationCanceledException)
+            { }
+        }
 
         private async Task ChangeLanguageAsync(string language)
         {
@@ -150,21 +178,41 @@ namespace IpScanner.Ui.ViewModels
         private async Task SaveDevicesAsync()
         {
             List<ScannedDevice> devices = _scanningModule.Devices;
-            await _fileService.SaveItemsAsync(devices);
+
+            try
+            {
+                StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
+                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+                await deviceRepository.SaveDevicesAsync(devices);
+            }
+            catch (OperationCanceledException)
+            { }
         }
 
         private async Task LoadDevicesAsync()
         {
             try
             {
-                IEnumerable<ScannedDevice> devices = await _fileService.GetItemsAsync();
-                _messenger.Send(new DevicesLoadedMessage(devices));
+                StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
+                _messenger.Send(new DevicesLoadedMessage(file));
             }
-            catch (JsonException)
+            catch (OperationCanceledException)
+            { }
+            catch (ContentFormatException)
             {
                 string message = _localizationService.GetLocalizedString("WrongFile");
                 await _dialogService.ShowMessageAsync("Error", message);
             }
+        }
+
+        private void ShowPrintPreview()
+        {
+            _messenger.Send(new PrintPreviewMessage());
+        }
+
+        private void ExitFromApplication()
+        {
+            _applicationService.Exit();
         }
     }
 }

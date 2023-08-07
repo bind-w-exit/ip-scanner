@@ -2,12 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Printing;
 using IpScanner.Ui.ViewModels.Modules;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -24,14 +30,20 @@ namespace IpScanner.Ui.ViewModels
         private ScanningModule _scanningModule;
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
-        private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IFileService _fileService;
+        private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly IPrintServiceFactory _printServiceFactory;
+        private FrameworkElement _elementToPrint;
 
-        public ScanPageViewModel(IMessenger messenger, IFileService<ScannedDevice> fileService, 
+        public ScanPageViewModel(IMessenger messenger, IFileService fileService,
+            IPrintServiceFactory printServiceFactory, IDeviceRepositoryFactory deviceRepositoryFactory,
             FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
             IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
+            _printServiceFactory = printServiceFactory;
+            _deviceRepositoryFactory = deviceRepositoryFactory;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -117,9 +129,22 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
+        public void InitializeElementToPrint(FrameworkElement element)
+        {
+            _elementToPrint = element;
+        }
+
         private async Task SaveDeviceAsync()
         {
-            await _fileService.SaveItemsAsync(new List<ScannedDevice> { SelectedDevice });
+            try
+            {
+                StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
+                IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
+
+                await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
+            }
+            catch (OperationCanceledException)
+            { } 
         }
 
         private void RegisterMessages(IMessenger messenger)
@@ -128,7 +153,8 @@ namespace IpScanner.Ui.ViewModels
             messenger.Register<DetailsPageVisibilityMessage>(this, OnDetailsPageVisibilityMessage);
             messenger.Register<MiscellaneousBarVisibilityMessage>(this, OnMiscellaneousBarVisibilityMessage);
             messenger.Register<ActionsBarVisibilityMessage>(this, OnActionsBarVisibilityMessage);
-            messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoadedMessage);
+            messenger.Register<ScanFromFileMessage>(this, OnScanFromFileMessage);
+            messenger.Register<PrintPreviewMessage>(this, OnPrintMessage);
         }
 
         private void OnFilterMessage(object sender, FilterMessage message)
@@ -160,10 +186,21 @@ namespace IpScanner.Ui.ViewModels
             ShowActions = message.Visible;
         }
 
-        private void OnDevicesLoadedMessage(object sender, DevicesLoadedMessage message)
+        private async void OnScanFromFileMessage(object sender, ScanFromFileMessage message)
         {
-            ScannedDevices.Clear();
-            ScannedDevices.AddRange(message.Devices);
+            IpRangeModule.IpRange = message.Content;
+            await ScanningModule.ScanCommand.ExecuteAsync(this);
+        }
+
+        private void OnPrintMessage(object sender, PrintPreviewMessage message)
+        {
+            if (_elementToPrint == null)
+            {
+                throw new InvalidOperationException("Element to print is not initialized");
+            }
+
+            IPrintService printService = _printServiceFactory.CreateBasedOneFrameworkElement(_elementToPrint);
+            printService.ShowPrintUIAsync();
         }
     }
 }

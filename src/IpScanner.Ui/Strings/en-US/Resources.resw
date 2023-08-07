@@ -195,8 +195,8 @@
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="LoadDevices.Text" xml:space="preserve">
-    <value>Load devices ...</value>
+  <data name="LoadFavorites.Text" xml:space="preserve">
+    <value>Load favorites ...</value>
   </data>
   <data name="Mac.Text" xml:space="preserve">
     <value>MAC</value>

@@ -131,7 +131,6 @@
     <Compile Include="Factories\NetworkScannerFactory.cs" />
     <Compile Include="Interfaces\IContentCreator.cs" />
     <Compile Include="Interfaces\IContentCreatorFactory.cs" />
-    <Compile Include="Interfaces\IDeviceRepository.cs" />
     <Compile Include="Interfaces\IFileWriter.cs" />
     <Compile Include="Interfaces\IHostRepository.cs" />
     <Compile Include="Interfaces\IMacAddressRepository.cs" />

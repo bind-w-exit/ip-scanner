@@ -22,11 +22,11 @@
         <!-- Menu bar -->
         <MenuBar Grid.Row="0">
             <MenuBarItem x:Uid="File">
-                <MenuFlyoutItem x:Uid="ScanFromFile"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="ScanFromFile" Command="{Binding ScanFromFileCommand}"></MenuFlyoutItem>
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="LoadDevices" Command="{Binding LoadDevicesCommand}">
+                <MenuFlyoutItem x:Uid="LoadFavorites" Command="{Binding LoadFavoritesCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xF12B;" />
                     </MenuFlyoutItem.Icon>
@@ -44,15 +44,9 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="PrintPreview">
+                <MenuFlyoutItem x:Uid="PrintPreview" Command="{Binding PrintPreviewCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE956;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-
-                <MenuFlyoutItem x:Uid="Print">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE749;" />
                     </MenuFlyoutItem.Icon>
 
                     <MenuFlyoutItem.KeyboardAccelerators>
@@ -62,7 +56,7 @@
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="Exit">
+                <MenuFlyoutItem x:Uid="Exit" Command="{Binding ExitCommand}">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="F4"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
@@ -163,6 +157,10 @@
 
                 <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
                 <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem x:Name="DebugPrint" Title="Debug">
+                <MenuFlyoutItem Text="Click!" Click="MenuFlyoutItem_Click"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
         

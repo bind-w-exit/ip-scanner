@@ -195,8 +195,8 @@
   <data name="Language.Text" xml:space="preserve">
     <value>Мова</value>
   </data>
-  <data name="LoadDevices.Text" xml:space="preserve">
-    <value>Завантажити девайси</value>
+  <data name="LoadFavorites.Text" xml:space="preserve">
+    <value>Завантажити обрані девайси</value>
   </data>
   <data name="Mac.Text" xml:space="preserve">
     <value>MAC</value>

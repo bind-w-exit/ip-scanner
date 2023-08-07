@@ -4,9 +4,13 @@ using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using IpScanner.Infrastructure.ContentCreators;
+using IpScanner.Infrastructure.ContentFormatters.Factories;
+using IpScanner.Infrastructure.Entities;
 using IpScanner.Infrastructure.Factories;
 using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using IpScanner.Ui.ViewModels.Modules;
@@ -38,17 +42,20 @@ namespace IpScanner.Ui
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
             services.AddTransient<IDialogService, DialogService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
 
-            services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
+            services.AddTransient<IDeviceRepositoryFactory, DeviceRepositoryFactory>();
 
             services.AddTransient<IContentCreatorFactory<ScannedDevice>, DeviceContentCreatorFactory>();
+            services.AddTransient<IContentFormatterFactory<DeviceEntity>, ContentFormatterFactory<DeviceEntity>>();
 
             services.AddTransient<DevicesJsonContentCreator>();
             services.AddTransient<DevicesXmlContentCreator>();
             services.AddTransient<DevicesCsvContentCreator>();
             services.AddTransient<DevicesHtmlContentCreator>();
 
-            services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IPrintServiceFactory, PrintServiceFactory>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 

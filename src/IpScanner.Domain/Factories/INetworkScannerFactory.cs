@@ -4,6 +4,6 @@ namespace IpScanner.Domain.Factories
 {
     public interface INetworkScannerFactory
     {
-        Models.NetworkScanner CreateBasedOnIpRange(IpRange range);
+        NetworkScanner CreateBasedOnIpRange(IpRange range);
     }
 }
