@@ -148,7 +148,7 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
 
-        public AsyncRelayCommand LoadDevicesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
+        public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadFavoritesAsync); }
 
         public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
 
@@ -177,7 +177,7 @@ namespace IpScanner.Ui.ViewModels
             await deviceRepository.SaveDevicesAsync(devices);
         }
 
-        private async Task LoadDevicesAsync()
+        private async Task LoadFavoritesAsync()
         {
             try
             {
