@@ -306,4 +306,7 @@
   <data name="View.Title" xml:space="preserve">
     <value>Вид</value>
   </data>
+  <data name="WrongFile" xml:space="preserve">
+    <value>Неможливо завантажити дані. Можливо, ви вибрали неправильний файл json</value>
+  </data>
 </root>

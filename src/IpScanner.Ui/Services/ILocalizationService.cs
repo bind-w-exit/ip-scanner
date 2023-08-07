@@ -6,5 +6,6 @@ namespace IpScanner.Ui.Services
     public interface ILocalizationService
     {
         Task SetLanguageAsync(Language language);
+        string GetLocalizedString(string key);
     }
 }

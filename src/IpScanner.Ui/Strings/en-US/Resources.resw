@@ -306,4 +306,7 @@
   <data name="View.Title" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="WrongFile" xml:space="preserve">
+    <value>Unable to load data. You may have selected the wrong json file</value>
+  </data>
 </root>

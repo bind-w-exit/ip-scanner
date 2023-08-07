@@ -7,10 +7,10 @@ using Windows.Storage.Provider;
 using Windows.Storage;
 using IpScanner.Domain.Enums;
 using Windows.Storage.Pickers;
-using Newtonsoft.Json;
 using System.Linq;
 using IpScanner.Infrastructure.Entities;
 using IpScanner.Infrastructure.Mappers;
+using System.Text.Json;
 
 namespace IpScanner.Infrastructure.Services
 {
@@ -117,7 +117,7 @@ namespace IpScanner.Infrastructure.Services
 
         private IEnumerable<ScannedDevice> DeserializeContent(string content)
         {
-            var scannedDevices = JsonConvert.DeserializeObject<IEnumerable<DeviceEntity>>(content);
+            var scannedDevices = JsonSerializer.Deserialize<IEnumerable<DeviceEntity>>(content);
             return scannedDevices.Select(x => x.ToDomain());
         }
     }

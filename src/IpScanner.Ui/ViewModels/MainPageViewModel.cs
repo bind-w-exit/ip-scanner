@@ -10,6 +10,7 @@ using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
 
@@ -26,6 +27,7 @@ namespace IpScanner.Ui.ViewModels
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
         private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IDialogService _dialogService;
         private readonly ScanningModule _scanningModule;
         private readonly IMessenger _messenger;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
@@ -33,7 +35,8 @@ namespace IpScanner.Ui.ViewModels
         private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
-            IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule)
+            IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule, 
+            IDialogService dialogService)
         {
             _messenger = messenger;
 
@@ -49,6 +52,7 @@ namespace IpScanner.Ui.ViewModels
             _fileService = fileService;
 
             _scanningModule = scanningModule;
+            _dialogService = dialogService;
         }
 
         public bool ShowUnknown
@@ -56,10 +60,8 @@ namespace IpScanner.Ui.ViewModels
             get => _showUnknown;
             set
             {
-                if(SetProperty(ref _showUnknown, value))
-                {
-                    _messenger.Send(new FilterMessage(_unknownFilter, !value));
-                }
+                _messenger.Send(new FilterMessage(_unknownFilter, !value));
+                SetProperty(ref _showUnknown, value);
             }
         }
 
@@ -153,8 +155,16 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task LoadDevicesAsync()
         {
-            IEnumerable<ScannedDevice> devices = await _fileService.GetItemsAsync();
-            _messenger.Send(new DevicesLoadedMessage(devices));
+            try
+            {
+                IEnumerable<ScannedDevice> devices = await _fileService.GetItemsAsync();
+                _messenger.Send(new DevicesLoadedMessage(devices));
+            }
+            catch (JsonException)
+            {
+                string message = _localizationService.GetLocalizedString("WrongFile");
+                await _dialogService.ShowMessageAsync("Error", message);
+            }
         }
     }
 }
