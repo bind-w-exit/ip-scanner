@@ -3,6 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Extensions;
+using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
@@ -12,6 +15,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
+using Windows.Storage;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -25,18 +29,19 @@ namespace IpScanner.Ui.ViewModels
         private bool _showActions;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
-        private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
         private readonly IApplicationService _applicationService;
-        private readonly ScanningModule _scanningModule;
         private readonly IMessenger _messenger;
+        private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly ScanningModule _scanningModule;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
         private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
-            IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule, 
-            IDialogService dialogService, IApplicationService applicationService)
+            IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory,
+            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule)
         {
             _messenger = messenger;
 
@@ -50,6 +55,7 @@ namespace IpScanner.Ui.ViewModels
             _navigationService = navigationService;
             _localizationService = localizationService;
             _fileService = fileService;
+            _deviceRepositoryFactory = deviceRepositoryFactory;
 
             _scanningModule = scanningModule;
             _dialogService = dialogService;
@@ -150,7 +156,9 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task ScanFromFileAsync()
         {
-            string content = await _fileService.GetStringAsync();
+            StorageFile file = await _fileService.GetFileForReadingAsync();
+
+            string content = await file.ReadTextAsync();
             _messenger.Send(new ScanFromFileMessage(content));
         }
 
@@ -163,14 +171,20 @@ namespace IpScanner.Ui.ViewModels
         private async Task SaveDevicesAsync()
         {
             List<ScannedDevice> devices = _scanningModule.Devices;
-            await _fileService.SaveItemsAsync(devices);
+
+            StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
+            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+            await deviceRepository.SaveDevicesAsync(devices);
         }
 
         private async Task LoadDevicesAsync()
         {
             try
             {
-                IEnumerable<ScannedDevice> devices = await _fileService.GetItemsAsync();
+                StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
+                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+
+                IEnumerable<ScannedDevice> devices = await deviceRepository.GetDevicesAsync();
                 _messenger.Send(new DevicesLoadedMessage(devices));
             }
             catch (JsonException)

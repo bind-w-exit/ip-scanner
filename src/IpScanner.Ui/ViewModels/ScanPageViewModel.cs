@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
@@ -10,6 +12,7 @@ using IpScanner.Ui.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
@@ -27,17 +30,20 @@ namespace IpScanner.Ui.ViewModels
         private ScanningModule _scanningModule;
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
-        private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IFileService _fileService;
+        private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly IPrintServiceFactory _printServiceFactory;
         private FrameworkElement _elementToPrint;
 
-        public ScanPageViewModel(IMessenger messenger, IFileService<ScannedDevice> fileService, 
+        public ScanPageViewModel(IMessenger messenger, IFileService fileService,
+            IPrintServiceFactory printServiceFactory, IDeviceRepositoryFactory deviceRepositoryFactory,
             FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
-            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintServiceFactory printServiceFactory)
+            IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
             _printServiceFactory = printServiceFactory;
+            _deviceRepositoryFactory = deviceRepositoryFactory;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -130,7 +136,10 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task SaveDeviceAsync()
         {
-            await _fileService.SaveItemsAsync(new List<ScannedDevice> { SelectedDevice });
+            StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
+            IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
+
+            await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
         }
 
         private void RegisterMessages(IMessenger messenger)

@@ -8,6 +8,7 @@ using IpScanner.Infrastructure.ContentFormatters.Factories;
 using IpScanner.Infrastructure.Entities;
 using IpScanner.Infrastructure.Factories;
 using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
@@ -43,7 +44,7 @@ namespace IpScanner.Ui
             services.AddTransient<IDialogService, DialogService>();
             services.AddTransient<IApplicationService, ApplicationService>();
 
-            services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
+            services.AddTransient<IDeviceRepositoryFactory, DeviceRepositoryFactory>();
 
             services.AddTransient<IContentCreatorFactory<ScannedDevice>, DeviceContentCreatorFactory>();
             services.AddTransient<IContentFormatterFactory<DeviceEntity>, ContentFormatterFactory<DeviceEntity>>();
@@ -53,7 +54,7 @@ namespace IpScanner.Ui
             services.AddTransient<DevicesCsvContentCreator>();
             services.AddTransient<DevicesHtmlContentCreator>();
 
-            services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
+            services.AddTransient<IFileService, FileService>();
             services.AddTransient<IPrintServiceFactory, PrintServiceFactory>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();

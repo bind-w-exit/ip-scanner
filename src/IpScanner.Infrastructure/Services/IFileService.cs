@@ -1,13 +1,12 @@
-﻿using IpScanner.Domain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace IpScanner.Infrastructure.Services
 {
-    public interface IFileService<T>
+    public interface IFileService
     {
-        Task<string> GetStringAsync();
-        Task<IEnumerable<T>> GetItemsAsync();
-        Task SaveItemsAsync(IEnumerable<T> devices);
+        Task<StorageFile> GetDefaultFileAsync();
+        Task<StorageFile> GetFileForReadingAsync(params string[] fileTypes);
+        Task<StorageFile> GetFileForWritingAsync(params string[] fileTypes);
     }
 }
