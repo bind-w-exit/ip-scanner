@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Globalization;
 
 namespace IpScanner.Ui.Services
@@ -12,6 +13,17 @@ namespace IpScanner.Ui.Services
             Windows.ApplicationModel.Resources.Core.ResourceContext.GetForViewIndependentUse().Reset();
 
             await WaitForLanguageChangeAsync();
+        }
+
+        public string GetLocalizedString(string key)
+        {
+            string message = ResourceLoader.GetForCurrentView().GetString(key);
+            if(string.IsNullOrEmpty(message))
+            {
+                throw new System.Exception($"Key '{key}' not found in resources");
+            }
+
+            return message;
         }
 
         private Task WaitForLanguageChangeAsync()

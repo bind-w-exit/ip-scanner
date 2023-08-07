@@ -195,8 +195,8 @@
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="LoadFavorites.Text" xml:space="preserve">
-    <value>Load favorites ...</value>
+  <data name="LoadDevices.Text" xml:space="preserve">
+    <value>Load devices ...</value>
   </data>
   <data name="Mac.Text" xml:space="preserve">
     <value>MAC</value>
@@ -305,5 +305,8 @@
   </data>
   <data name="View.Title" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="WrongFile" xml:space="preserve">
+    <value>Unable to load data. You may have selected the wrong json file</value>
   </data>
 </root>

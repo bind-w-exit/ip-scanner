@@ -7,6 +7,10 @@ using Windows.Storage.Provider;
 using Windows.Storage;
 using IpScanner.Domain.Enums;
 using Windows.Storage.Pickers;
+using System.Linq;
+using IpScanner.Infrastructure.Entities;
+using IpScanner.Infrastructure.Mappers;
+using System.Text.Json;
 
 namespace IpScanner.Infrastructure.Services
 {
@@ -17,6 +21,15 @@ namespace IpScanner.Infrastructure.Services
         public DevicesFileService(IContentCreatorFactory<ScannedDevice> contentCreatorFactory)
         {
             _contentCreatorFactory = contentCreatorFactory;
+        }
+
+        public async Task<IEnumerable<ScannedDevice>> GetItemsAsync()
+        {
+            StorageFile file = await GetFileFromOpenPickerAsync();
+            if (file == null) return Enumerable.Empty<ScannedDevice>();
+
+            string content = await ReadContentFromFileAsync(file);
+            return DeserializeContent(content);
         }
 
         public async Task SaveItemsAsync(IEnumerable<ScannedDevice> devices)
@@ -82,6 +95,30 @@ namespace IpScanner.Infrastructure.Services
             {
                 throw new OperationCanceledException("Cannot complete file saving");
             }
+        }
+
+        private async Task<StorageFile> GetFileFromOpenPickerAsync()
+        {
+            var openPicker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.List,
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+
+            openPicker.FileTypeFilter.Add(".json");
+
+            return await openPicker.PickSingleFileAsync();
+        }
+
+        private async Task<string> ReadContentFromFileAsync(StorageFile file)
+        {
+            return await FileIO.ReadTextAsync(file);
+        }
+
+        private IEnumerable<ScannedDevice> DeserializeContent(string content)
+        {
+            var scannedDevices = JsonSerializer.Deserialize<IEnumerable<DeviceEntity>>(content);
+            return scannedDevices.Select(x => x.ToDomain());
         }
     }
 }

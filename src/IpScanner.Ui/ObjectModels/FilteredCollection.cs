@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace IpScanner.Ui.ObjectModels
@@ -50,6 +49,14 @@ namespace IpScanner.Ui.ObjectModels
                 {
                     FilteredItems.Add(item);
                 }
+            }
+        }
+
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
             }
         }
 

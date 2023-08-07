@@ -6,6 +6,7 @@ namespace IpScanner.Infrastructure.Services
 {
     public interface IFileService<T>
     {
+        Task<IEnumerable<T>> GetItemsAsync();
         Task SaveItemsAsync(IEnumerable<T> devices);
     }
 }
