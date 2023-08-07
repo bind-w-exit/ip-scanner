@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 
 namespace IpScanner.Infrastructure.Mappers
 {
-    internal static class DeviceMapper
+    public static class DeviceMapper
     {
         public static DeviceEntity ToEntity(this ScannedDevice domain)
         {

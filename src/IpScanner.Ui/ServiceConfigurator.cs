@@ -3,7 +3,10 @@ using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
+using IpScanner.Infrastructure.ContentCreators;
+using IpScanner.Infrastructure.Factories;
 using IpScanner.Infrastructure.Repositories;
+using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using IpScanner.Ui.ViewModels.Modules;
@@ -30,11 +33,21 @@ namespace IpScanner.Ui
             services.AddSingleton<FavoritesDevicesModule>();
             services.AddSingleton<ProgressModule>();
             services.AddSingleton<IpRangeModule>();
+            services.AddSingleton<ScanningModule>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
 
             services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
+
+            services.AddTransient<IContentCreatorFactory<ScannedDevice>, DeviceContentCreatorFactory>();
+
+            services.AddTransient<DevicesJsonContentCreator>();
+            services.AddTransient<DevicesXmlContentCreator>();
+            services.AddTransient<DevicesCsvContentCreator>();
+            services.AddTransient<DevicesHtmlContentCreator>();
+
+            services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 

@@ -32,7 +32,7 @@
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="SaveAs">
+                <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding SaveDevicesCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE74E;" />
                     </MenuFlyoutItem.Icon>
