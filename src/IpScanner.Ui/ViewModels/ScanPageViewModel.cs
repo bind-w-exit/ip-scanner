@@ -1,15 +1,17 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.ViewModels.Modules;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IpScanner.Ui.ViewModels
 {
-    public class ScanPageViewModel : ObservableObject, IDisposable
+    public class ScanPageViewModel : ObservableObject
     {
         private bool _showDetails;
         private bool _showMiscellaneous;
@@ -22,11 +24,14 @@ namespace IpScanner.Ui.ViewModels
         private ScanningModule _scanningModule;
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
+        private readonly IFileService<ScannedDevice> _fileService;
 
-        public ScanPageViewModel(IMessenger messenger, INetworkScannerFactory factory, FavoritesDevicesModule favoritesDevicesModule, 
-            ProgressModule progressModule, IpRangeModule ipRangeModule, ScanningModule scanningModule)
+        public ScanPageViewModel(IMessenger messenger, IFileService<ScannedDevice> fileService, 
+            FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
+            IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
+            _fileService = fileService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -110,7 +115,12 @@ namespace IpScanner.Ui.ViewModels
             set => SetProperty(ref _filteredDevices, value);
         }
 
-        public void Dispose() => ScanningModule.Dispose();
+        public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
+
+        private async Task SaveDeviceAsync()
+        {
+            await _fileService.SaveItemsAsync(new List<ScannedDevice> { SelectedDevice });
+        }
 
         private void RegisterMessages(IMessenger messenger)
         {

@@ -30,7 +30,7 @@
 
             <MenuFlyoutItem x:Uid="Copy"></MenuFlyoutItem>
             <MenuFlyoutItem x:Uid="Rescan"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="SaveAs">
+            <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding SaveDeviceCommand}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE792;" />
                 </MenuFlyoutItem.Icon>
@@ -39,34 +39,14 @@
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
             <MenuFlyoutItem x:Uid="FavoritesAdd" Command="{Binding FavoritesDevicesModule.AddToFavoritesCommand}" 
-                CommandParameter="{Binding}">
+                Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE728;" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-        </MenuFlyout>
-        
-        <MenuFlyout x:Key="FavoritesContextMenu">
-            <MenuFlyoutItem x:Uid="Explore">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon Glyph="&#xED25;" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-
-            <MenuFlyoutSeparator></MenuFlyoutSeparator>
-
-            <MenuFlyoutItem x:Uid="Copy"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="Rescan"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="SaveAs">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon Glyph="&#xE792;" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-
-            <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
             <MenuFlyoutItem x:Uid="FavoritesRemove" Command="{Binding FavoritesDevicesModule.RemoveFromFavoritesCommand}" 
-                CommandParameter="{Binding}">
+                Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityConvertor}}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xECC9;" />
                 </MenuFlyoutItem.Icon>
@@ -283,7 +263,7 @@
                             <controls:DataGrid ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" ContextFlyout="{StaticResource FavoritesContextMenu}">
+                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" ContextFlyout="{StaticResource ResultsContextMenu}">
                                 <controls:DataGrid.Columns>
                                     <controls:DataGridTemplateColumn x:Uid="Status">
                                         <controls:DataGridTemplateColumn.CellTemplate>
