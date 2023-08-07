@@ -23,10 +23,24 @@ namespace IpScanner.Infrastructure.Services
             _contentCreatorFactory = contentCreatorFactory;
         }
 
+        public async Task<string> GetStringAsync()
+        {
+            StorageFile file = await GetFileFromOpenPickerAsync(".txt");
+            if (file == null)
+            {
+                return string.Empty;
+            }
+
+            return await ReadContentFromFileAsync(file);
+        }
+
         public async Task<IEnumerable<ScannedDevice>> GetItemsAsync()
         {
-            StorageFile file = await GetFileFromOpenPickerAsync();
-            if (file == null) return Enumerable.Empty<ScannedDevice>();
+            StorageFile file = await GetFileFromOpenPickerAsync(".json");
+            if (file == null)
+            {
+                return Enumerable.Empty<ScannedDevice>();
+            }
 
             string content = await ReadContentFromFileAsync(file);
             return DeserializeContent(content);
@@ -97,7 +111,7 @@ namespace IpScanner.Infrastructure.Services
             }
         }
 
-        private async Task<StorageFile> GetFileFromOpenPickerAsync()
+        private async Task<StorageFile> GetFileFromOpenPickerAsync(params string[] fileTypes)
         {
             var openPicker = new FileOpenPicker
             {
@@ -105,7 +119,10 @@ namespace IpScanner.Infrastructure.Services
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
 
-            openPicker.FileTypeFilter.Add(".json");
+            foreach (var item in fileTypes)
+            {
+                openPicker.FileTypeFilter.Add(item);
+            }
 
             return await openPicker.PickSingleFileAsync();
         }

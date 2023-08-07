@@ -140,11 +140,19 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand ShowActionsCommand { get => new RelayCommand(() => ShowActions = !ShowActions); }
 
+        public AsyncRelayCommand ScanFromFileCommand { get => new AsyncRelayCommand(ScanFromFileAsync); }
+
         public AsyncRelayCommand SaveDevicesCommand { get => new AsyncRelayCommand(SaveDevicesAsync); }
 
         public AsyncRelayCommand LoadDevicesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
 
         public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
+
+        private async Task ScanFromFileAsync()
+        {
+            string content = await _fileService.GetStringAsync();
+            _messenger.Send(new ScanFromFileMessage(content));
+        }
 
         private async Task ChangeLanguageAsync(string language)
         {

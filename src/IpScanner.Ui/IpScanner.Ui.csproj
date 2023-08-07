@@ -135,6 +135,7 @@
     <Compile Include="Messages\FilterMessage.cs" />
     <Compile Include="Messages\DevicesLoadedMessage.cs" />
     <Compile Include="Messages\MiscellaneousBarVisibilityMessage.cs" />
+    <Compile Include="Messages\ScanFromFileMessage.cs" />
     <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />

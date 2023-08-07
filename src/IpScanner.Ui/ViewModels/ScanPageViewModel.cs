@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
@@ -24,14 +25,16 @@ namespace IpScanner.Ui.ViewModels
         private ScanningModule _scanningModule;
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
+        private readonly INetworkScannerFactory _networkScannerFactory;
         private readonly IFileService<ScannedDevice> _fileService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService<ScannedDevice> fileService, 
             FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
-            IpRangeModule ipRangeModule, ScanningModule scanningModule)
+            IpRangeModule ipRangeModule, ScanningModule scanningModule, INetworkScannerFactory networkScannerFactory)
         {
             _messanger = messenger;
             _fileService = fileService;
+            _networkScannerFactory = networkScannerFactory;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -129,6 +132,7 @@ namespace IpScanner.Ui.ViewModels
             messenger.Register<MiscellaneousBarVisibilityMessage>(this, OnMiscellaneousBarVisibilityMessage);
             messenger.Register<ActionsBarVisibilityMessage>(this, OnActionsBarVisibilityMessage);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoadedMessage);
+            messenger.Register<ScanFromFileMessage>(this, OnScanFromFileMessage);
         }
 
         private void OnFilterMessage(object sender, FilterMessage message)
@@ -164,6 +168,12 @@ namespace IpScanner.Ui.ViewModels
         {
             ScannedDevices.Clear();
             ScannedDevices.AddRange(message.Devices);
+        }
+
+        private async void OnScanFromFileMessage(object sender, ScanFromFileMessage message)
+        {
+            IpRangeModule.IpRange = message.Content;
+            await ScanningModule.ScanCommand.ExecuteAsync(this);
         }
     }
 }

@@ -22,7 +22,7 @@
         <!-- Menu bar -->
         <MenuBar Grid.Row="0">
             <MenuBarItem x:Uid="File">
-                <MenuFlyoutItem x:Uid="ScanFromFile"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="ScanFromFile" Command="{Binding ScanFromFileCommand}"></MenuFlyoutItem>
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
