@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
+using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -28,6 +29,7 @@ namespace IpScanner.Ui.ViewModels
         private readonly ILocalizationService _localizationService;
         private readonly IFileService<ScannedDevice> _fileService;
         private readonly IDialogService _dialogService;
+        private readonly IApplicationService _applicationService;
         private readonly ScanningModule _scanningModule;
         private readonly IMessenger _messenger;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
@@ -36,7 +38,7 @@ namespace IpScanner.Ui.ViewModels
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
             IMessenger messenger, IFileService<ScannedDevice> fileService, ScanningModule scanningModule, 
-            IDialogService dialogService)
+            IDialogService dialogService, IApplicationService applicationService)
         {
             _messenger = messenger;
 
@@ -53,6 +55,7 @@ namespace IpScanner.Ui.ViewModels
 
             _scanningModule = scanningModule;
             _dialogService = dialogService;
+            _applicationService = applicationService;
         }
 
         public bool ShowUnknown
@@ -141,6 +144,8 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand LoadDevicesCommand { get => new AsyncRelayCommand(LoadDevicesAsync); }
 
+        public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
+
         private async Task ChangeLanguageAsync(string language)
         {
             await _localizationService.SetLanguageAsync(new Language(language));
@@ -165,6 +170,11 @@ namespace IpScanner.Ui.ViewModels
                 string message = _localizationService.GetLocalizedString("WrongFile");
                 await _dialogService.ShowMessageAsync("Error", message);
             }
+        }
+
+        private void ExitFromApplication()
+        {
+            _applicationService.Exit();
         }
     }
 }

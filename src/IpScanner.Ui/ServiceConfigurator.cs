@@ -38,6 +38,7 @@ namespace IpScanner.Ui
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
             services.AddTransient<IDialogService, DialogService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
 
             services.AddTransient<IDeviceRepository, DevicesJsonRepository>();
 
