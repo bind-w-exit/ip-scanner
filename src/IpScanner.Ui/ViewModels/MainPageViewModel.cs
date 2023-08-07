@@ -156,7 +156,7 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task ScanFromFileAsync()
         {
-            StorageFile file = await _fileService.GetFileForReadingAsync();
+            StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
 
             string content = await file.ReadTextAsync();
             _messenger.Send(new ScanFromFileMessage(content));
@@ -182,10 +182,7 @@ namespace IpScanner.Ui.ViewModels
             try
             {
                 StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
-                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-
-                IEnumerable<ScannedDevice> devices = await deviceRepository.GetDevicesAsync();
-                _messenger.Send(new DevicesLoadedMessage(devices));
+                _messenger.Send(new DevicesLoadedMessage(file));
             }
             catch (JsonException)
             {

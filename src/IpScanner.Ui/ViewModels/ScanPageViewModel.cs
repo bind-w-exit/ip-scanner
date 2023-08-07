@@ -148,7 +148,6 @@ namespace IpScanner.Ui.ViewModels
             messenger.Register<DetailsPageVisibilityMessage>(this, OnDetailsPageVisibilityMessage);
             messenger.Register<MiscellaneousBarVisibilityMessage>(this, OnMiscellaneousBarVisibilityMessage);
             messenger.Register<ActionsBarVisibilityMessage>(this, OnActionsBarVisibilityMessage);
-            messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoadedMessage);
             messenger.Register<ScanFromFileMessage>(this, OnScanFromFileMessage);
             messenger.Register<PrintPreviewMessage>(this, OnPrintMessage);
         }
@@ -180,12 +179,6 @@ namespace IpScanner.Ui.ViewModels
         private void OnActionsBarVisibilityMessage(object sender, ActionsBarVisibilityMessage message)
         {
             ShowActions = message.Visible;
-        }
-
-        private void OnDevicesLoadedMessage(object sender, DevicesLoadedMessage message)
-        {
-            ScannedDevices.Clear();
-            ScannedDevices.AddRange(message.Devices);
         }
 
         private async void OnScanFromFileMessage(object sender, ScanFromFileMessage message)

@@ -18,6 +18,7 @@ namespace IpScanner.Ui.ViewModels.Modules
     {
         private bool _displayFavorites;
         private ScannedDevice _selectedDevice;
+        private StorageFile _storageFile;
         private readonly IFileService _fileService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly FilteredCollection<ScannedDevice> _filteredDevices;
@@ -31,6 +32,7 @@ namespace IpScanner.Ui.ViewModels.Modules
             _filteredDevices = new FilteredCollection<ScannedDevice>();
 
             messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
+            messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
         }
 
         public FilteredCollection<ScannedDevice> FavoritesDevices { get => _filteredDevices; }
@@ -49,9 +51,29 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public RelayCommand RemoveFromFavoritesCommand { get => new RelayCommand(RemoveFromFavorites); }
 
+        public void SetStorageFile(StorageFile file)
+        {
+            _storageFile = file;
+        }
+
+        private async Task<StorageFile> GetStorageFileAsync()
+        {
+            if (_storageFile == null)
+            {
+                _storageFile = await _fileService.GetDefaultFileAsync();
+            }
+
+            return _storageFile;
+        }
+
+        private void OnDevicesLoaded(object sender, DevicesLoadedMessage message)
+        {
+            SetStorageFile(message.StorageFile);
+        }
+
         private async Task LoadFavoritesAsync()
         {
-            StorageFile file = await _fileService.GetDefaultFileAsync();
+            StorageFile file = await GetStorageFileAsync();
             IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
 
             List<ScannedDevice> devices = (await deviceRepository.GetDevicesAsync()).ToList();
@@ -65,7 +87,7 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private async Task UnloadFavoritesAsync()
         {
-            StorageFile file = await _fileService.GetDefaultFileAsync();
+            StorageFile file = await GetStorageFileAsync();
             IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
 
             await deviceRepository.SaveDevicesAsync(FavoritesDevices);
