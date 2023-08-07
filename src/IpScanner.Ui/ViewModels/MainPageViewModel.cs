@@ -10,11 +10,11 @@ using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Pages;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
 using Windows.Storage;
@@ -156,6 +156,8 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand PrintPreviewCommand { get => new RelayCommand(ShowPrintPreview); }
 
+        public AsyncRelayCommand ShowOptionsDialogCommand => new AsyncRelayCommand(ShowOptionsDialog);
+
         private async Task ScanFromFileAsync()
         {
             try
@@ -213,6 +215,12 @@ namespace IpScanner.Ui.ViewModels
         private void ExitFromApplication()
         {
             _applicationService.Exit();
+        }
+
+        private async Task ShowOptionsDialog()
+        {
+            var dialog = new OptionsDialog();
+            await dialog.ShowAsync();
         }
     }
 }

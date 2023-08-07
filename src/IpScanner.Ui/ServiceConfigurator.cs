@@ -33,6 +33,7 @@ namespace IpScanner.Ui
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();
+            services.AddSingleton<ColorThemePageViewModel>();
 
             services.AddSingleton<FavoritesDevicesModule>();
             services.AddSingleton<ProgressModule>();

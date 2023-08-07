@@ -128,7 +128,7 @@
             </MenuBarItem>
 
             <MenuBarItem x:Uid="Settings">
-                <MenuFlyoutItem x:Uid="Options">
+                <MenuFlyoutItem x:Uid="Options" Command="{Binding ShowOptionsDialogCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE713;" />
                     </MenuFlyoutItem.Icon>
@@ -157,10 +157,6 @@
 
                 <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
                 <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
-            </MenuBarItem>
-
-            <MenuBarItem x:Name="DebugPrint" Title="Debug">
-                <MenuFlyoutItem Text="Click!" Click="MenuFlyoutItem_Click"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
         

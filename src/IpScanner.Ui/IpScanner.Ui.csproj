@@ -140,8 +140,14 @@
     <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />
+    <Compile Include="Pages\ColorThemePage.xaml.cs">
+      <DependentUpon>ColorThemePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OptionsDialog.xaml.cs">
+      <DependentUpon>OptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
@@ -160,6 +166,7 @@
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
+    <Compile Include="ViewModels\ColorThemePageViewModel.cs" />
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\Modules\FavoritesDevicesModule.cs" />
@@ -168,6 +175,7 @@
     <Compile Include="ViewModels\Modules\ScanningModule.cs" />
     <Compile Include="ViewModels\Modules\SearchModule.cs" />
     <Compile Include="ViewModels\Modules\ValidationModule.cs" />
+    <Compile Include="ViewModels\OptionsDialogViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,7 +202,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\ColorThemePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\DetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\OptionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

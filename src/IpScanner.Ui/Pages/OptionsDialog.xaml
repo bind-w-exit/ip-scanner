@@ -1,0 +1,23 @@
+﻿<ContentDialog
+    x:Class="IpScanner.Ui.Pages.OptionsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:IpScanner.Ui.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Options">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Button Content="Color theme" Command="{Binding NavigateToColorThemePageCommand}"/>
+        </StackPanel>
+
+        <Frame x:Name="OptionsFrame" Grid.Column="1"/>
+    </Grid>
+</ContentDialog>
