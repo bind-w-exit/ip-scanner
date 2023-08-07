@@ -148,6 +148,8 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand ExitCommand { get => new RelayCommand(ExitFromApplication); }
 
+        public RelayCommand PrintPreviewCommand { get => new RelayCommand(ShowPrintPreview); }
+
         private async Task ScanFromFileAsync()
         {
             string content = await _fileService.GetStringAsync();
@@ -178,6 +180,11 @@ namespace IpScanner.Ui.ViewModels
                 string message = _localizationService.GetLocalizedString("WrongFile");
                 await _dialogService.ShowMessageAsync("Error", message);
             }
+        }
+
+        private void ShowPrintPreview()
+        {
+            _messenger.Send(new PrintPreviewMessage());
         }
 
         private void ExitFromApplication()

@@ -9,9 +9,17 @@ namespace IpScanner.Ui.Pages
         public ScanPage()
         {
             this.InitializeComponent();
-            DataContext = Ioc.Default.GetService<ScanPageViewModel>();
+            DataContext = GetAndInitializeScanPage();
 
             DetailsFrame.Navigate(typeof(DetailsPage));
+        }
+
+        private ScanPageViewModel GetAndInitializeScanPage()
+        {
+            var viewModel = Ioc.Default.GetService<ScanPageViewModel>();
+            viewModel.InitializeElementToPrint(ScannedDevicesDataGrid);
+
+            return viewModel;
         }
     }
 }

@@ -135,6 +135,7 @@
     <Compile Include="Messages\FilterMessage.cs" />
     <Compile Include="Messages\DevicesLoadedMessage.cs" />
     <Compile Include="Messages\MiscellaneousBarVisibilityMessage.cs" />
+    <Compile Include="Messages\PrintPreviewMessage.cs" />
     <Compile Include="Messages\ScanFromFileMessage.cs" />
     <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
@@ -145,6 +146,10 @@
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Printing\IPrintService.cs" />
+    <Compile Include="Printing\IPrintServiceFactory.cs" />
+    <Compile Include="Printing\PrintService.cs" />
+    <Compile Include="Printing\PrintServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfigurator.cs" />
     <Compile Include="Services\ApplicationService.cs" />

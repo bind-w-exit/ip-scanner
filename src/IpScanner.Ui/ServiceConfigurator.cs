@@ -7,6 +7,7 @@ using IpScanner.Infrastructure.ContentCreators;
 using IpScanner.Infrastructure.Factories;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using IpScanner.Ui.ViewModels.Modules;
@@ -50,6 +51,7 @@ namespace IpScanner.Ui
             services.AddTransient<DevicesHtmlContentCreator>();
 
             services.AddTransient<IFileService<ScannedDevice>, DevicesFileService>();
+            services.AddTransient<IPrintServiceFactory, PrintServiceFactory>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 

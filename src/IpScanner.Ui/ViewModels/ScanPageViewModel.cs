@@ -1,14 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using IpScanner.Domain.Factories;
 using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Printing;
 using IpScanner.Ui.ViewModels.Modules;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -25,16 +27,17 @@ namespace IpScanner.Ui.ViewModels
         private ScanningModule _scanningModule;
         private FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
-        private readonly INetworkScannerFactory _networkScannerFactory;
         private readonly IFileService<ScannedDevice> _fileService;
+        private readonly IPrintServiceFactory _printServiceFactory;
+        private FrameworkElement _elementToPrint;
 
         public ScanPageViewModel(IMessenger messenger, IFileService<ScannedDevice> fileService, 
             FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
-            IpRangeModule ipRangeModule, ScanningModule scanningModule, INetworkScannerFactory networkScannerFactory)
+            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintServiceFactory printServiceFactory)
         {
             _messanger = messenger;
             _fileService = fileService;
-            _networkScannerFactory = networkScannerFactory;
+            _printServiceFactory = printServiceFactory;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -120,6 +123,11 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
+        public void InitializeElementToPrint(FrameworkElement element)
+        {
+            _elementToPrint = element;
+        }
+
         private async Task SaveDeviceAsync()
         {
             await _fileService.SaveItemsAsync(new List<ScannedDevice> { SelectedDevice });
@@ -133,6 +141,7 @@ namespace IpScanner.Ui.ViewModels
             messenger.Register<ActionsBarVisibilityMessage>(this, OnActionsBarVisibilityMessage);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoadedMessage);
             messenger.Register<ScanFromFileMessage>(this, OnScanFromFileMessage);
+            messenger.Register<PrintPreviewMessage>(this, OnPrintMessage);
         }
 
         private void OnFilterMessage(object sender, FilterMessage message)
@@ -174,6 +183,17 @@ namespace IpScanner.Ui.ViewModels
         {
             IpRangeModule.IpRange = message.Content;
             await ScanningModule.ScanCommand.ExecuteAsync(this);
+        }
+
+        private void OnPrintMessage(object sender, PrintPreviewMessage message)
+        {
+            if (_elementToPrint == null)
+            {
+                throw new InvalidOperationException("Element to print is not initialized");
+            }
+
+            IPrintService printService = _printServiceFactory.CreateBasedOneFrameworkElement(_elementToPrint);
+            printService.ShowPrintUIAsync();
         }
     }
 }
