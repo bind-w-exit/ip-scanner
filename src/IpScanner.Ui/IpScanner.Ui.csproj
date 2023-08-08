@@ -175,12 +175,15 @@
     <Compile Include="ViewModels\ColorThemePageViewModel.cs" />
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\Modules\FavoritesDevicesModule.cs" />
-    <Compile Include="ViewModels\Modules\IpRangeModule.cs" />
-    <Compile Include="ViewModels\Modules\ProgressModule.cs" />
-    <Compile Include="ViewModels\Modules\ScanningModule.cs" />
-    <Compile Include="ViewModels\Modules\SearchModule.cs" />
-    <Compile Include="ViewModels\Modules\ValidationModule.cs" />
+    <Compile Include="ViewModels\Modules\Menu\MenuFileModule.cs" />
+    <Compile Include="ViewModels\Modules\Menu\MenuSettingsModule.cs" />
+    <Compile Include="ViewModels\Modules\Menu\MenuViewModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\FavoritesDevicesModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\IpRangeModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\ProgressModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\ScanningModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\SearchModule.cs" />
+    <Compile Include="ViewModels\Modules\Scanning\ValidationModule.cs" />
     <Compile Include="ViewModels\OptionsPageViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
   </ItemGroup>
