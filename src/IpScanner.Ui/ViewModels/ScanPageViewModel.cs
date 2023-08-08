@@ -24,20 +24,19 @@ namespace IpScanner.Ui.ViewModels
         private bool _showActions;
         private ScannedDevice _selectedDevice;
         private FilteredCollection<ScannedDevice> _filteredDevices;
-        private IpRangeModule _ipRangeModule;
-        private SearchModule _searchModule;
-        private ProgressModule _progressModule;
-        private ScanningModule _scanningModule;
-        private FavoritesDevicesModule _favoritesDevicesModule;
+        private readonly IpRangeModule _ipRangeModule;
+        private readonly SearchModule _searchModule;
+        private readonly ProgressModule _progressModule;
+        private readonly ScanningModule _scanningModule;
+        private readonly FavoritesDevicesModule _favoritesDevicesModule;
         private readonly IMessenger _messanger;
         private readonly IFileService _fileService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly IPrintServiceFactory _printServiceFactory;
         private FrameworkElement _elementToPrint;
 
-        public ScanPageViewModel(IMessenger messenger, IFileService fileService,
-            IPrintServiceFactory printServiceFactory, IDeviceRepositoryFactory deviceRepositoryFactory,
-            FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
+        public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
+            IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
             IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
@@ -51,14 +50,14 @@ namespace IpScanner.Ui.ViewModels
             SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
             ScannedDevices = new FilteredCollection<ScannedDevice>();
 
-            IpRangeModule = ipRangeModule;
-            ProgressModule = progressModule;
-            FavoritesDevicesModule = favoritesDevicesModule;
+            _ipRangeModule = ipRangeModule;
+            _progressModule = progressModule;
+            _favoritesDevicesModule = favoritesDevicesModule;
 
-            SearchModule = new SearchModule(ScannedDevices);
+            _searchModule = new SearchModule(ScannedDevices);
 
-            ScanningModule = scanningModule;
-            ScanningModule.InitializeCollection(ScannedDevices);
+            _scanningModule = scanningModule;
+            _scanningModule.InitializeCollection(ScannedDevices);
 
             RegisterMessages(messenger);
         }
@@ -91,41 +90,21 @@ namespace IpScanner.Ui.ViewModels
             }
         }
 
-        public IpRangeModule IpRangeModule
-        {
-            get => _ipRangeModule;
-            set => SetProperty(ref _ipRangeModule, value);
-        }
-
-        public SearchModule SearchModule
-        {
-            get => _searchModule;
-            set => SetProperty(ref _searchModule, value);
-        }
-
-        public ProgressModule ProgressModule
-        {
-            get => _progressModule;
-            set => SetProperty(ref _progressModule, value);
-        }
-
-        public ScanningModule ScanningModule
-        {
-            get => _scanningModule;
-            set => SetProperty(ref _scanningModule, value);
-        }
-
-        public FavoritesDevicesModule FavoritesDevicesModule
-        {
-            get => _favoritesDevicesModule;
-            set => SetProperty(ref _favoritesDevicesModule, value);
-        }
-
         public FilteredCollection<ScannedDevice> ScannedDevices
         {
             get => _filteredDevices;
             set => SetProperty(ref _filteredDevices, value);
         }
+
+        public IpRangeModule IpRangeModule => _ipRangeModule;
+
+        public SearchModule SearchModule => _searchModule;
+
+        public ProgressModule ProgressModule => _progressModule;
+
+        public ScanningModule ScanningModule => _scanningModule;
+
+        public FavoritesDevicesModule FavoritesDevicesModule => _favoritesDevicesModule;
 
         public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
