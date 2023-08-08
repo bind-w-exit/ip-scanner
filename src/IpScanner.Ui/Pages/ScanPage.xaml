@@ -223,12 +223,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Padding="5,5,5,0" Orientation="Horizontal">
-                    <Button x:Uid="Results" Margin="0,0,1,0" MinWidth="75"
-                            IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites}"
-                            Command="{Binding FavoritesDevicesModule.UnloadFavoritesCommand}"/>
-                    <Button x:Uid="Favorites" Margin="1,0,2,0" MinWidth="75"
-                            IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BooleanInvertConverter}}"
-                            Command="{Binding FavoritesDevicesModule.LoadFavoritesCommand}"/>
+                    <ComboBox MinWidth="250" ItemsSource="{Binding FavoritesDevicesModule.Collections, Mode=TwoWay}"
+                              SelectedItem="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}"/>
                 </StackPanel>
 
                 <!-- Devices list -->

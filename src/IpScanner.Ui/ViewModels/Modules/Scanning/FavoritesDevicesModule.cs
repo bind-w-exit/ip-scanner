@@ -2,15 +2,19 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Models;
+using IpScanner.Infrastructure.Exceptions;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Services;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
@@ -20,16 +24,29 @@ namespace IpScanner.Ui.ViewModels.Modules
         private ScannedDevice _selectedDevice;
         private StorageFile _storageFile;
         private readonly IFileService _fileService;
+        private readonly IDialogService _dialogService;
+        private readonly ObservableCollection<string> _collections;
+        private string _selectedCollection;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly FilteredCollection<ScannedDevice> _filteredDevices;
 
-        public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory)
+        public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, 
+            IDeviceRepositoryFactory deviceRepositoryFactory, IDialogService dialogService)
         {
-            _deviceRepositoryFactory = deviceRepositoryFactory;
             _fileService = fileService;
+            _deviceRepositoryFactory = deviceRepositoryFactory;
+            _dialogService = dialogService;
 
             _displayFavorites = false;
             _filteredDevices = new FilteredCollection<ScannedDevice>();
+
+            _collections = new ObservableCollection<string>
+            {
+                "Results",
+                "Favorites"
+            };
+
+            SelectedCollection = _collections.First();
 
             messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
@@ -42,6 +59,20 @@ namespace IpScanner.Ui.ViewModels.Modules
             get => _displayFavorites;
             set => SetProperty(ref _displayFavorites, value);
         }
+
+        public string SelectedCollection
+        {
+            get => _selectedCollection;
+            set
+            {
+                SetProperty(ref _selectedCollection, value);
+                ExecuteSelectedOption.Execute(value);
+            }
+        }
+
+        public ObservableCollection<string> Collections => _collections;
+
+        public AsyncRelayCommand<string> ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
 
         public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadFavoritesAsync); }
 
@@ -66,26 +97,45 @@ namespace IpScanner.Ui.ViewModels.Modules
             return _storageFile;
         }
 
-        private async void OnDevicesLoaded(object sender, DevicesLoadedMessage message)
+        private async Task ExecuteOptionAsync(string collection)
+        {
+            if (collection == "Results")
+            {
+                await UnloadFavoritesCommand.ExecuteAsync(null);
+            }
+            else if (collection == "Favorites")
+            {
+                await LoadFavoritesCommand.ExecuteAsync(null);
+            }
+        }
+
+        private void OnDevicesLoaded(object sender, DevicesLoadedMessage message)
         {
             SetStorageFile(message.StorageFile);
 
             FavoritesDevices.Clear();
-            await LoadFavoritesCommand.ExecuteAsync(this);
+            SelectedCollection = _collections.First(x => x == "Favorites");
         }
 
         private async Task LoadFavoritesAsync()
         {
-            StorageFile file = await GetStorageFileAsync();
-            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-
-            List<ScannedDevice> devices = (await deviceRepository.GetDevicesAsync()).ToList();
-            foreach (var device in devices)
+            try
             {
-                FavoritesDevices.Add(device);
-            }
+                StorageFile file = await GetStorageFileAsync();
+                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
 
-            DisplayFavorites = true;
+                List<ScannedDevice> devices = (await deviceRepository.GetDevicesAsync()).ToList();
+                foreach (var device in devices)
+                {
+                    FavoritesDevices.Add(device);
+                }
+
+                DisplayFavorites = true;
+            }
+            catch (ContentFormatException)
+            {
+                await _dialogService.ShowMessageAsync("Error", "The file is corrupted. Please delete it and try again.");
+            }
         }
 
         private async Task UnloadFavoritesAsync()
@@ -100,7 +150,7 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private void AddToFavorites()
         {
-            if(_selectedDevice == null)
+            if (_selectedDevice == null)
             {
                 return;
             }
