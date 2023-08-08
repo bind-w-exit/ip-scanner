@@ -14,6 +14,7 @@ using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
 using IpScanner.Ui.ViewModels.Modules;
+using IpScanner.Ui.ViewModels.Modules.Menu;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IpScanner.Ui
@@ -39,6 +40,10 @@ namespace IpScanner.Ui
             services.AddSingleton<ProgressModule>();
             services.AddSingleton<IpRangeModule>();
             services.AddSingleton<ScanningModule>();
+
+            services.AddSingleton<MenuViewModule>();
+            services.AddSingleton<MenuFileModule>();
+            services.AddSingleton<MenuSettingsModule>();
 
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<ILocalizationService, LocalizationService>();
