@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="IpScanner.Ui.App">
       <uap:VisualElements
-        DisplayName="IpScanner.Ui"
+        DisplayName="Advanced IP Scanner"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="IpScanner.Ui"

@@ -33,6 +33,7 @@ namespace IpScanner.Ui
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();
+            services.AddSingleton<ColorThemePageViewModel>();
 
             services.AddSingleton<FavoritesDevicesModule>();
             services.AddSingleton<ProgressModule>();
@@ -58,6 +59,10 @@ namespace IpScanner.Ui
             services.AddTransient<IPrintServiceFactory, PrintServiceFactory>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
+
+            services.AddSingleton<IColorThemeService, ColorThemeService>();
+
+            services.AddTransient<IModalsService, ModalsService>();
 
             return services;
         }

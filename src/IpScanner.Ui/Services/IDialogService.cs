@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.UI.Popups;
+﻿using System.Threading.Tasks;
 
 namespace IpScanner.Ui.Services
 {

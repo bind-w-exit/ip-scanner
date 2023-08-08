@@ -124,8 +124,10 @@
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityInvertConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
+    <Compile Include="Convertors\NavigationViewItemConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
+    <Compile Include="Extensions\ElementThemeExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -140,8 +142,14 @@
     <Compile Include="Messages\VisibilityMessageBase.cs" />
     <Compile Include="ObjectModels\ItemFilter.cs" />
     <Compile Include="ObjectModels\FilteredCollection.cs" />
+    <Compile Include="Pages\ColorThemePage.xaml.cs">
+      <DependentUpon>ColorThemePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OptionsPage.xaml.cs">
+      <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
@@ -153,13 +161,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfigurator.cs" />
     <Compile Include="Services\ApplicationService.cs" />
+    <Compile Include="Services\ColorThemeService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IApplicationService.cs" />
+    <Compile Include="Services\IColorThemeService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IModalsService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\LocalizationService.cs" />
+    <Compile Include="Services\ModalsService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
+    <Compile Include="ViewModels\ColorThemePageViewModel.cs" />
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\Modules\FavoritesDevicesModule.cs" />
@@ -168,6 +181,7 @@
     <Compile Include="ViewModels\Modules\ScanningModule.cs" />
     <Compile Include="ViewModels\Modules\SearchModule.cs" />
     <Compile Include="ViewModels\Modules\ValidationModule.cs" />
+    <Compile Include="ViewModels\OptionsPageViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,7 +208,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\ColorThemePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\DetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\OptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -226,6 +248,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.5</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Scrutor">
       <Version>4.2.2</Version>

@@ -10,14 +10,17 @@ using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Pages;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Globalization;
 using Windows.Storage;
+using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -36,6 +39,7 @@ namespace IpScanner.Ui.ViewModels
         private readonly IApplicationService _applicationService;
         private readonly IMessenger _messenger;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly IModalsService _modalsService;
         private readonly ScanningModule _scanningModule;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
@@ -43,7 +47,8 @@ namespace IpScanner.Ui.ViewModels
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
             IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory,
-            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule)
+            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule, 
+            IModalsService modalsService)
         {
             _messenger = messenger;
 
@@ -62,6 +67,7 @@ namespace IpScanner.Ui.ViewModels
             _scanningModule = scanningModule;
             _dialogService = dialogService;
             _applicationService = applicationService;
+            _modalsService = modalsService;
         }
 
         public bool ShowUnknown
@@ -156,6 +162,8 @@ namespace IpScanner.Ui.ViewModels
 
         public RelayCommand PrintPreviewCommand { get => new RelayCommand(ShowPrintPreview); }
 
+        public AsyncRelayCommand ShowOptionsDialogCommand => new AsyncRelayCommand(ShowOptionsDialog);
+
         private async Task ScanFromFileAsync()
         {
             try
@@ -213,6 +221,11 @@ namespace IpScanner.Ui.ViewModels
         private void ExitFromApplication()
         {
             _applicationService.Exit();
+        }
+
+        private async Task ShowOptionsDialog()
+        {
+            await _modalsService.ShowPageAsync(typeof(OptionsPage));
         }
     }
 }
