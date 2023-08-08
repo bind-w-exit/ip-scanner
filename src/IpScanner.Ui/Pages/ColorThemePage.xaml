@@ -6,10 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
 
-    <Grid>
-        <ComboBox SelectedValue="{Binding SelectedTheme, Mode=TwoWay}" Header="Select Theme">
+    <Grid Margin="20">
+        <ComboBox SelectedValue="{Binding SelectedTheme, Mode=TwoWay}" Header="Select Theme"
+                  MinWidth="250">
             <ComboBox.Items>
                 <x:String>Light</x:String>
                 <x:String>Dark</x:String>

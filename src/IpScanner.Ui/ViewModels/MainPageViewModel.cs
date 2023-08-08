@@ -18,6 +18,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Globalization;
 using Windows.Storage;
+using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -219,8 +222,11 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task ShowOptionsDialog()
         {
-            var dialog = new OptionsDialog();
-            await dialog.ShowAsync();
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(OptionsPage));
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            await appWindow.TryShowAsync();
         }
     }
 }

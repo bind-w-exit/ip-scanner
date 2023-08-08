@@ -124,6 +124,7 @@
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityInvertConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
+    <Compile Include="Convertors\NavigationViewItemConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -146,8 +147,8 @@
     <Compile Include="Pages\DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\OptionsDialog.xaml.cs">
-      <DependentUpon>OptionsDialog.xaml</DependentUpon>
+    <Compile Include="Pages\OptionsPage.xaml.cs">
+      <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
@@ -175,7 +176,7 @@
     <Compile Include="ViewModels\Modules\ScanningModule.cs" />
     <Compile Include="ViewModels\Modules\SearchModule.cs" />
     <Compile Include="ViewModels\Modules\ValidationModule.cs" />
-    <Compile Include="ViewModels\OptionsDialogViewModel.cs" />
+    <Compile Include="ViewModels\OptionsPageViewModel.cs" />
     <Compile Include="ViewModels\ScanPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,7 +211,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\OptionsDialog.xaml">
+    <Page Include="Pages\OptionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,6 +243,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.5</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Scrutor">
       <Version>4.2.2</Version>
