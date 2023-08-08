@@ -21,14 +21,14 @@ namespace IpScanner.Ui.ViewModels.Modules
     public class FavoritesDevicesModule : ObservableObject
     {
         private bool _displayFavorites;
-        private ScannedDevice _selectedDevice;
+        private string _selectedCollection;
         private StorageFile _storageFile;
+        private ScannedDevice _selectedDevice;
+        private readonly ObservableCollection<string> _collections;
+        private readonly FilteredCollection<ScannedDevice> _filteredDevices;
         private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
-        private readonly ObservableCollection<string> _collections;
-        private string _selectedCollection;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
-        private readonly FilteredCollection<ScannedDevice> _filteredDevices;
 
         public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, 
             IDeviceRepositoryFactory deviceRepositoryFactory, IDialogService dialogService)
@@ -39,14 +39,13 @@ namespace IpScanner.Ui.ViewModels.Modules
 
             _displayFavorites = false;
             _filteredDevices = new FilteredCollection<ScannedDevice>();
-
             _collections = new ObservableCollection<string>
             {
                 "Results",
                 "Favorites"
             };
 
-            SelectedCollection = _collections.First();
+            _selectedCollection = _collections.First();
 
             messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
