@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using IpScanner.Domain;
+using IpScanner.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.ApplicationModel;
@@ -23,7 +25,9 @@ namespace IpScanner.Ui
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            _serviceCollection.ConfigureServices();
+            _serviceCollection.ConfigureUiServices()
+                .ConfigureInfrastructureServices()
+                .ConfigureDomainServices();
 
             var rootFrame = Window.Current.Content as Frame;
 
