@@ -176,6 +176,7 @@
     <Compile Include="ViewModels\DetailsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\Modules\Menu\MenuFileModule.cs" />
+    <Compile Include="ViewModels\Modules\Menu\MenuHelpModule.cs" />
     <Compile Include="ViewModels\Modules\Menu\MenuSettingsModule.cs" />
     <Compile Include="ViewModels\Modules\Menu\MenuViewModule.cs" />
     <Compile Include="ViewModels\Modules\Scanning\FavoritesDevicesModule.cs" />

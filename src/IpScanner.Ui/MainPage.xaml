@@ -142,20 +142,20 @@
             </MenuBarItem>
 
             <MenuBarItem x:Uid="Help">
-                <MenuFlyoutItem x:Uid="Contents">
+                <MenuFlyoutItem x:Uid="Contents" Command="{Binding HelpModule.OpenContentsCommand}">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Modifiers="Control" Key="F1"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ReportBug"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="RequestFeature"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="Community"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="ReportBug" Command="{Binding HelpModule.OpenBugReportCommand}"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="RequestFeature" Command="{Binding HelpModule.OpenRequestFeatureCommand}"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="Community" Command="{Binding HelpModule.OpenCommunityCommand}"></MenuFlyoutItem>
 
                 <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
                 <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="About"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="About" Command="{Binding HelpModule.OpenAboutCommand}"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
         

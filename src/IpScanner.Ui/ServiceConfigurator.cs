@@ -25,6 +25,7 @@ namespace IpScanner.Ui
             services.AddSingleton<MenuViewModule>();
             services.AddSingleton<MenuFileModule>();
             services.AddSingleton<MenuSettingsModule>();
+            services.AddSingleton<MenuHelpModule>();
 
             services.AddTransient<INavigationService, NavigationService>();
 

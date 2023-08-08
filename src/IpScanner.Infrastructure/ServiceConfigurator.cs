@@ -31,6 +31,8 @@ namespace IpScanner.Infrastructure
 
             services.AddTransient<IFileService, FileService>();
 
+            services.AddTransient<IBrowserService, BrowserService>();
+
             return services;
         }
     }

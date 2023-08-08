@@ -8,12 +8,15 @@ namespace IpScanner.Ui.ViewModels
         private readonly MenuViewModule _viewModule;
         private readonly MenuFileModule _fileModule;
         private readonly MenuSettingsModule _settingsModule;
-        
-        public MainPageViewModel(MenuViewModule viewModule, MenuFileModule menuFileModule, MenuSettingsModule menuSettingsModule)
+        private readonly MenuHelpModule _helpModule;
+
+        public MainPageViewModel(MenuViewModule viewModule, MenuFileModule menuFileModule,
+            MenuSettingsModule menuSettingsModule, MenuHelpModule helpModule)
         {
             _viewModule = viewModule;
             _fileModule = menuFileModule;
             _settingsModule = menuSettingsModule;
+            _helpModule = helpModule;
         }
 
         public MenuViewModule ViewModule => _viewModule;
@@ -21,5 +24,7 @@ namespace IpScanner.Ui.ViewModels
         public MenuFileModule FileModule => _fileModule;
 
         public MenuSettingsModule SettingsModule => _settingsModule;
+
+        public MenuHelpModule HelpModule => _helpModule;
     }
 }
