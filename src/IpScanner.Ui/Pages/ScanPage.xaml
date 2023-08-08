@@ -222,10 +222,9 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Padding="5,5,5,0" Orientation="Horizontal">
-                    <ComboBox MinWidth="250" ItemsSource="{Binding FavoritesDevicesModule.Collections, Mode=TwoWay}"
-                              SelectedItem="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}"/>
-                </StackPanel>
+                <ComboBox Grid.Row="0" MinWidth="250" Margin="5,5,5,0"
+                          ItemsSource="{Binding FavoritesDevicesModule.Collections, Mode=TwoWay}"
+                          SelectedItem="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}" />
 
                 <!-- Devices list -->
                 <Grid Grid.Row="1" Padding="5">
