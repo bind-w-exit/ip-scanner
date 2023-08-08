@@ -66,9 +66,12 @@ namespace IpScanner.Ui.ViewModels.Modules
             return _storageFile;
         }
 
-        private void OnDevicesLoaded(object sender, DevicesLoadedMessage message)
+        private async void OnDevicesLoaded(object sender, DevicesLoadedMessage message)
         {
             SetStorageFile(message.StorageFile);
+
+            FavoritesDevices.Clear();
+            await LoadFavoritesCommand.ExecuteAsync(this);
         }
 
         private async Task LoadFavoritesAsync()
