@@ -127,6 +127,7 @@
     <Compile Include="Convertors\NavigationViewItemConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
+    <Compile Include="Extensions\ElementThemeExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -165,8 +166,10 @@
     <Compile Include="Services\IApplicationService.cs" />
     <Compile Include="Services\IColorThemeService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IModalsService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\LocalizationService.cs" />
+    <Compile Include="Services\ModalsService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="ViewModels\ColorThemePageViewModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Services;
 using Windows.UI.Xaml;
 
@@ -27,18 +28,7 @@ namespace IpScanner.Ui.ViewModels
 
         private void ChangeTheme()
         {
-            switch (_selectedTheme)
-            {
-                case "Light":
-                    _colorThemeService.SetColorTheme(ElementTheme.Light);
-                    break;
-                case "Dark":
-                    _colorThemeService.SetColorTheme(ElementTheme.Dark);
-                    break;
-                case "Default":
-                    _colorThemeService.SetColorTheme(ElementTheme.Default);
-                    break;
-            }
+            _colorThemeService.SetColorTheme(SelectedTheme.ToElementTheme());
         }
     }
 }

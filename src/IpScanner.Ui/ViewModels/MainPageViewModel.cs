@@ -39,6 +39,7 @@ namespace IpScanner.Ui.ViewModels
         private readonly IApplicationService _applicationService;
         private readonly IMessenger _messenger;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly IModalsService _modalsService;
         private readonly ScanningModule _scanningModule;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
@@ -46,7 +47,8 @@ namespace IpScanner.Ui.ViewModels
 
         public MainPageViewModel(INavigationService navigationService, ILocalizationService localizationService,
             IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory,
-            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule)
+            IDialogService dialogService, IApplicationService applicationService, ScanningModule scanningModule, 
+            IModalsService modalsService)
         {
             _messenger = messenger;
 
@@ -65,6 +67,7 @@ namespace IpScanner.Ui.ViewModels
             _scanningModule = scanningModule;
             _dialogService = dialogService;
             _applicationService = applicationService;
+            _modalsService = modalsService;
         }
 
         public bool ShowUnknown
@@ -222,11 +225,7 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task ShowOptionsDialog()
         {
-            AppWindow appWindow = await AppWindow.TryCreateAsync();
-            Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(OptionsPage));
-            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
-            await appWindow.TryShowAsync();
+            await _modalsService.ShowPageAsync(typeof(OptionsPage));
         }
     }
 }

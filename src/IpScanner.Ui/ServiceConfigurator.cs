@@ -62,6 +62,8 @@ namespace IpScanner.Ui
 
             services.AddSingleton<IColorThemeService, ColorThemeService>();
 
+            services.AddTransient<IModalsService, ModalsService>();
+
             return services;
         }
     }

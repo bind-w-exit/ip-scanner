@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Frame x:Name="OptionsFrame">
+    <Grid>
         <NavigationView IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Left"
             PaneTitle="Options" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
@@ -32,5 +32,5 @@
                 <Frame x:Name="ContentFrame" />
             </NavigationView.Content>
         </NavigationView>
-    </Frame>
+    </Grid>
 </Page>
