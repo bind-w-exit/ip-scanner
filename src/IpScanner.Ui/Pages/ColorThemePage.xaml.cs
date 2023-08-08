@@ -9,7 +9,6 @@ namespace IpScanner.Ui.Pages
         public ColorThemePage()
         {
             this.InitializeComponent();
-
             DataContext = Ioc.Default.GetService<ColorThemePageViewModel>();
         }
     }

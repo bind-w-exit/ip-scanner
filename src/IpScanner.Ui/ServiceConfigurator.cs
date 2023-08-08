@@ -60,6 +60,8 @@ namespace IpScanner.Ui
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 
+            services.AddSingleton<IColorThemeService, ColorThemeService>();
+
             return services;
         }
     }

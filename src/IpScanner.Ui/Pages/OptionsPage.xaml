@@ -9,9 +9,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Frame x:Name="OptionsFrame">
         <NavigationView IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Left"
-            PaneTitle="Options">
+            PaneTitle="Options" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemInvoked">
                     <core:EventTriggerBehavior.Actions>
@@ -29,8 +29,8 @@
             </NavigationView.MenuItems>
 
             <NavigationView.Content>
-                <Frame x:Name="OptionsFrame" />
+                <Frame x:Name="ContentFrame" />
             </NavigationView.Content>
         </NavigationView>
-    </Grid>
+    </Frame>
 </Page>

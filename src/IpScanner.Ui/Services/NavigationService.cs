@@ -13,11 +13,6 @@ namespace IpScanner.Ui.Services
             _mainFrame = frame;
         }
 
-        public void ChangeColorTheme(ElementTheme theme)
-        {
-            _mainFrame.RequestedTheme = theme;
-        }
-
         public void NavigateToPage(Frame frame, Type typeOfPage)
         {
             frame.Navigate(typeOfPage);

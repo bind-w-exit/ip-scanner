@@ -14,6 +14,7 @@
             <ComboBox.Items>
                 <x:String>Light</x:String>
                 <x:String>Dark</x:String>
+                <x:String>Default</x:String>
             </ComboBox.Items>
         </ComboBox>
     </Grid>

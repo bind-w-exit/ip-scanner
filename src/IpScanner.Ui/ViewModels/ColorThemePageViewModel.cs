@@ -7,13 +7,12 @@ namespace IpScanner.Ui.ViewModels
     public class ColorThemePageViewModel : ObservableObject
     {
         private string _selectedTheme;
-        private INavigationService _navigationService;
+        private readonly IColorThemeService _colorThemeService;
 
-        public ColorThemePageViewModel(INavigationService navigationService)
+        public ColorThemePageViewModel(IColorThemeService colorThemeService)
         {
-            _navigationService = navigationService;
-
-            SelectedTheme = string.Empty;
+            _colorThemeService = colorThemeService;
+            SelectedTheme = _colorThemeService.GetColorTheme().ToString();
         }
 
         public string SelectedTheme
@@ -31,14 +30,15 @@ namespace IpScanner.Ui.ViewModels
             switch (_selectedTheme)
             {
                 case "Light":
-                    _navigationService.ChangeColorTheme(ElementTheme.Light);
+                    _colorThemeService.SetColorTheme(ElementTheme.Light);
                     break;
                 case "Dark":
-                    _navigationService.ChangeColorTheme(ElementTheme.Dark);
+                    _colorThemeService.SetColorTheme(ElementTheme.Dark);
+                    break;
+                case "Default":
+                    _colorThemeService.SetColorTheme(ElementTheme.Default);
                     break;
             }
-
-            _navigationService.ReloadMainPage();
         }
     }
 }

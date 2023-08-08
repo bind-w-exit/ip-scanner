@@ -11,8 +11,18 @@ namespace IpScanner.Ui.Pages
         {
             this.InitializeComponent();
 
+            RegisterOptionsFrame();
+
             var navigationService = Ioc.Default.GetService<INavigationService>();
-            DataContext = new OptionsPageViewModel(OptionsFrame, navigationService);
+            DataContext = new OptionsPageViewModel(ContentFrame, navigationService);
+        }
+
+        private void RegisterOptionsFrame()
+        {
+            var colorThemeService = Ioc.Default.GetService<IColorThemeService>();
+
+            colorThemeService.Register(OptionsFrame);
+            colorThemeService.SetColorTheme(OptionsFrame, colorThemeService.GetColorTheme());
         }
     }
 }
