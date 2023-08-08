@@ -222,7 +222,7 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <ComboBox Grid.Row="0" MinWidth="250" Margin="5,5,5,0"
+                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="250" Margin="5,5,5,0"
                           ItemsSource="{Binding FavoritesDevicesModule.Collections, Mode=TwoWay}"
                           SelectedItem="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}" />
 
