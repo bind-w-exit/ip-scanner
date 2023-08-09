@@ -119,15 +119,14 @@ namespace IpScanner.Ui.ViewModels
 
         private async Task SaveDeviceAsync()
         {
-            try
+            StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
+            if (file == null)
             {
-                StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
-                IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
-
-                await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
+                return;
             }
-            catch (OperationCanceledException)
-            { } 
+
+            IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
+            await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
         }
 
         private async Task ExploreInExplorerAsync()
