@@ -1,6 +1,21 @@
-﻿# IP Scanner (In Development) 🚧
+﻿# IP Scanner
 
 IP Scanner is a planned network scanner application for analyzing LAN. The aim is to provide functionality to show all network devices, give access to shared folders, offer remote control of computers (via RDP and Radmin), and even remotely switch computers off. The application is intended to be user-friendly and designed to operate as a portable edition.
+
+## How to Launch
+
+To get started with the Network Scanner application, follow these steps:
+
+1. **Clone the Repository**: Open your Git terminal and clone the repository by running:
+```
+git clone https://github.com/vitaliy-bezugly/ip-scanner.git
+```
+
+2. **Open the Project**: Open the cloned repository with Visual Studio or another IDE that supports UWP development.
+
+3. **Set Process Type**: UWP doesn't support "Any CPU" as the compile option, so make sure to set the process type to either <code>**x64 or x86**</code>.
+
+4. **Build and Run**: Build the solution and then run the application. You should see the Ip Scanner's main window, and you can begin exploring its features.
 
 ## Planned Key Features
 - ✅ Scanning local networks to identify connected devices
