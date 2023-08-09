@@ -51,45 +51,38 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
 
         private async Task ScanFromFileAsync()
         {
-            try
+            StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
+            if (file == null)
             {
-                StorageFile file = await _fileService.GetFileForReadingAsync(".txt");
-
-                string content = await file.ReadTextAsync();
-                _messenger.Send(new ScanFromFileMessage(content));
+                return;
             }
-            catch (OperationCanceledException)
-            { }
+
+            string content = await file.ReadTextAsync();
+            _messenger.Send(new ScanFromFileMessage(content));
         }
 
         private async Task SaveDevicesAsync()
         {
             List<ScannedDevice> devices = _scanningModule.Devices;
-
-            try
+            StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
+            if(file == null)
             {
-                StorageFile file = await _fileService.GetFileForWritingAsync(".xml", ".json", ".csv", ".html");
-                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-                await deviceRepository.SaveDevicesAsync(devices);
+                return;
             }
-            catch (OperationCanceledException)
-            { }
+
+            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+            await deviceRepository.SaveDevicesAsync(devices);
         }
 
         private async Task LoadDevicesAsync()
         {
-            try
+            StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
+            if(file == null)
             {
-                StorageFile file = await _fileService.GetFileForReadingAsync(".xml", ".json");
-                _messenger.Send(new DevicesLoadedMessage(file));
+                return;
             }
-            catch (OperationCanceledException)
-            { }
-            catch (ContentFormatException)
-            {
-                string message = _localizationService.GetLocalizedString("WrongFile");
-                await _dialogService.ShowMessageAsync("Error", message);
-            }
+
+            _messenger.Send(new DevicesLoadedMessage(file));
         }
 
         private void ShowPrintPreview()
