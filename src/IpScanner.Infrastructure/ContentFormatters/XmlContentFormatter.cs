@@ -1,42 +1,42 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 using System;
-using IpScanner.Infrastructure.Exceptions;
 using System.Collections.Generic;
+using FluentResults;
 
 namespace IpScanner.Infrastructure.ContentFormatters
 {
     public class XmlContentFormatter<T> : IContentFormatter<T>
     {
-        public T FormatContent(string content)
+        public IResult<T> FormatContent(string content)
         {
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
                 using (StringReader reader = new StringReader(content))
                 {
-                    return (T)serializer.Deserialize(reader);
+                    return Result.Ok((T)serializer.Deserialize(reader));
                 }
             }
             catch (InvalidOperationException e)
             {
-                throw new ContentFormatException("The content is not in the correct format.", e);
+                return Result.Fail<T>(new Error("The content is not in the correct format.", new Error(e.Message)));
             }
         }
 
-        public IEnumerable<T> FormatContentAsCollection(string content)
+        public IResult<IEnumerable<T>> FormatContentAsCollection(string content)
         {
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
                 using (StringReader reader = new StringReader(content))
                 {
-                    return (List<T>)serializer.Deserialize(reader);
+                    return Result.Ok((List<T>)serializer.Deserialize(reader));
                 }
             }
             catch (InvalidOperationException e)
             {
-                throw new ContentFormatException("The content is not in the correct format.", e);
+                return Result.Fail<IEnumerable<T>>(new Error("The content is not in the correct format.", new Error(e.Message)));
             }
         }
     }

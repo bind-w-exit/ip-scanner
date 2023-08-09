@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Models;
-using IpScanner.Infrastructure.Exceptions;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
@@ -29,13 +28,16 @@ namespace IpScanner.Ui.ViewModels.Modules
         private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
+        private readonly ILocalizationService _localizationService;
 
         public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, IDialogService dialogService)
+            IDeviceRepositoryFactory deviceRepositoryFactory, IDialogService dialogService, 
+            ILocalizationService localizationService)
         {
             _fileService = fileService;
             _deviceRepositoryFactory = deviceRepositoryFactory;
             _dialogService = dialogService;
+            _localizationService = localizationService;
 
             _displayFavorites = false;
             _filteredDevices = new FilteredCollection<ScannedDevice>();
@@ -115,23 +117,22 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private async Task LoadFavoritesAsync()
         {
-            try
+            StorageFile file = await GetStorageFileAsync();
+            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+            
+            IEnumerable<ScannedDevice> devices = await deviceRepository.GetDevicesOrNullAsync();
+            if (devices == null)
             {
-                StorageFile file = await GetStorageFileAsync();
-                IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-
-                List<ScannedDevice> devices = (await deviceRepository.GetDevicesAsync()).ToList();
-                foreach (var device in devices)
-                {
-                    FavoritesDevices.Add(device);
-                }
-
-                DisplayFavorites = true;
+                await ShowLoadingDataErrorMessage();
+                return;
             }
-            catch (ContentFormatException)
+
+            foreach (var device in devices)
             {
-                await _dialogService.ShowMessageAsync("Error", "The file is corrupted. Please delete it and try again.");
+                FavoritesDevices.Add(device);
             }
+
+            DisplayFavorites = true;
         }
 
         private async Task UnloadFavoritesAsync()
@@ -181,6 +182,14 @@ namespace IpScanner.Ui.ViewModels.Modules
             messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
             messenger.Register<FilterMessage>(this, OnFilterMessage);
+        }
+
+        private async Task ShowLoadingDataErrorMessage()
+        {
+            string title = _localizationService.GetLocalizedString("Error");
+            string message = _localizationService.GetLocalizedString("CorruptedMessage");
+
+            await _dialogService.ShowMessageAsync(title, message);
         }
     }
 }

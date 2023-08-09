@@ -147,6 +147,9 @@
   <data name="Copy.Text" xml:space="preserve">
     <value>Скопіювати</value>
   </data>
+  <data name="CorruptedMessage" xml:space="preserve">
+    <value>Файл пошкоджено. Будь ласка, видаліть його та повторіть спробу.</value>
+  </data>
   <data name="Dark.Content" xml:space="preserve">
     <value>Темна</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="English.Text" xml:space="preserve">
     <value>Англійська (en-US)</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Помилка</value>
   </data>
   <data name="Exit.Text" xml:space="preserve">
     <value>Вийти</value>

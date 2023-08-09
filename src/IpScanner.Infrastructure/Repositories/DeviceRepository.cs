@@ -1,4 +1,5 @@
-﻿using IpScanner.Domain.Enums;
+﻿using FluentResults;
+using IpScanner.Domain.Enums;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.ContentFormatters;
@@ -24,12 +25,11 @@ namespace IpScanner.Infrastructure.Repositories
             IContentFormatterFactory<DeviceEntity> contentFormatterFactory)
         {
             _file = file;
-
             _contentCreatorFactory = contentCreatorFactory;
             _contentFormatterFactory = contentFormatterFactory;
         }
 
-        public async Task<IEnumerable<ScannedDevice>> GetDevicesAsync()
+        public async Task<IEnumerable<ScannedDevice>> GetDevicesOrNullAsync()
         {
             string content = await FileIO.ReadTextAsync(_file);
             if(string.IsNullOrEmpty(content))
@@ -49,7 +49,7 @@ namespace IpScanner.Infrastructure.Repositories
 
         public async Task AddDeviceAsync(ScannedDevice device)
         {
-            List<ScannedDevice> currentDevices = (await GetDevicesAsync()).ToList();
+            List<ScannedDevice> currentDevices = (await GetDevicesOrNullAsync()).ToList();
             currentDevices.Add(device);
 
             await SaveDevicesAsync(currentDevices);
@@ -57,13 +57,10 @@ namespace IpScanner.Infrastructure.Repositories
 
         public async Task RemoveDeviceAsync(ScannedDevice device)
         {
-            List<ScannedDevice> currentDevices = (await GetDevicesAsync()).ToList();
+            List<ScannedDevice> currentDevices = (await GetDevicesOrNullAsync()).ToList();
 
-            ScannedDevice deviceToRemove = currentDevices.FirstOrDefault(d => d.Ip.Equals(device.Ip));
-            if (deviceToRemove == null)
-            {
-                throw new ArgumentException("Device not found");
-            }
+            ScannedDevice deviceToRemove = currentDevices.FirstOrDefault(d => d.Ip.Equals(device.Ip)) 
+                ?? throw new ArgumentException("Device not found");
 
             currentDevices.Remove(deviceToRemove);
             await SaveDevicesAsync(currentDevices);
@@ -71,13 +68,10 @@ namespace IpScanner.Infrastructure.Repositories
 
         public async Task UpdateDeviceAsync(ScannedDevice device)
         {
-            List<ScannedDevice> currentDevices = (await GetDevicesAsync()).ToList();
+            List<ScannedDevice> currentDevices = (await GetDevicesOrNullAsync()).ToList();
 
-            ScannedDevice destination = currentDevices.FirstOrDefault(d => d.Ip.Equals(device.Ip));
-            if (destination == null)
-            {
-                throw new ArgumentException("Device not found");
-            }
+            ScannedDevice destination = currentDevices.FirstOrDefault(d => d.Ip.Equals(device.Ip))
+                ?? throw new ArgumentException("Device not found");
 
             currentDevices.Remove(destination);
             currentDevices.Add(device);
@@ -93,9 +87,15 @@ namespace IpScanner.Infrastructure.Repositories
             return formatter;
         }
 
-        private IEnumerable<ScannedDevice> DeserializeContent(string content, IContentFormatter<DeviceEntity> contentFormatter)
+        private static IEnumerable<ScannedDevice> DeserializeContent(string content, IContentFormatter<DeviceEntity> contentFormatter)
         {
-            IEnumerable<DeviceEntity> scannedDevices = contentFormatter.FormatContentAsCollection(content);
+            IResult<IEnumerable<DeviceEntity>> result = contentFormatter.FormatContentAsCollection(content);
+            if (result.IsFailed)
+            {
+                return null;
+            }
+
+            IEnumerable<DeviceEntity> scannedDevices = result.Value;
             return scannedDevices.Select(x => x.ToDomain());
         }
 

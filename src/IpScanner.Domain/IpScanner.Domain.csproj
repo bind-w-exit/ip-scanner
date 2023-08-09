@@ -143,6 +143,9 @@
     <EmbeddedResource Include="Properties\IpScanner.Domain.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentResults">
+      <Version>3.15.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
       <Version>7.0.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
