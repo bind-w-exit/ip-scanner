@@ -10,8 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NavigationView IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Left"
-            PaneTitle="Options" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Uid="OptionsNavigationView" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Left"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemInvoked">
                     <core:EventTriggerBehavior.Actions>
@@ -21,7 +21,7 @@
             </i:Interaction.Behaviors>
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Color theme" Tag="ColorTheme">
+                <NavigationViewItem x:Uid="ColorTheme" Tag="ColorTheme">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE790;" />
                     </NavigationViewItem.Icon>
