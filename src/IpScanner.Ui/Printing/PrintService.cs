@@ -21,11 +21,6 @@ namespace IpScanner.Ui.Printing
             _printDocument.AddPages += OnAddPages;
         }
 
-        public IPrintService CreateBasedOneFrameworkElement(FrameworkElement elementToPrint)
-        {
-            return new PrintService(elementToPrint);
-        }
-
         public async void ShowPrintUIAsync()
         {
             PrintManager printManager = PrintManager.GetForCurrentView();
@@ -59,5 +54,4 @@ namespace IpScanner.Ui.Printing
             });
         }
     }
-
 }
