@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using IpScanner.Domain.Models;
 using System.Collections.Generic;
-using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Validators;
+using FluentResults;
 
 namespace IpScanner.Domain.Factories
 {
@@ -23,15 +23,18 @@ namespace IpScanner.Domain.Factories
             _ipRangeValidator = ipRangeValidator;
         }
 
-        public NetworkScanner CreateBasedOnIpRange(IpRange range)
+        public IResult<NetworkScanner> CreateBasedOnIpRange(IpRange range)
         {
-            if (_ipRangeValidator.Validate(range) == false)
+            bool validationResult = _ipRangeValidator.Validate(range);
+            if (validationResult == false)
             {
-                throw new IpValidationException();
+                return Result.Fail<NetworkScanner>("Wrong format for IP range");
             }
 
             List<IPAddress> ips = range.GenerateIPAddresses();
-            return new NetworkScanner(ips, _manufactorRepository, _macAddressRepository, _hostRepository);
+            var scanner = new NetworkScanner(ips, _manufactorRepository, _macAddressRepository, _hostRepository);
+
+            return Result.Ok(scanner);
         }
     }
 }

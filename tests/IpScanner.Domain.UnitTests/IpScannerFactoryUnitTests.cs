@@ -1,10 +1,12 @@
-﻿using IpScanner.Domain.Exceptions;
+﻿using FluentResults;
 using IpScanner.Domain.Factories;
 using IpScanner.Domain.Interfaces;
 using IpScanner.Domain.Models;
 using IpScanner.Domain.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Linq;
 
 namespace IpScanner.Domain.UnitTests
 {
@@ -31,15 +33,19 @@ namespace IpScanner.Domain.UnitTests
         [DataRow("300.168.0.105")]
         [DataRow("192.168.0.1-")]
         [DataRow("192.168.0.155 192.168.0.201")]
-        [ExpectedException(typeof(IpValidationException))]
-        public void CreateBasedOnIpRange_ShouldThrowException_WhenIpRangeIsInvalid(string range)
+        public void CreateBasedOnIpRange_ShouldReturnFailedResult_WhenIpRangeIsInvalid(string range)
         {
             // Arrange
             var ipRange = new IpRange(range);
             _ipRangeValidator.Validate(ipRange).Returns(false);
 
             // Act
-            _sut.CreateBasedOnIpRange(ipRange);
+            IResult<NetworkScanner> result = _sut.CreateBasedOnIpRange(ipRange);
+
+            // Assert
+            Assert.IsFalse(result.IsSuccess);
+            Assert.IsTrue(result.Errors.Any());
+            Assert.ThrowsException<InvalidOperationException>(() => result.Value);
         }
     }
 }

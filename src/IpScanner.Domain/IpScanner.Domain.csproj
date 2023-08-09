@@ -123,7 +123,6 @@
     <Compile Include="Args\ScannedDeviceEventArgs.cs" />
     <Compile Include="Enums\DeviceStatus.cs" />
     <Compile Include="Enums\ContentFormat.cs" />
-    <Compile Include="Exceptions\IpValidationException.cs" />
     <Compile Include="Extensions\IPAddressExtensions.cs" />
     <Compile Include="Factories\INetworkScannerFactory.cs" />
     <Compile Include="Factories\NetworkScannerFactory.cs" />

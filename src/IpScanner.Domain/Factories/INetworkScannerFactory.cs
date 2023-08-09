@@ -1,9 +1,10 @@
-﻿using IpScanner.Domain.Models;
+﻿using FluentResults;
+using IpScanner.Domain.Models;
 
 namespace IpScanner.Domain.Factories
 {
     public interface INetworkScannerFactory
     {
-        NetworkScanner CreateBasedOnIpRange(IpRange range);
+        IResult<NetworkScanner> CreateBasedOnIpRange(IpRange range);
     }
 }

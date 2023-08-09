@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 
 namespace IpScanner.Infrastructure.Repositories
