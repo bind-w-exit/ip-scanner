@@ -257,7 +257,7 @@
                                 </controls:DataGrid.Columns>
                             </controls:DataGrid>
 
-                            <controls:DataGrid ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                            <controls:DataGrid x:Name="FavoritesDevicesDataGrid" ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" ContextFlyout="{StaticResource ResultsContextMenu}">

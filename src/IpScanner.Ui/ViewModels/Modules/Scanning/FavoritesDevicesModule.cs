@@ -6,6 +6,7 @@ using IpScanner.Infrastructure.Exceptions;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Services;
@@ -47,8 +48,7 @@ namespace IpScanner.Ui.ViewModels.Modules
 
             SelectedCollection = _collections.First();
 
-            messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
-            messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
+            RegisterMessages(messenger);
         }
 
         public FilteredCollection<ScannedDevice> FavoritesDevices { get => _filteredDevices; }
@@ -170,6 +170,18 @@ namespace IpScanner.Ui.ViewModels.Modules
         private void OnDeviceSelected(object sender, DeviceSelectedMessage message)
         {
             _selectedDevice = message.Device;
+        }
+
+        private void OnFilterMessage(object sender, FilterMessage message)
+        {
+            FavoritesDevices.ApplyFilter(message.FilterStatus, message.Filter);
+        }
+
+        private void RegisterMessages(IMessenger messenger)
+        {
+            messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
+            messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
+            messenger.Register<FilterMessage>(this, OnFilterMessage);
         }
     }
 }

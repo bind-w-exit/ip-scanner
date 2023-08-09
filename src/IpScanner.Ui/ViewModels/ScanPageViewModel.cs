@@ -5,6 +5,7 @@ using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Printing;
@@ -33,16 +34,17 @@ namespace IpScanner.Ui.ViewModels
         private readonly IFileService _fileService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly IPrintServiceFactory _printServiceFactory;
-        private FrameworkElement _elementToPrint;
+        private readonly IPrintElementRepository _printingElementRepository;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule,ProgressModule progressModule, 
-            IpRangeModule ipRangeModule, ScanningModule scanningModule)
+            IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
+            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintElementRepository printingElementRepository)
         {
             _messanger = messenger;
             _fileService = fileService;
             _printServiceFactory = printServiceFactory;
             _deviceRepositoryFactory = deviceRepositoryFactory;
+            _printingElementRepository = printingElementRepository;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -108,11 +110,6 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
-        public void InitializeElementToPrint(FrameworkElement element)
-        {
-            _elementToPrint = element;
-        }
-
         private async Task SaveDeviceAsync()
         {
             try
@@ -138,16 +135,7 @@ namespace IpScanner.Ui.ViewModels
 
         private void OnFilterMessage(object sender, FilterMessage message)
         {
-            if(message.FilterStatus)
-            {
-                ScannedDevices.AddFilter(message.Filter);
-            }
-            else
-            {
-                ScannedDevices.RemoveFilter(message.Filter);
-            }
-
-            ScannedDevices.RefreshFilteredItems();
+            ScannedDevices.ApplyFilter(message.FilterStatus, message.Filter);
         }
 
         private void OnDetailsPageVisibilityMessage(object sender, DetailsPageVisibilityMessage message)
@@ -173,12 +161,13 @@ namespace IpScanner.Ui.ViewModels
 
         private void OnPrintMessage(object sender, PrintPreviewMessage message)
         {
-            if (_elementToPrint == null)
+            FrameworkElement elementToPrint = _printingElementRepository.GetElementToPrint();
+            if (elementToPrint == null)
             {
                 throw new InvalidOperationException("Element to print is not initialized");
             }
 
-            IPrintService printService = _printServiceFactory.CreateBasedOneFrameworkElement(_elementToPrint);
+            IPrintService printService = _printServiceFactory.CreateBasedOneFrameworkElement(elementToPrint);
             printService.ShowPrintUIAsync();
         }
     }
