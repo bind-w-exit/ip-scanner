@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using IpScanner.Ui.Printing;
 using IpScanner.Ui.ViewModels;
 using Windows.UI.Xaml.Controls;
 
@@ -9,17 +10,16 @@ namespace IpScanner.Ui.Pages
         public ScanPage()
         {
             this.InitializeComponent();
-            DataContext = GetAndInitializeScanPage();
 
+            InitializePrintingElementRepo(Ioc.Default.GetService<IPrintElementRepository>());
+
+            DataContext = Ioc.Default.GetService<ScanPageViewModel>();
             DetailsFrame.Navigate(typeof(DetailsPage));
         }
 
-        private ScanPageViewModel GetAndInitializeScanPage()
+        private void InitializePrintingElementRepo(IPrintElementRepository elementRepository)
         {
-            var viewModel = Ioc.Default.GetService<ScanPageViewModel>();
-            viewModel.InitializeElementToPrint(ScannedDevicesDataGrid);
-
-            return viewModel;
+            elementRepository.AddElements(FavoritesDevicesDataGrid, ScannedDevicesDataGrid);
         }
     }
 }

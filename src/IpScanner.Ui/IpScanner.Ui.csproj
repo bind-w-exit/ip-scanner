@@ -154,8 +154,10 @@
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Printing\IPrintElementRepository.cs" />
     <Compile Include="Printing\IPrintService.cs" />
     <Compile Include="Printing\IPrintServiceFactory.cs" />
+    <Compile Include="Printing\PrintElementRepository.cs" />
     <Compile Include="Printing\PrintService.cs" />
     <Compile Include="Printing\PrintServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
