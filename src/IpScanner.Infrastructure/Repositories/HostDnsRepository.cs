@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 
 namespace IpScanner.Infrastructure.Repositories
@@ -15,9 +14,9 @@ namespace IpScanner.Infrastructure.Repositories
                 IPHostEntry hostEntry = await Dns.GetHostEntryAsync(address);
                 return hostEntry;
             }
-			catch (Exception e)
+			catch (Exception)
 			{
-				throw new HostNotFoundException(address, e.Message, e);
+                return new IPHostEntry() { HostName = address.ToString() };
 			}
         }
     }

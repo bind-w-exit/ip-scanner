@@ -14,29 +14,18 @@ namespace IpScanner.Infrastructure.Services
         {
             var localFolder = ApplicationData.Current.LocalFolder;
             var file = await localFolder.CreateFileAsync(FileName, CreationCollisionOption.OpenIfExists);
-
             return file;
         }
 
         public async Task<StorageFile> GetFileForReadingAsync(params string[] fileTypes)
         {
             StorageFile file = await GetFileFromOpenPickerAsync(fileTypes);
-            if (file == null)
-            {
-                throw new OperationCanceledException("Cannot open file");
-            }
-
             return file;
         }
 
         public async Task<StorageFile> GetFileForWritingAsync(params string[] fileTypes)
         {
             StorageFile file = await GetFileFromSavePickerAsync(fileTypes);
-            if (file == null)
-            {
-                throw new OperationCanceledException("Cannot save file");
-            }
-
             return file;
         }
 

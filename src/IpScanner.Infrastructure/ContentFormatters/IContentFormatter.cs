@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
 
 namespace IpScanner.Infrastructure.ContentFormatters
 {
     public interface IContentFormatter<T>
     {
-        T FormatContent(string content);
-        IEnumerable<T> FormatContentAsCollection(string content);
+        IResult<T> FormatContent(string content);
+        IResult<IEnumerable<T>> FormatContentAsCollection(string content);
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using IpScanner.Domain.Enums;
-using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Interfaces;
 using System.Linq;
 using IpScanner.Domain.Args;
@@ -51,45 +50,27 @@ namespace IpScanner.Domain.Models
 
         private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination, CancellationToken cancellationToken)
         {
-            PhysicalAddress macAddress = await GetMacAddressAsync(destination);
-            cancellationToken.ThrowIfCancellationRequested();
+            PhysicalAddress macAddress =  await _macAddressRepository.GetMacAddressAsync(destination);
             if (macAddress == PhysicalAddress.None)
             {
                 return new ScannedDevice(destination);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             string manufacturer = await _manufactorRepository.GetManufacturerOrEmptyStringAsync(macAddress);
             cancellationToken.ThrowIfCancellationRequested();
 
-            string name = await GetHostnameOrIpAddress(destination);
+            string name = await GetHostname(destination);
             cancellationToken.ThrowIfCancellationRequested();
 
             return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
         }
 
-        private async Task<string> GetHostnameOrIpAddress(IPAddress destination)
+        private async Task<string> GetHostname(IPAddress destination)
         {
-            try
-            {
-                IPHostEntry hostEntry = await _hostRepository.GetHostAsync(destination);
-                return hostEntry.HostName;
-            }
-            catch (HostNotFoundException)
-            {
-                return destination.ToString();
-            }
-        }
-
-        private async Task<PhysicalAddress> GetMacAddressAsync(IPAddress destination)
-        {
-            try
-            {
-                return await _macAddressRepository.GetMacAddressAsync(destination);
-            }
-            catch (MacAddressNotFoundException)
-            {
-                return PhysicalAddress.None;
-            }
+            IPHostEntry hostEntry = await _hostRepository.GetHostAsync(destination);
+            return hostEntry.HostName;
         }
     }
 }

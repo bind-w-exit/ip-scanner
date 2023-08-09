@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using IpScanner.Domain.Exceptions;
 using IpScanner.Domain.Models;
 using System.Threading.Tasks;
 using System.Threading;
@@ -11,6 +10,7 @@ using IpScanner.Domain.Factories;
 using IpScanner.Ui.ObjectModels;
 using System.Linq;
 using System.Collections.Generic;
+using FluentResults;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
@@ -50,10 +50,7 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
 
-        public void Dispose()
-        {
-            _cancellationTokenSource.Dispose();
-        }
+        public void Dispose() => _cancellationTokenSource.Dispose();
 
         public void InitializeCollection(FilteredCollection<ScannedDevice> scannedDevices)
         {
@@ -62,32 +59,25 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private async Task ScanAsync()
         {
-            try
-            {
-                await TryScanningAsync();
-            }
-            catch (IpValidationException)
+            InitiateScanning();
+
+            NetworkScanner scanner = CreateScannerIfErrorReturnNull();
+            if (scanner == null)
             {
                 OnValidationError();
+                return;
             }
+
+            _progressModule.TotalCountOfIps = scanner.ScannedIps.Count;
+            await scanner.StartAsync(_cancellationTokenSource.Token);
+
+            FinishScanning();
         }
 
         private void CancelScanning()
         {
             CancelCurrentTask();
             ResetCancellationTokenSource();
-        }
-
-        private async Task TryScanningAsync()
-        {
-            InitiateScanning();
-
-            NetworkScanner scanner = CreateScanner();
-            _progressModule.TotalCountOfIps = scanner.ScannedIps.Count;
-
-            await scanner.StartAsync(_cancellationTokenSource.Token);
-
-            FinishScanning();
         }
 
         private void InitiateScanning()
@@ -97,11 +87,17 @@ namespace IpScanner.Ui.ViewModels.Modules
             CurrentlyScanning = true;
         }
 
-        private NetworkScanner CreateScanner()
+        private NetworkScanner CreateScannerIfErrorReturnNull()
         {
-            NetworkScanner scanner = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(_ipRangeModule.IpRange));
-            scanner.DeviceScanned += DeviceScannedHandler;
+            IResult<NetworkScanner> result = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(_ipRangeModule.IpRange));
 
+            if (result.IsFailed)
+            {
+                return null;
+            }
+
+            NetworkScanner scanner = result.Value;
+            scanner.DeviceScanned += DeviceScannedHandler;
             return scanner;
         }
 

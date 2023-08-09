@@ -123,9 +123,6 @@
     <Compile Include="Args\ScannedDeviceEventArgs.cs" />
     <Compile Include="Enums\DeviceStatus.cs" />
     <Compile Include="Enums\ContentFormat.cs" />
-    <Compile Include="Exceptions\HostNotFoundException.cs" />
-    <Compile Include="Exceptions\IpValidationException.cs" />
-    <Compile Include="Exceptions\MacAddressNotFoundException.cs" />
     <Compile Include="Extensions\IPAddressExtensions.cs" />
     <Compile Include="Factories\INetworkScannerFactory.cs" />
     <Compile Include="Factories\NetworkScannerFactory.cs" />
@@ -145,6 +142,9 @@
     <EmbeddedResource Include="Properties\IpScanner.Domain.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentResults">
+      <Version>3.15.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
       <Version>7.0.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
