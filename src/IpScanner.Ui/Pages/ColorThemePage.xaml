@@ -9,13 +9,11 @@
     Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
 
     <Grid Margin="20">
-        <ComboBox SelectedValue="{Binding SelectedTheme, Mode=TwoWay}" Header="Select Theme"
-                  MinWidth="250">
-            <ComboBox.Items>
-                <x:String>Light</x:String>
-                <x:String>Dark</x:String>
-                <x:String>Default</x:String>
-            </ComboBox.Items>
+        <ComboBox x:Uid="SelectTheme" MinWidth="250" SelectedValuePath="Tag" 
+                  SelectedValue="{Binding SelectedTheme, Mode=TwoWay}">
+            <ComboBoxItem x:Uid="Light" Tag="Light"></ComboBoxItem>
+            <ComboBoxItem x:Uid="Dark" Tag="Dark"></ComboBoxItem>
+            <ComboBoxItem x:Uid="Default" Tag="Default"></ComboBoxItem>
         </ComboBox>
     </Grid>
 </Page>

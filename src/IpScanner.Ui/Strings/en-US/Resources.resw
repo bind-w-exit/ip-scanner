@@ -129,6 +129,9 @@
   <data name="CollapseAll.Text" xml:space="preserve">
     <value>Collapse all</value>
   </data>
+  <data name="ColorTheme.Content" xml:space="preserve">
+    <value>Color theme</value>
+  </data>
   <data name="Comments.Header" xml:space="preserve">
     <value>Comments</value>
   </data>
@@ -144,8 +147,17 @@
   <data name="Copy.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
   <data name="Date.Text" xml:space="preserve">
     <value>Date</value>
+  </data>
+  <data name="Dead" xml:space="preserve">
+    <value>dead</value>
+  </data>
+  <data name="Default.Content" xml:space="preserve">
+    <value>Default</value>
   </data>
   <data name="Details.Text" xml:space="preserve">
     <value>Details</value>
@@ -195,6 +207,9 @@
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="LoadFavorites.Text" xml:space="preserve">
     <value>Load favorites ...</value>
   </data>
@@ -221,6 +236,9 @@
   </data>
   <data name="Options.Text" xml:space="preserve">
     <value>Options ...</value>
+  </data>
+  <data name="OptionsNavigationView.PaneTitle" xml:space="preserve">
+    <value>Options</value>
   </data>
   <data name="Print.Text" xml:space="preserve">
     <value>Print ...</value>
@@ -257,6 +275,9 @@
   </data>
   <data name="Search.PlaceholderText" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="SelectTheme.Header" xml:space="preserve">
+    <value>Select theme</value>
   </data>
   <data name="Service.Text" xml:space="preserve">
     <value>Service</value>
@@ -299,6 +320,9 @@
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Ukrainian (uk-UA)</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>unknown</value>
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>User</value>

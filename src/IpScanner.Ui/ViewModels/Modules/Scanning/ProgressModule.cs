@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using IpScanner.Domain.Enums;
+using IpScanner.Ui.Services;
 using System;
 
 namespace IpScanner.Ui.ViewModels.Modules
@@ -11,9 +12,12 @@ namespace IpScanner.Ui.ViewModels.Modules
         private int _countOfOnlineDevices;
         private int _countOfOfflineDevices;
         private int _countOfScannedIps;
+        private ILocalizationService _localizationService;
 
-        public ProgressModule()
+        public ProgressModule(ILocalizationService localizationService)
         {
+            _localizationService = localizationService;
+
             CountOfScannedIps = 0;
             CountOfUnknownDevices = 0;
             CountOfOnlineDevices = 0;
@@ -71,7 +75,12 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public string ProgressString
         {
-            get => $"{CalculateProgress()}%, {CountOfOfflineDevices} dead, {CountOfUnknownDevices} unknown";
+            get
+            {
+                string dead = _localizationService.GetLocalizedString("Dead");
+                string unknown = _localizationService.GetLocalizedString("Unknown");
+                return $"{CalculateProgress()}%, {CountOfOfflineDevices} {dead}, {CountOfUnknownDevices} {unknown}";
+            }
         }
 
         public void UpdateProgress(int currentCount, DeviceStatus status)

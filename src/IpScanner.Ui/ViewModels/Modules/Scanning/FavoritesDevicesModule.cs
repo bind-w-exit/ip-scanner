@@ -45,7 +45,7 @@ namespace IpScanner.Ui.ViewModels.Modules
                 "Favorites"
             };
 
-            _selectedCollection = _collections.First();
+            SelectedCollection = _collections.First();
 
             messenger.Register<DeviceSelectedMessage>(this, OnDeviceSelected);
             messenger.Register<DevicesLoadedMessage>(this, OnDevicesLoaded);
@@ -68,8 +68,6 @@ namespace IpScanner.Ui.ViewModels.Modules
                 ExecuteSelectedOption.Execute(value);
             }
         }
-
-        public ObservableCollection<string> Collections => _collections;
 
         public AsyncRelayCommand<string> ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
 
