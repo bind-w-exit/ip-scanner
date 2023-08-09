@@ -236,7 +236,7 @@
                 <!-- Devices list -->
                 <Grid Grid.Row="1" Padding="5">
                     <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <Grid>
+                        <Grid x:Name="DevicesGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                             <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
