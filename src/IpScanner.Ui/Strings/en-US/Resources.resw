@@ -153,6 +153,9 @@
   <data name="Date.Text" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="Dead" xml:space="preserve">
+    <value>dead</value>
+  </data>
   <data name="Default.Content" xml:space="preserve">
     <value>Default</value>
   </data>
@@ -317,6 +320,9 @@
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Ukrainian (uk-UA)</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>unknown</value>
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>User</value>

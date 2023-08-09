@@ -153,6 +153,9 @@
   <data name="Date.Text" xml:space="preserve">
     <value>Дата</value>
   </data>
+  <data name="Dead" xml:space="preserve">
+    <value>вимкнуті</value>
+  </data>
   <data name="Default.Content" xml:space="preserve">
     <value>За замовчуванням</value>
   </data>
@@ -317,6 +320,9 @@
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
     <value>Український (uk-UA)</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>без відомостей про стан</value>
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>Користувач</value>

@@ -222,9 +222,11 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="250" Margin="5,5,5,0"
-                          ItemsSource="{Binding FavoritesDevicesModule.Collections, Mode=TwoWay}"
-                          SelectedItem="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}" />
+                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="250" Margin="5,5,5,0" SelectedValuePath="Tag"
+                          SelectedValue="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}">
+                    <ComboBoxItem x:Uid="Results" Tag="Results"></ComboBoxItem>
+                    <ComboBoxItem x:Uid="Favorites" Tag="Favorites"></ComboBoxItem>
+                </ComboBox>
 
                 <!-- Devices list -->
                 <Grid Grid.Row="1" Padding="5">
