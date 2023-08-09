@@ -4,7 +4,7 @@ IP Scanner is a planned network scanner application for analyzing LAN. The aim i
 
 ## Planned Key Features
 - ✅ Scanning local networks to identify connected devices
-- ❌ Providing easy access to network shares
+- ✅ Providing easy access to network shares
 - ❌ Allowing remote control via RDP and Radmin
 - ✅ Detecting MAC addresses
 - ❌ Enabling switching on/off computers remotely
