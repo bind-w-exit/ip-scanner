@@ -5,6 +5,7 @@ using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Printing;
@@ -134,16 +135,7 @@ namespace IpScanner.Ui.ViewModels
 
         private void OnFilterMessage(object sender, FilterMessage message)
         {
-            if(message.FilterStatus)
-            {
-                ScannedDevices.AddFilter(message.Filter);
-            }
-            else
-            {
-                ScannedDevices.RemoveFilter(message.Filter);
-            }
-
-            ScannedDevices.RefreshFilteredItems();
+            ScannedDevices.ApplyFilter(message.FilterStatus, message.Filter);
         }
 
         private void OnDetailsPageVisibilityMessage(object sender, DetailsPageVisibilityMessage message)
