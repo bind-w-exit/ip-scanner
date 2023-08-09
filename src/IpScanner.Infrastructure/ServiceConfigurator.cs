@@ -31,7 +31,7 @@ namespace IpScanner.Infrastructure
 
             services.AddTransient<IFileService, FileService>();
 
-            services.AddTransient<IBrowserService, BrowserService>();
+            services.AddTransient<IUriOpenerService, UriOpenerService>();
 
             return services;
         }

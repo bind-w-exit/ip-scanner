@@ -19,6 +19,8 @@
         <convertors:BooleanInvertConverter x:Key="BooleanInvertConverter" />
         <convertors:StringContentToVisibility x:Key="StringContentToVisibility" />
         <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
+        <convertors:NullBoolConvertor x:Key="NullBoolConvertor" />
+
         <MenuFlyout x:Key="ResultsContextMenu">
             <MenuFlyoutItem x:Uid="Explore">
                 <MenuFlyoutItem.Icon>
@@ -129,7 +131,8 @@
                     <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
                 </StackPanel>
 
-                <Button Margin="5,0,5,0" IsEnabled="False">
+                <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
+                        Command="{Binding ExploreInExplorerCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xF12B;" />
                     </StackPanel>
@@ -138,7 +141,8 @@
                     </ToolTipService.ToolTip>
                 </Button>
 
-                <Button Margin="5,0,5,0" IsEnabled="False">
+                <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}" 
+                        Command="{Binding ExploreHttpCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE774;" />
                     </StackPanel>
@@ -146,7 +150,8 @@
                         <ToolTip Content="Http"/>
                     </ToolTipService.ToolTip>
                 </Button>
-                <Button Margin="5,0,5,0" IsEnabled="False">
+                <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}" 
+                        Command="{Binding ExploreHttpsCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE875;" />
                     </StackPanel>

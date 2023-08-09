@@ -9,10 +9,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
 {
     public class MenuHelpModule : ObservableObject
     {
-        private readonly IBrowserService _browserService;
+        private readonly IUriOpenerService _browserService;
         private readonly IDialogService _dialogService;
 
-        public MenuHelpModule(IBrowserService browserService, IDialogService dialogService)
+        public MenuHelpModule(IUriOpenerService browserService, IDialogService dialogService)
         {
             _browserService = browserService;
             _dialogService = dialogService;
@@ -30,22 +30,22 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
 
         public async Task OpenContentsAsync()
         {
-            await _browserService.OpenBrowserAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=help"));
+            await _browserService.OpenUriAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=help"));
         }
 
         public async Task OpenBugReportAsync()
         {
-            await _browserService.OpenBrowserAsync(new Uri("https://www.advanced-ip-scanner.com/support/?category=bug&lng=en&ver=2-5-4594-1&beta=n"));
+            await _browserService.OpenUriAsync(new Uri("https://www.advanced-ip-scanner.com/support/?category=bug&lng=en&ver=2-5-4594-1&beta=n"));
         }
 
         public async Task OpenRequestFeatureAsync()
         {
-            await _browserService.OpenBrowserAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=feature"));
+            await _browserService.OpenUriAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=feature"));
         }
 
         public async Task OpenCommunityAsync()
         {
-            await _browserService.OpenBrowserAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=community"));
+            await _browserService.OpenUriAsync(new Uri("http://www.advanced-ip-scanner.com/link.php?lng=en&ver=2-5-4594-1&beta=n&page=community"));
         }
 
         public async Task OpenAboutAsync()

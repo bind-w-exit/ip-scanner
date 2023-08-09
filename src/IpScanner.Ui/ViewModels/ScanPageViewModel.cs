@@ -35,16 +35,19 @@ namespace IpScanner.Ui.ViewModels
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly IPrintServiceFactory _printServiceFactory;
         private readonly IPrintElementRepository _printingElementRepository;
+        private readonly IUriOpenerService _uriOpenerService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
             IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
-            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintElementRepository printingElementRepository)
+            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintElementRepository printingElementRepository, 
+            IUriOpenerService uriOpenerService)
         {
             _messanger = messenger;
             _fileService = fileService;
             _printServiceFactory = printServiceFactory;
             _deviceRepositoryFactory = deviceRepositoryFactory;
             _printingElementRepository = printingElementRepository;
+            _uriOpenerService = uriOpenerService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -55,9 +58,7 @@ namespace IpScanner.Ui.ViewModels
             _ipRangeModule = ipRangeModule;
             _progressModule = progressModule;
             _favoritesDevicesModule = favoritesDevicesModule;
-
             _searchModule = new SearchModule(ScannedDevices);
-
             _scanningModule = scanningModule;
             _scanningModule.InitializeCollection(ScannedDevices);
 
@@ -110,6 +111,12 @@ namespace IpScanner.Ui.ViewModels
 
         public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
+        public AsyncRelayCommand ExploreInExplorerCommand => new AsyncRelayCommand(ExploreInExplorerAsync);
+
+        public AsyncRelayCommand ExploreHttpCommand => new AsyncRelayCommand(ExploreHttpAsync);
+
+        public AsyncRelayCommand ExploreHttpsCommand => new AsyncRelayCommand(ExploreHttpsAsync);
+
         private async Task SaveDeviceAsync()
         {
             try
@@ -121,6 +128,21 @@ namespace IpScanner.Ui.ViewModels
             }
             catch (OperationCanceledException)
             { } 
+        }
+
+        private async Task ExploreInExplorerAsync()
+        {
+            await _uriOpenerService.OpenUriAsync(new Uri($"file://{SelectedDevice.Ip}"));
+        }
+
+        private async Task ExploreHttpAsync()
+        {
+            await _uriOpenerService.OpenUriAsync(new Uri($"http://{SelectedDevice.Ip}"));
+        }
+
+        private async Task ExploreHttpsAsync()
+        {
+            await _uriOpenerService.OpenUriAsync(new Uri($"https://{SelectedDevice.Ip}"));
         }
 
         private void RegisterMessages(IMessenger messenger)

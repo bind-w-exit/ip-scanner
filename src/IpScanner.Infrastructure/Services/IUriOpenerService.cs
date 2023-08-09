@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace IpScanner.Infrastructure.Services
 {
-    public interface IBrowserService
+    public interface IUriOpenerService
     {
-        Task OpenBrowserAsync(Uri uri);
+        Task OpenUriAsync(Uri uri);
     }
 }
