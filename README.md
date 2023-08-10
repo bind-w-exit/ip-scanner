@@ -33,9 +33,9 @@ Unauthorized network scanning can be considered illegal and unethical activity, 
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Pictures 
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/94fba02d-fe21-4738-833b-eadc35a73e25)
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/fc2f5248-be97-4fff-a880-ec681b2c0af4)
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/708a1d2a-2efa-489a-b3da-9cb68a89a97f)
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/1c72c9ba-292f-4be3-99b1-728cc3c8189e)
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/8ae9b45c-7f90-47a4-987d-ebc5ccfbfaa6)
-![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/d4024d7f-86a4-408f-aaf5-c94dc854f41d)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/6afd2cce-7298-421c-9404-6ff902f73cdc)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/3077bc6b-dbfd-4f5b-b03d-9a7d737ebbeb)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/c3b193c7-e20e-41ce-a9eb-fb926af8f485)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/efe328ba-5fe1-41dd-b61f-4816f3c0537d)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/08bc122d-eed4-49a2-a27a-e3179c68fd65)
+![image](https://github.com/vitaliy-bezugly/ip-scanner/assets/87979065/90393ae7-f89a-4c73-8229-1b0ef487f71e)
