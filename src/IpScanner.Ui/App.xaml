@@ -16,6 +16,15 @@
                         <Setter Property="Padding" Value="0" />
                         <Setter Property="Height" Value="Auto"/>
                     </Style>
+
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="CustomToolbarBackgroundColor">#eff3f9</SolidColorBrush>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="CustomToolbarBackgroundColor">#282828</SolidColorBrush>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

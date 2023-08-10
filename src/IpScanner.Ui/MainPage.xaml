@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:convertors="using:IpScanner.Ui.Convertors"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -14,152 +15,181 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40" ></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="AppTitleBar" Background="{ThemeResource CustomToolbarBackgroundColor}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="LeftPaddingColumn" Width="5"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition x:Name="RightPaddingColumn" Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="Assets/WindowIcon.png" 
+                   Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   Width="26" Height="26"
+                   Margin="8,0,0,0"/>
+                
+                <TextBlock Text="Advanced IP Scanner" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Margin="42,0,0,0"/>
+            </Grid>
+        </Grid>
+
         <!-- Menu bar -->
-        <MenuBar Grid.Row="0">
-            <MenuBarItem x:Uid="File">
-                <MenuFlyoutItem x:Uid="ScanFromFile" Command="{Binding FileModule.ScanFromFileCommand}"></MenuFlyoutItem>
+        <Border Grid.Row="1" BorderBrush="{ThemeResource ControlStrokeColorOnAccentTertiaryBrush}" BorderThickness="0 0 0 1">
+            <MenuBar Background="{ThemeResource CustomToolbarBackgroundColor}">
+                <MenuBarItem x:Uid="File">
+                    <MenuFlyoutItem x:Uid="ScanFromFile" Command="{Binding FileModule.ScanFromFileCommand}"></MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="LoadFavorites" Command="{Binding FileModule.LoadFavoritesCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xF12B;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="LoadFavorites" Command="{Binding FileModule.LoadFavoritesCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xF12B;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding FileModule.SaveDevicesCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE74E;" />
-                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding FileModule.SaveDevicesCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE74E;" />
+                        </MenuFlyoutItem.Icon>
 
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="S"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="PrintPreview" Command="{Binding FileModule.PrintPreviewCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE956;" />
-                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem x:Uid="PrintPreview" Command="{Binding FileModule.PrintPreviewCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE956;" />
+                        </MenuFlyoutItem.Icon>
 
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="P"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="P"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="Exit" Command="{Binding FileModule.ExitCommand}">
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="F4"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
-            </MenuBarItem>
+                    <MenuFlyoutItem x:Uid="Exit" Command="{Binding FileModule.ExitCommand}">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="F4"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
 
-            <MenuBarItem x:Uid="View">
-                <MenuFlyoutItem x:Uid="ExpandAll">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xEB91;" />
-                    </MenuFlyoutItem.Icon>
+                <MenuBarItem x:Uid="View">
+                    <MenuFlyoutItem x:Uid="ExpandAll">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xEB91;" />
+                        </MenuFlyoutItem.Icon>
 
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="NumberPad9"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="NumberPad9"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="CollapseAll">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xF165;" />
-                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem x:Uid="CollapseAll">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xF165;" />
+                        </MenuFlyoutItem.Icon>
 
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="NumberPad8"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="NumberPad8"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowAlive" Command="{Binding ViewModule.ShowOnlineCommand, Mode=TwoWay}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowOnline, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ShowAlive" Command="{Binding ViewModule.ShowOnlineCommand, Mode=TwoWay}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowOnline, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowDead" Command="{Binding ViewModule.ShowOfflineCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowOffline, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ShowDead" Command="{Binding ViewModule.ShowOfflineCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowOffline, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowUnknown" Command="{Binding ViewModule.ShowUnknownCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowUnknown, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ShowUnknown" Command="{Binding ViewModule.ShowUnknownCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowUnknown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar" Command="{Binding ViewModule.ShowMiscellaneousCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowMiscellaneous, Converter={StaticResource BoolToVisibilityConverter}}" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ShowMiscellaneousToolbar" Command="{Binding ViewModule.ShowMiscellaneousCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowMiscellaneous, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ShowActionToolbar" Command="{Binding ViewModule.ShowActionsCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ShowActionToolbar" Command="{Binding ViewModule.ShowActionsCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="ShowTheDetailsPane" Command="{Binding ViewModule.ShowDetailsPageCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
-            </MenuBarItem>
+                    <MenuFlyoutItem x:Uid="ShowTheDetailsPane" Command="{Binding ViewModule.ShowDetailsPageCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE73E;" Visibility="{Binding ViewModule.ShowDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
 
-            <MenuBarItem x:Uid="Settings">
-                <MenuFlyoutItem x:Uid="Options" Command="{Binding SettingsModule.ShowOptionsDialogCommand}">
-                    <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE713;" />
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
+                <MenuBarItem x:Uid="Settings">
+                    <MenuFlyoutItem x:Uid="Options" Command="{Binding SettingsModule.ShowOptionsDialogCommand}">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE713;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutSubItem x:Uid="Language">
-                    <MenuFlyoutItem  x:Uid="English" Command="{Binding SettingsModule.ChangeLanguageCommand}" CommandParameter="en-US"/>
-                    <MenuFlyoutItem  x:Uid="Ukranian" Command="{Binding SettingsModule.ChangeLanguageCommand}" CommandParameter="uk-UA"/>
-                </MenuFlyoutSubItem>
-            </MenuBarItem>
+                    <MenuFlyoutSubItem x:Uid="Language">
+                        <MenuFlyoutItem  x:Uid="English" Command="{Binding SettingsModule.ChangeLanguageCommand}" CommandParameter="en-US"/>
+                        <MenuFlyoutItem  x:Uid="Ukranian" Command="{Binding SettingsModule.ChangeLanguageCommand}" CommandParameter="uk-UA"/>
+                    </MenuFlyoutSubItem>
+                </MenuBarItem>
 
-            <MenuBarItem x:Uid="Help">
-                <MenuFlyoutItem x:Uid="Contents" Command="{Binding HelpModule.OpenContentsCommand}">
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Modifiers="Control" Key="F1"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
+                <MenuBarItem x:Uid="Help">
+                    <MenuFlyoutItem x:Uid="Contents" Command="{Binding HelpModule.OpenContentsCommand}">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="F1"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
 
-                <MenuFlyoutItem x:Uid="ReportBug" Command="{Binding HelpModule.OpenBugReportCommand}"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="RequestFeature" Command="{Binding HelpModule.OpenRequestFeatureCommand}"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="Community" Command="{Binding HelpModule.OpenCommunityCommand}"></MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="ReportBug" Command="{Binding HelpModule.OpenBugReportCommand}"></MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="RequestFeature" Command="{Binding HelpModule.OpenRequestFeatureCommand}"></MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="Community" Command="{Binding HelpModule.OpenCommunityCommand}"></MenuFlyoutItem>
 
-                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-                <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
-                <MenuFlyoutItem x:Uid="About" Command="{Binding HelpModule.OpenAboutCommand}"></MenuFlyoutItem>
-            </MenuBarItem>
-        </MenuBar>
-        
+                    <MenuFlyoutItem x:Uid="CheckForUpdates"></MenuFlyoutItem>
+                    <MenuFlyoutItem x:Uid="About" Command="{Binding HelpModule.OpenAboutCommand}"></MenuFlyoutItem>
+                </MenuBarItem>
+            </MenuBar>
+        </Border>
+
         <!-- Main content -->
-        <Frame x:Name="ContentFrame" Grid.Row="1"/>
+        <Frame x:Name="ContentFrame" Grid.Row="2" Margin="0,5,0,0"/>
     </Grid>
 </Page>
