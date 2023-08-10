@@ -52,8 +52,6 @@ namespace IpScanner.Ui.ViewModels.Modules
             RegisterMessages(messenger);
         }
 
-        public FilteredCollection<ScannedDevice> FavoritesDevices { get => _filteredDevices; }
-
         public bool DisplayFavorites
         {
             get => _displayFavorites;
@@ -69,6 +67,8 @@ namespace IpScanner.Ui.ViewModels.Modules
                 ExecuteSelectedOption.Execute(value);
             }
         }
+
+        public FilteredCollection<ScannedDevice> FavoritesDevices { get => _filteredDevices; }
 
         public ICommand ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
 
