@@ -146,10 +146,13 @@
     <Compile Include="Repositories\ManufacturerCsvRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfigurator.cs" />
+    <Compile Include="Services\FtpService.cs" />
+    <Compile Include="Services\IFtpService.cs" />
     <Compile Include="Services\UriOpenerService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IUriOpenerService.cs" />
     <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Settings\FtpConfiguration.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Infrastructure.rd.xml" />
   </ItemGroup>
   <ItemGroup>

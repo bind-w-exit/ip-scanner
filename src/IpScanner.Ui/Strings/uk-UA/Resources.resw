@@ -141,6 +141,9 @@
   <data name="Community.Text" xml:space="preserve">
     <value>Спільнота</value>
   </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Підключено!</value>
+  </data>
   <data name="Contents.Text" xml:space="preserve">
     <value>Зміст</value>
   </data>
@@ -194,6 +197,12 @@
   </data>
   <data name="File.Title" xml:space="preserve">
     <value>Файл</value>
+  </data>
+  <data name="FtpError" xml:space="preserve">
+    <value>Не вдалося підключитися до FTP-сервера</value>
+  </data>
+  <data name="FtpSuccess" xml:space="preserve">
+    <value>Успішне підключення до FRP-сервера</value>
   </data>
   <data name="Help.Title" xml:space="preserve">
     <value>Допомога</value>
