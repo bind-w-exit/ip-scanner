@@ -33,12 +33,12 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private void EnableSubnetMask()
         {
-            IpRange = "192.168.0.1-254, 26.0.0.1-26.255.255.254";
+            IpRange = "192.168.0.1-254, 26.0.0.1-254";
         }
 
         private void EnableSubnetClassCMask()
         {
-            IpRange = "192.168.0.1-254, 26.0.0.1-254";
+            IpRange = "192.168.0.1-254";
         }
     }
 }
