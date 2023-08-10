@@ -35,6 +35,8 @@ namespace IpScanner.Infrastructure
 
             services.AddTransient<IFtpService, FtpService>();
 
+            services.AddTransient<IRdpService, RdpService>();
+
             return services;
         }
     }

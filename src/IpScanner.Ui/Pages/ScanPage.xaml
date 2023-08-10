@@ -47,7 +47,7 @@
                         <FontIcon Glyph="&#xEC50;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="RDP" IsEnabled="False">
+                <MenuFlyoutItem Text="RDP" Command="{Binding ExploreRdpCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE836;" />
                     </MenuFlyoutItem.Icon>
@@ -198,7 +198,8 @@
                         <ToolTip Content="Ftp"/>
                     </ToolTipService.ToolTip>
                 </Button>
-                <Button Margin="5,0,5,0" IsEnabled="False">
+                <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
+                        Command="{Binding ExploreRdpCommand}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE836;" />
                     </StackPanel>
@@ -206,6 +207,7 @@
                         <ToolTip Content="Rdp"/>
                     </ToolTipService.ToolTip>
                 </Button>
+                
                 <Button Margin="5,0,5,0" IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE7E8;" />

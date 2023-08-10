@@ -264,6 +264,9 @@
   <data name="PrintPreview.Text" xml:space="preserve">
     <value>Попередній перегляд ...</value>
   </data>
+  <data name="RdpError" xml:space="preserve">
+    <value>Не вдалося підключитися до пристрою через протокол RDP</value>
+  </data>
   <data name="ReportBug.Text" xml:space="preserve">
     <value>Повідомити про помилку</value>
   </data>

@@ -42,11 +42,13 @@ namespace IpScanner.Ui.ViewModels
         private readonly IFtpService _ftpService;
         private readonly IDialogService _dialogService;
         private readonly ILocalizationService _localizationService;
+        private readonly IRdpService _rdpService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
-            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintElementRepository printingElementRepository, 
-            IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService)
+            IDeviceRepositoryFactory deviceRepositoryFactory, IPrintElementRepository printingElementRepository, 
+            IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
+            IRdpService rdpService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
+            IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
@@ -57,6 +59,7 @@ namespace IpScanner.Ui.ViewModels
             _ftpService = ftpService;
             _dialogService = dialogService;
             _localizationService = localizationService;
+            _rdpService = rdpService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -130,6 +133,8 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand ExploreFtpCommand => new AsyncRelayCommand(ExploreFtpAsync);
 
+        public ICommand ExploreRdpCommand => new RelayCommand(ExploreRdp);
+
         private void OnRightTapped(ScannedDevice selectedItem)
         {
             SelectedDevice = selectedItem;
@@ -180,6 +185,21 @@ namespace IpScanner.Ui.ViewModels
                 string couldNotConnectMessage = _localizationService.GetLocalizedString("FtpError");
 
                 await _dialogService.ShowMessageAsync(error, couldNotConnectMessage);
+            }
+        }
+
+        private void ExploreRdp()
+        {
+            try
+            {
+                _rdpService.Connect(new RdpConfiguration(SelectedDevice.Ip));
+            }
+            catch (Exception)
+            {
+                string error = _localizationService.GetLocalizedString("Error");
+                string couldNotConnectMessage = _localizationService.GetLocalizedString("RdpError");
+
+                _dialogService.ShowMessageAsync(error, couldNotConnectMessage);
             }
         }
 

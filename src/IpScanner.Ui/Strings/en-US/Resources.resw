@@ -264,6 +264,9 @@
   <data name="PrintPreview.Text" xml:space="preserve">
     <value>Print preview ...</value>
   </data>
+  <data name="RdpError" xml:space="preserve">
+    <value>Could not connect to device via RDP protocol</value>
+  </data>
   <data name="ReportBug.Text" xml:space="preserve">
     <value>Report a bug</value>
   </data>

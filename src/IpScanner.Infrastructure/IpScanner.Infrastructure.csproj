@@ -148,11 +148,14 @@
     <Compile Include="ServiceConfigurator.cs" />
     <Compile Include="Services\FtpService.cs" />
     <Compile Include="Services\IFtpService.cs" />
+    <Compile Include="Services\IRdpService.cs" />
+    <Compile Include="Services\RdpService.cs" />
     <Compile Include="Services\UriOpenerService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IUriOpenerService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Settings\FtpConfiguration.cs" />
+    <Compile Include="Settings\RdpConfiguration.cs" />
     <EmbeddedResource Include="Properties\IpScanner.Infrastructure.rd.xml" />
   </ItemGroup>
   <ItemGroup>
