@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     xmlns:convertors="using:IpScanner.Ui.Convertors"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -20,18 +22,46 @@
         <convertors:StringContentToVisibility x:Key="StringContentToVisibility" />
         <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
         <convertors:NullBoolConvertor x:Key="NullBoolConvertor" />
+        <convertors:RightTappedToScannedDeviceConverter x:Key="RightTappedToScannedDeviceConverter" />
 
         <MenuFlyout x:Key="ResultsContextMenu">
-            <MenuFlyoutItem x:Uid="Explore">
+            <MenuFlyoutItem x:Uid="Explore" Command="{Binding ExploreInExplorerCommand}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xED25;" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
 
+            <MenuFlyoutSubItem x:Uid="Tools">
+                <MenuFlyoutItem Text="HTTP" Command="{Binding ExploreHttpCommand}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE774;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="HTTPS" Command="{Binding ExploreHttpsCommand}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xF552;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="FTP" IsEnabled="False">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xEC50;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="RDP" IsEnabled="False">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE836;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSubItem.Icon>
+                    <FontIcon Glyph="&#xEC7A;" />
+                </MenuFlyoutSubItem.Icon>
+            </MenuFlyoutSubItem>
+
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
-            <MenuFlyoutItem x:Uid="Copy"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="Rescan"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Copy" IsEnabled="False"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Rescan" IsEnabled="False"></MenuFlyoutItem>
             <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding SaveDeviceCommand}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE792;" />
@@ -153,7 +183,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}" 
                         Command="{Binding ExploreHttpsCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE875;" />
+                        <FontIcon Glyph="&#xF552;" />
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Https"/>
@@ -230,60 +260,76 @@
                 </ComboBox>
 
                 <!-- Devices list -->
-                <Grid Grid.Row="1" Padding="5">
-                    <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <Grid x:Name="DevicesGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                            <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                <ScrollViewer Grid.Row="1" Padding="5" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <Grid x:Name="DevicesGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                        <!-- Results list -->
+                        <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}"
                             ContextFlyout="{StaticResource ResultsContextMenu}">
-                                <controls:DataGrid.Columns>
-                                    <controls:DataGridTemplateColumn x:Uid="Status">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip Content="{Binding Status}"/>
-                                                    </ToolTipService.ToolTip>
-                                                </FontIcon>
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                                </controls:DataGrid.Columns>
-                            </controls:DataGrid>
-
-                            <controls:DataGrid x:Name="FavoritesDevicesDataGrid" ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                            
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="RightTapped">
+                                    <core:InvokeCommandAction Command="{Binding RightTappedCommand}"
+                                     InputConverter="{StaticResource RightTappedToScannedDeviceConverter}" />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                            
+                            <controls:DataGrid.Columns>
+                                <controls:DataGridTemplateColumn x:Uid="Status">
+                                    <controls:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{Binding Status}"/>
+                                                </ToolTipService.ToolTip>
+                                            </FontIcon>
+                                        </DataTemplate>
+                                    </controls:DataGridTemplateColumn.CellTemplate>
+                                </controls:DataGridTemplateColumn>
+                                <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                            </controls:DataGrid.Columns>
+                        </controls:DataGrid>
+    
+                        <!-- Favorites list -->
+                        <controls:DataGrid x:Name="FavoritesDevicesDataGrid" ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
                             ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
                             Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" ContextFlyout="{StaticResource ResultsContextMenu}">
-                                <controls:DataGrid.Columns>
-                                    <controls:DataGridTemplateColumn x:Uid="Status">
-                                        <controls:DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip Content="{Binding Status}"/>
-                                                    </ToolTipService.ToolTip>
-                                                </FontIcon>
-                                            </DataTemplate>
-                                        </controls:DataGridTemplateColumn.CellTemplate>
-                                    </controls:DataGridTemplateColumn>
-                                    <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
-                                    <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
-                                    <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                    <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
-                                    <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
-                                </controls:DataGrid.Columns>
-                            </controls:DataGrid>
-                        </Grid>
-                    </ScrollViewer>
-                </Grid>
+
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="RightTapped">
+                                    <core:InvokeCommandAction Command="{Binding RightTappedCommand}"
+                                     InputConverter="{StaticResource RightTappedToScannedDeviceConverter}" />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+
+                            <controls:DataGrid.Columns>
+                                <controls:DataGridTemplateColumn x:Uid="Status">
+                                    <controls:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <FontIcon Glyph="{Binding Status, Converter={StaticResource DeviceStatusToGlyphConverter}}" FontFamily="Segoe MDL2 Assets">
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{Binding Status}"/>
+                                                </ToolTipService.ToolTip>
+                                            </FontIcon>
+                                        </DataTemplate>
+                                    </controls:DataGridTemplateColumn.CellTemplate>
+                                </controls:DataGridTemplateColumn>
+                                <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
+                                <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
+                                <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
+                            </controls:DataGrid.Columns>
+                        </controls:DataGrid>
+                    </Grid>
+                </ScrollViewer>
             </Grid>
             
             <!-- Device details -->

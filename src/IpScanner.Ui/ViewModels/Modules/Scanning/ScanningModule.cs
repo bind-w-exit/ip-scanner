@@ -23,8 +23,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, 
-            INetworkScannerFactory factory)
+        public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, INetworkScannerFactory factory)
         {
             _progressModule = progressModule;
             _ipRangeModule = ipRangeModule;

@@ -321,6 +321,9 @@
   <data name="SubnetC.Content" xml:space="preserve">
     <value>Буде скановано підмережу класу 'C'</value>
   </data>
+  <data name="Tools.Text" xml:space="preserve">
+    <value>Інструменти</value>
+  </data>
   <data name="Type.Text" xml:space="preserve">
     <value>Тип</value>
   </data>
