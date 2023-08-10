@@ -126,6 +126,7 @@
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
     <Compile Include="Convertors\NavigationViewItemConverter.cs" />
     <Compile Include="Convertors\NullBoolConvertor.cs" />
+    <Compile Include="Convertors\RightTappedToScannedDeviceConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
     <Compile Include="Extensions\ElementThemeExtensions.cs" />

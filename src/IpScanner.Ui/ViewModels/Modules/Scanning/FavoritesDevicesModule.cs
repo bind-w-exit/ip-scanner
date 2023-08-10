@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Storage;
 
 namespace IpScanner.Ui.ViewModels.Modules
@@ -30,9 +31,8 @@ namespace IpScanner.Ui.ViewModels.Modules
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly ILocalizationService _localizationService;
 
-        public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, IDialogService dialogService, 
-            ILocalizationService localizationService)
+        public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory, 
+            IDialogService dialogService, ILocalizationService localizationService)
         {
             _fileService = fileService;
             _deviceRepositoryFactory = deviceRepositoryFactory;
@@ -70,15 +70,15 @@ namespace IpScanner.Ui.ViewModels.Modules
             }
         }
 
-        public AsyncRelayCommand<string> ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
+        public ICommand ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
 
         public AsyncRelayCommand LoadFavoritesCommand { get => new AsyncRelayCommand(LoadFavoritesAsync); }
 
-        public AsyncRelayCommand UnloadFavoritesCommand { get => new AsyncRelayCommand(UnloadFavoritesAsync); }
+        public ICommand UnloadFavoritesCommand { get => new RelayCommand(UnloadFavorites); }
 
-        public RelayCommand AddToFavoritesCommand { get => new RelayCommand(AddToFavorites); }
+        public AsyncRelayCommand AddToFavoritesCommand { get => new AsyncRelayCommand(AddToFavoritesAsync); }
 
-        public RelayCommand RemoveFromFavoritesCommand { get => new RelayCommand(RemoveFromFavorites); }
+        public AsyncRelayCommand RemoveFromFavoritesCommand { get => new AsyncRelayCommand(RemoveFromFavoritesAsync); }
 
         public void SetStorageFile(StorageFile file)
         {
@@ -99,7 +99,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             if (collection == "Results")
             {
-                await UnloadFavoritesCommand.ExecuteAsync(null);
+                UnloadFavoritesCommand.Execute(null);
             }
             else if (collection == "Favorites")
             {
@@ -120,13 +120,14 @@ namespace IpScanner.Ui.ViewModels.Modules
             StorageFile file = await GetStorageFileAsync();
             IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
             
-            IEnumerable<ScannedDevice> devices = await deviceRepository.GetDevicesOrNullAsync();
-            if (devices == null)
+            IEnumerable<ScannedDevice> items = await deviceRepository.GetDevicesOrNullAsync();
+            if (items == null)
             {
                 await ShowLoadingDataErrorMessage();
                 return;
             }
 
+            List<ScannedDevice> devices = items.ToList();
             foreach (var device in devices)
             {
                 FavoritesDevices.Add(device);
@@ -135,35 +136,38 @@ namespace IpScanner.Ui.ViewModels.Modules
             DisplayFavorites = true;
         }
 
-        private async Task UnloadFavoritesAsync()
+        private void UnloadFavorites()
         {
-            StorageFile file = await GetStorageFileAsync();
-            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
-
-            await deviceRepository.SaveDevicesAsync(FavoritesDevices);
             DisplayFavorites = false;
             FavoritesDevices.Clear();
         }
 
-        private void AddToFavorites()
+        private async Task AddToFavoritesAsync()
         {
             if (_selectedDevice == null)
             {
                 return;
             }
+
+            StorageFile file = await GetStorageFileAsync();
+            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
 
             _selectedDevice.MarkAsFavorite();
-            FavoritesDevices.Add(_selectedDevice);
+            await deviceRepository.AddDeviceAsync(_selectedDevice);
         }
 
-        private void RemoveFromFavorites()
+        private async Task RemoveFromFavoritesAsync()
         {
             if (_selectedDevice == null)
             {
                 return;
             }
 
+            StorageFile file = await GetStorageFileAsync();
+            IDeviceRepository deviceRepository = _deviceRepositoryFactory.CreateWithFile(file);
+
             _selectedDevice.UnmarkAsFavorite();
+            await deviceRepository.RemoveDeviceAsync(_selectedDevice);
             FavoritesDevices.Remove(_selectedDevice);
         }
 

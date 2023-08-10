@@ -321,6 +321,9 @@
   <data name="SubnetC.Content" xml:space="preserve">
     <value>Subnet of class 'C' will be scanned</value>
   </data>
+  <data name="Tools.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
   <data name="Type.Text" xml:space="preserve">
     <value>Type</value>
   </data>

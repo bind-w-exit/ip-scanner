@@ -13,6 +13,7 @@ using IpScanner.Ui.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.Storage;
 using Windows.UI.Xaml;
 
@@ -109,18 +110,25 @@ namespace IpScanner.Ui.ViewModels
 
         public FavoritesDevicesModule FavoritesDevicesModule => _favoritesDevicesModule;
 
-        public AsyncRelayCommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
+        public ICommand RightTappedCommand => new RelayCommand<ScannedDevice>(OnRightTapped);
 
-        public AsyncRelayCommand ExploreInExplorerCommand => new AsyncRelayCommand(ExploreInExplorerAsync);
+        public ICommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
-        public AsyncRelayCommand ExploreHttpCommand => new AsyncRelayCommand(ExploreHttpAsync);
+        public ICommand ExploreInExplorerCommand => new AsyncRelayCommand(ExploreInExplorerAsync);
 
-        public AsyncRelayCommand ExploreHttpsCommand => new AsyncRelayCommand(ExploreHttpsAsync);
+        public ICommand ExploreHttpCommand => new AsyncRelayCommand(ExploreHttpAsync);
+
+        public ICommand ExploreHttpsCommand => new AsyncRelayCommand(ExploreHttpsAsync);
+
+        private void OnRightTapped(ScannedDevice selectedItem)
+        {
+            SelectedDevice = selectedItem;
+        }
 
         private async Task SaveDeviceAsync()
         {
             StorageFile file = await _fileService.GetFileForWritingAsync(".json", ".xml", ".csv", ".html");
-            if (file == null)
+            if (file == null || SelectedDevice == null)
             {
                 return;
             }
