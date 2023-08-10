@@ -6,8 +6,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Core;
-using Windows.UI.Xaml.Media;
 
 namespace IpScanner.Ui
 {
@@ -28,9 +26,17 @@ namespace IpScanner.Ui
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             // Set caption buttons background to transparent.
-            ApplicationViewTitleBar titleBar =
-                ApplicationView.GetForCurrentView().TitleBar;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonHoverBackgroundColor = Colors.LightGray;
+            titleBar.ButtonForegroundColor = Colors.Black;
+            titleBar.ButtonHoverForegroundColor = Colors.Black;
+
+            // Set inactive window colors
+            titleBar.InactiveForegroundColor = Colors.Black;
+            titleBar.InactiveBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveForegroundColor = Colors.Black;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
             // Set XAML element as a drag region.
             Window.Current.SetTitleBar(AppTitleBar);
