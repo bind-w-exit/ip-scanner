@@ -5,10 +5,12 @@ using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Services;
+using IpScanner.Infrastructure.Settings;
 using IpScanner.Ui.Extensions;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Printing;
+using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules;
 using System;
 using System.Collections.Generic;
@@ -37,11 +39,16 @@ namespace IpScanner.Ui.ViewModels
         private readonly IPrintServiceFactory _printServiceFactory;
         private readonly IPrintElementRepository _printingElementRepository;
         private readonly IUriOpenerService _uriOpenerService;
+        private readonly IFtpService _ftpService;
+        private readonly IDialogService _dialogService;
+        private readonly ILocalizationService _localizationService;
+        private readonly IRdpService _rdpService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
-            IpRangeModule ipRangeModule, ScanningModule scanningModule, IPrintElementRepository printingElementRepository, 
-            IUriOpenerService uriOpenerService)
+            IDeviceRepositoryFactory deviceRepositoryFactory, IPrintElementRepository printingElementRepository, 
+            IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
+            IRdpService rdpService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
+            IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
@@ -49,6 +56,10 @@ namespace IpScanner.Ui.ViewModels
             _deviceRepositoryFactory = deviceRepositoryFactory;
             _printingElementRepository = printingElementRepository;
             _uriOpenerService = uriOpenerService;
+            _ftpService = ftpService;
+            _dialogService = dialogService;
+            _localizationService = localizationService;
+            _rdpService = rdpService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -120,6 +131,10 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand ExploreHttpsCommand => new AsyncRelayCommand(ExploreHttpsAsync);
 
+        public ICommand ExploreFtpCommand => new AsyncRelayCommand(ExploreFtpAsync);
+
+        public ICommand ExploreRdpCommand => new RelayCommand(ExploreRdp);
+
         private void OnRightTapped(ScannedDevice selectedItem)
         {
             SelectedDevice = selectedItem;
@@ -150,6 +165,42 @@ namespace IpScanner.Ui.ViewModels
         private async Task ExploreHttpsAsync()
         {
             await _uriOpenerService.OpenUriAsync(new Uri($"https://{SelectedDevice.Ip}"));
+        }
+
+        private async Task ExploreFtpAsync()
+        {
+            var ftpConfiguration = new FtpConfiguration($@"ftp://{SelectedDevice.Ip}", "anonymous", "anonymous");
+            bool connected = await _ftpService.ConnectAsync(ftpConfiguration);
+
+            if (connected)
+            {
+                string connectedMessage = _localizationService.GetLocalizedString("Connected");
+                string successfullyConnectedMessage = _localizationService.GetLocalizedString("FtpSuccess");
+
+                await _dialogService.ShowMessageAsync(connectedMessage, successfullyConnectedMessage);
+            }
+            else
+            {
+                string error = _localizationService.GetLocalizedString("Error");
+                string couldNotConnectMessage = _localizationService.GetLocalizedString("FtpError");
+
+                await _dialogService.ShowMessageAsync(error, couldNotConnectMessage);
+            }
+        }
+
+        private void ExploreRdp()
+        {
+            try
+            {
+                _rdpService.Connect(new RdpConfiguration(SelectedDevice.Ip));
+            }
+            catch (Exception)
+            {
+                string error = _localizationService.GetLocalizedString("Error");
+                string couldNotConnectMessage = _localizationService.GetLocalizedString("RdpError");
+
+                _dialogService.ShowMessageAsync(error, couldNotConnectMessage);
+            }
         }
 
         private void RegisterMessages(IMessenger messenger)

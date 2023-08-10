@@ -33,6 +33,10 @@ namespace IpScanner.Infrastructure
 
             services.AddTransient<IUriOpenerService, UriOpenerService>();
 
+            services.AddTransient<IFtpService, FtpService>();
+
+            services.AddTransient<IRdpService, RdpService>();
+
             return services;
         }
     }

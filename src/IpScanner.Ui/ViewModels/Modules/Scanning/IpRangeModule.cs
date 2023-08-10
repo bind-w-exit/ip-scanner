@@ -11,7 +11,6 @@ namespace IpScanner.Ui.ViewModels.Modules
         public IpRangeModule()
         {
             _validationModule = new ValidationModule();
-
             IpRange = string.Empty;
         }
 
