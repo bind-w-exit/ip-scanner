@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml;
 using IpScanner.Domain.Models;
+using System.Net;
 
 namespace IpScanner.Ui.Convertors
 {
@@ -14,7 +15,14 @@ namespace IpScanner.Ui.Convertors
         {
             var args = value as RightTappedRoutedEventArgs;
             var originalSource = (FrameworkElement)args?.OriginalSource;
-            return (FindParent<DataGridRow>(originalSource)).DataContext as ScannedDevice;
+
+            DataGridRow row = FindParent<DataGridRow>(originalSource);
+            if (row == null)
+            {
+                return new ScannedDevice(IPAddress.Any);
+            }
+
+            return row.DataContext as ScannedDevice;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
