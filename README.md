@@ -20,7 +20,7 @@ git clone https://github.com/vitaliy-bezugly/ip-scanner.git
 ## Planned Key Features
 - ✅ Scanning local networks to identify connected devices
 - ✅ Providing easy access to network shares
-- ❌ Allowing remote control via RDP and Radmin
+- ✅ Allowing remote control via RDP and Radmin
 - ✅ Detecting MAC addresses
 - ❌ Enabling switching on/off computers remotely
 - ✅ Supporting scanning of different IP address ranges
