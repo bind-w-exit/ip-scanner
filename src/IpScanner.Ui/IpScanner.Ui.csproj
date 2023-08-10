@@ -166,6 +166,7 @@
     <Compile Include="ServiceConfigurator.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\ColorThemeService.cs" />
+    <Compile Include="Services\ContentBarCustomizationService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IApplicationService.cs" />
     <Compile Include="Services\IColorThemeService.cs" />
@@ -198,6 +199,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\WindowIcon.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
