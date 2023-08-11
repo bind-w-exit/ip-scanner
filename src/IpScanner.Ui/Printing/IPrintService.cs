@@ -1,9 +1,12 @@
-﻿using Windows.UI.Xaml;
+﻿using IpScanner.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace IpScanner.Ui.Printing
 {
-    public interface IPrintService
+    public interface IPrintService<T>
     {
-        void ShowPrintUIAsync();
+        Task ShowPrintUIAsync(IEnumerable<T> devicesToPrint);
     }
 }

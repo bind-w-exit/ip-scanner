@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using IpScanner.Domain.Models;
 using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
@@ -27,8 +28,6 @@ namespace IpScanner.Ui
             services.AddSingleton<MenuSettingsModule>();
             services.AddSingleton<MenuHelpModule>();
 
-            services.AddSingleton<IPrintElementRepository, PrintElementRepository>();
-
             services.AddTransient<INavigationService, NavigationService>();
 
             services.AddTransient<ILocalizationService, LocalizationService>();
@@ -37,7 +36,9 @@ namespace IpScanner.Ui
 
             services.AddTransient<IApplicationService, ApplicationService>();
 
-            services.AddTransient<IPrintServiceFactory, PrintServiceFactory>();
+            services.AddSingleton<IPanelContainer, PanelContainer>();
+
+            services.AddTransient<IPrintService<ScannedDevice>, PrintService<ScannedDevice>>();
 
             services.AddSingleton<IMessenger, StrongReferenceMessenger>();
 
