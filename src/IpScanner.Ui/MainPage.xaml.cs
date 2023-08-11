@@ -12,16 +12,20 @@ namespace IpScanner.Ui
         public MainPage()
         {
             this.InitializeComponent();
+            this.InitializeScanPageViewModelForMessanger();
+            this.CustomizeToolbar();
 
-            InitializeScanPageViewModelForMessanger();
             DataContext = Ioc.Default.GetService<MainPageViewModel>();
             ContentFrame.Navigate(typeof(ScanPage));
+        }
 
+        private void InitializeScanPageViewModelForMessanger() => Ioc.Default.GetService<ScanPageViewModel>();
+
+        private void CustomizeToolbar()
+        {
             CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             var contentBarService = new ContentBarCustomizationService(coreTitleBar, AppTitleBar, LeftPaddingColumn, RightPaddingColumn);
             contentBarService.Customize();
         }
-
-        private void InitializeScanPageViewModelForMessanger() => Ioc.Default.GetService<ScanPageViewModel>();
     }
 }
