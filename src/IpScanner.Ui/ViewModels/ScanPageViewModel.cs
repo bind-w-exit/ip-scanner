@@ -17,8 +17,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
 {
