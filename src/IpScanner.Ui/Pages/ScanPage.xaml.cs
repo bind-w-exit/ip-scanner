@@ -10,17 +10,16 @@ namespace IpScanner.Ui.Pages
         public ScanPage()
         {
             this.InitializeComponent();
-
-            PreparePrintingElementRepo(Ioc.Default.GetService<IPrintElementRepository>());
+            this.InitializePanelContainer();
 
             DataContext = Ioc.Default.GetService<ScanPageViewModel>();
             DetailsFrame.Navigate(typeof(DetailsPage));
         }
 
-        private void PreparePrintingElementRepo(IPrintElementRepository elementRepository)
+        private void InitializePanelContainer()
         {
-            elementRepository.ClearElements();
-            elementRepository.AddElements(DevicesGrid);
+            IPanelContainer panelContainer = Ioc.Default.GetService<IPanelContainer>();
+            panelContainer.Inialize(CustomPrintContainer);
         }
     }
 }

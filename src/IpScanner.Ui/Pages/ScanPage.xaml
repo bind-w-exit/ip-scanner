@@ -256,11 +256,13 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <ComboBox Grid.Row="0" Grid.Column="0" MinWidth="250" Margin="5,5,5,0" SelectedValuePath="Tag"
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                    <ComboBox MinWidth="250" Margin="5,5,5,0" SelectedValuePath="Tag"
                           SelectedValue="{Binding FavoritesDevicesModule.SelectedCollection, Mode=TwoWay}">
-                    <ComboBoxItem x:Uid="Results" Tag="Results"></ComboBoxItem>
-                    <ComboBoxItem x:Uid="Favorites" Tag="Favorites"></ComboBoxItem>
-                </ComboBox>
+                        <ComboBoxItem x:Uid="Results" Tag="Results"></ComboBoxItem>
+                        <ComboBoxItem x:Uid="Favorites" Tag="Favorites"></ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
 
                 <!-- Devices list -->
                 <ScrollViewer Grid.Row="1" Padding="5" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -298,7 +300,8 @@
                                 <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                             </controls:DataGrid.Columns>
                         </controls:DataGrid>
-    
+                        <Grid x:Name="CustomPrintContainer"
+                            Opacity="0" />
                         <!-- Favorites list -->
                         <controls:DataGrid x:Name="FavoritesDevicesDataGrid" ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"

@@ -157,12 +157,10 @@
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Printing\IPrintElementRepository.cs" />
+    <Compile Include="Printing\IPanelContainer.cs" />
     <Compile Include="Printing\IPrintService.cs" />
-    <Compile Include="Printing\IPrintServiceFactory.cs" />
-    <Compile Include="Printing\PrintElementRepository.cs" />
+    <Compile Include="Printing\PanelContainer.cs" />
     <Compile Include="Printing\PrintService.cs" />
-    <Compile Include="Printing\PrintServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfigurator.cs" />
     <Compile Include="Services\ApplicationService.cs" />
@@ -256,6 +254,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>7.1.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
       <Version>7.1.3</Version>

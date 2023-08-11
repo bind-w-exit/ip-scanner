@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace IpScanner.Ui.ViewModels
@@ -36,25 +37,22 @@ namespace IpScanner.Ui.ViewModels
         private readonly IMessenger _messanger;
         private readonly IFileService _fileService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
-        private readonly IPrintServiceFactory _printServiceFactory;
-        private readonly IPrintElementRepository _printingElementRepository;
+        private readonly IPrintService<ScannedDevice> _printService;
         private readonly IUriOpenerService _uriOpenerService;
         private readonly IFtpService _ftpService;
         private readonly IDialogService _dialogService;
         private readonly ILocalizationService _localizationService;
         private readonly IRdpService _rdpService;
 
-        public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintServiceFactory printServiceFactory, 
-            IDeviceRepositoryFactory deviceRepositoryFactory, IPrintElementRepository printingElementRepository, 
+        public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintService<ScannedDevice> printService, IDeviceRepositoryFactory deviceRepositoryFactory, 
             IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
             IRdpService rdpService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
             IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
-            _printServiceFactory = printServiceFactory;
+            _printService = printService;
             _deviceRepositoryFactory = deviceRepositoryFactory;
-            _printingElementRepository = printingElementRepository;
             _uriOpenerService = uriOpenerService;
             _ftpService = ftpService;
             _dialogService = dialogService;
@@ -239,16 +237,13 @@ namespace IpScanner.Ui.ViewModels
             await ScanningModule.ScanCommand.ExecuteAsync(this);
         }
 
-        private void OnPrintMessage(object sender, PrintPreviewMessage message)
+        private async void OnPrintMessage(object sender, PrintPreviewMessage message)
         {
-            FrameworkElement elementToPrint = _printingElementRepository.GetElementToPrint();
-            if (elementToPrint == null)
-            {
-                throw new InvalidOperationException("Element to print is not initialized");
-            }
+            IEnumerable<ScannedDevice> devices = FavoritesDevicesModule.DisplayFavorites 
+                ? FavoritesDevicesModule.FavoritesDevices.FilteredItems
+                : ScannedDevices.FilteredItems;
 
-            IPrintService printService = _printServiceFactory.CreateBasedOneFrameworkElement(elementToPrint);
-            printService.ShowPrintUIAsync();
+            await _printService.ShowPrintUIAsync(devices);
         }
     }
 }

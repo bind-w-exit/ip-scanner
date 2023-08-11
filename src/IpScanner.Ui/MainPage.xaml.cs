@@ -17,9 +17,8 @@ namespace IpScanner.Ui
             DataContext = Ioc.Default.GetService<MainPageViewModel>();
             ContentFrame.Navigate(typeof(ScanPage));
 
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             var contentBarService = new ContentBarCustomizationService(coreTitleBar, AppTitleBar, LeftPaddingColumn, RightPaddingColumn);
-
             contentBarService.Customize();
         }
 
