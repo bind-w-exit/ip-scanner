@@ -41,10 +41,11 @@ namespace IpScanner.Ui.ViewModels
         private readonly IDialogService _dialogService;
         private readonly ILocalizationService _localizationService;
         private readonly IRdpService _rdpService;
+        private readonly IWakeOnLanService _wakeOnLanService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintService<ScannedDevice> printService, IDeviceRepositoryFactory deviceRepositoryFactory, 
             IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
-            IRdpService rdpService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
+            IRdpService rdpService, IWakeOnLanService wakeOnLanService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
             IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
@@ -56,11 +57,12 @@ namespace IpScanner.Ui.ViewModels
             _dialogService = dialogService;
             _localizationService = localizationService;
             _rdpService = rdpService;
+            _wakeOnLanService = wakeOnLanService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
             ShowActions = true;
-            SelectedDevice = new ScannedDevice(System.Net.IPAddress.Any);
+            SelectedDevice = null;
             ScannedDevices = new FilteredCollection<ScannedDevice>();
 
             _ipRangeModule = ipRangeModule;
@@ -131,6 +133,8 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand ExploreRdpCommand => new RelayCommand(ExploreRdp);
 
+        public ICommand WakeOnLanCommand => new AsyncRelayCommand(WakeOnLanAsync);
+
         private void OnRightTapped(ScannedDevice selectedItem)
         {
             SelectedDevice = selectedItem;
@@ -197,6 +201,11 @@ namespace IpScanner.Ui.ViewModels
 
                 _dialogService.ShowMessageAsync(error, couldNotConnectMessage);
             }
+        }
+
+        private async Task WakeOnLanAsync()
+        {
+            await _wakeOnLanService.SendPacketAsync(SelectedDevice.MacAddress, SelectedDevice.Ip);
         }
 
         private void RegisterMessages(IMessenger messenger)
