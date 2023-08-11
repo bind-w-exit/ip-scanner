@@ -54,7 +54,7 @@
                 </MenuFlyoutItem>
                 <MenuFlyoutItem Text="Wake On LAN" Command="{Binding WakeOnLanCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE7E8;" />
+                        <FontIcon Glyph="&#xE7E8;" Foreground="Red" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
@@ -122,7 +122,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue"/>
+                        <FontIcon Glyph="&#xF6FA;" />
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Subnet"/>
@@ -131,7 +131,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
+                        <FontIcon Glyph="&#xED5C;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="SubnetC"/>
@@ -144,7 +144,7 @@
 
                 <Button Margin="5,0,5,0">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xEC8F;" />
+                        <FontIcon Glyph="&#xEC8F;" Foreground="DarkCyan"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Expand"/>
@@ -153,7 +153,7 @@
 
                 <Button Margin="5,0,5,0">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF165;" />
+                        <FontIcon Glyph="&#xF165;" Foreground="Blue"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Collapse"/>
@@ -169,7 +169,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
                         Command="{Binding ExploreInExplorerCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF12B;" />
+                        <FontIcon Glyph="&#xF12B;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Explore"/>
@@ -179,7 +179,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}" 
                         Command="{Binding ExploreHttpCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE774;" />
+                        <FontIcon Glyph="&#xE774;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Http"/>
@@ -188,7 +188,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}" 
                         Command="{Binding ExploreHttpsCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF552;" />
+                        <FontIcon Glyph="&#xF552;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Https"/>
@@ -197,7 +197,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
                         Command="{Binding ExploreFtpCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xEC50;" />
+                        <FontIcon Glyph="&#xEC50;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Ftp"/>
@@ -206,7 +206,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
                         Command="{Binding ExploreRdpCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE836;" />
+                        <FontIcon Glyph="&#xE836;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Rdp"/>
@@ -216,7 +216,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
                         Command="{Binding WakeOnLanCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE7E8;" />
+                        <FontIcon Glyph="&#xE7E8;" Foreground="Red"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Wake-On-LAN"/>
@@ -237,10 +237,10 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Text="{Binding IpRangeModule.IpRange, Mode=TwoWay}" IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BooleanInvertConverter}}"/>
+                <TextBox Text="{Binding IpRangeModule.IpRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BooleanInvertConverter}}"/>
                 <TextBlock x:Uid="IpRangeExample" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,3" 
                     FontStyle="Italic" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" IsHitTestVisible="False"
-                    Visibility="{Binding IpRangeModule.IpRange, Converter={StaticResource StringContentToVisibility}}"/>
+                    Visibility="{Binding IpRangeModule.IpRange, Converter={StaticResource StringContentToVisibility}, Mode=TwoWay}"/>
             </Grid>
             
             <AutoSuggestBox x:Uid="Search" Grid.Column="1" QueryIcon="Find" PlaceholderText="Search" Margin="2,0,5,0" 

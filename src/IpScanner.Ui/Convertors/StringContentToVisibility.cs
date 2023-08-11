@@ -5,11 +5,13 @@ namespace IpScanner.Ui.Convertors
 {
     public class StringContentToVisibility : IValueConverter
     {
+        const int AcceptableCountOfChars = 35;
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string content = value as string;
 
-            if (string.IsNullOrWhiteSpace(content))
+            if (content.Length < AcceptableCountOfChars)
             {
                 return Windows.UI.Xaml.Visibility.Visible;
             }
