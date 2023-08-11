@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About.Text" xml:space="preserve">
-    <value>Щодо ...</value>
+    <value>Відомості ...</value>
   </data>
   <data name="CheckForUpdates.Text" xml:space="preserve">
-    <value>Перевірити оновлення</value>
+    <value>Перевірка наявності оновлень</value>
   </data>
   <data name="Collapse.Content" xml:space="preserve">
     <value>Згорнути все</value>
@@ -145,7 +145,7 @@
     <value>Підключено!</value>
   </data>
   <data name="Contents.Text" xml:space="preserve">
-    <value>Зміст</value>
+    <value>Вміст</value>
   </data>
   <data name="Copy.Text" xml:space="preserve">
     <value>Скопіювати</value>
@@ -166,7 +166,7 @@
     <value>За замовчуванням</value>
   </data>
   <data name="Details.Text" xml:space="preserve">
-    <value>Деталі</value>
+    <value>Відомості</value>
   </data>
   <data name="English.Text" xml:space="preserve">
     <value>Англійська (en-US)</value>
@@ -184,7 +184,7 @@
     <value>Розгорнути все</value>
   </data>
   <data name="Explore.Text" xml:space="preserve">
-    <value>Дослідити</value>
+    <value>Переглянути</value>
   </data>
   <data name="Favorites.Content" xml:space="preserve">
     <value>Обране</value>
@@ -205,16 +205,16 @@
     <value>Успішне підключення до FRP-сервера</value>
   </data>
   <data name="Help.Title" xml:space="preserve">
-    <value>Допомога</value>
+    <value>Довідка</value>
   </data>
   <data name="IP.Text" xml:space="preserve">
     <value>IP</value>
   </data>
   <data name="IPAddress.Header" xml:space="preserve">
-    <value>IP Адреса</value>
+    <value>IP-адреса</value>
   </data>
   <data name="IpRangeExample.Text" xml:space="preserve">
-    <value>Приклад: 192.168.0.1-100, 192.168.0.200</value>
+    <value>Наприклад: 192.168.0.1-100, 192.168.0.200</value>
   </data>
   <data name="IpRangeValidationMessage.Text" xml:space="preserve">
     <value>Неправильний формат вводу діапазону IP</value>
@@ -226,13 +226,13 @@
     <value>Світла</value>
   </data>
   <data name="LoadFavorites.Text" xml:space="preserve">
-    <value>Завантажити обрані девайси</value>
+    <value>Завантажити обране</value>
   </data>
   <data name="Mac.Text" xml:space="preserve">
     <value>MAC</value>
   </data>
   <data name="MACAddress.Header" xml:space="preserve">
-    <value>MAC Адреса</value>
+    <value>MAC-адреса</value>
   </data>
   <data name="Manufacturer.Header" xml:space="preserve">
     <value>Виробник</value>
@@ -241,7 +241,7 @@
     <value>Виробник</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
-    <value>Назва</value>
+    <value>Ім'я</value>
   </data>
   <data name="NetBIOS.Text" xml:space="preserve">
     <value>NetBIOS</value>
@@ -250,19 +250,19 @@
     <value>Операційна система</value>
   </data>
   <data name="Options.Text" xml:space="preserve">
-    <value>Опції ...</value>
+    <value>Параметри ...</value>
   </data>
   <data name="OptionsNavigationView.PaneTitle" xml:space="preserve">
     <value>Налаштування</value>
   </data>
   <data name="Print.Text" xml:space="preserve">
-    <value>Роздрукувати ...</value>
+    <value>Друкувати ...</value>
   </data>
   <data name="PrintDetails.Content" xml:space="preserve">
-    <value>Роздрукувати ...</value>
+    <value>Друкувати ...</value>
   </data>
   <data name="PrintPreview.Text" xml:space="preserve">
-    <value>Попередній перегляд ...</value>
+    <value>Попередній перегляд друку...</value>
   </data>
   <data name="RdpError" xml:space="preserve">
     <value>Не вдалося підключитися до пристрою через протокол RDP</value>
@@ -271,13 +271,13 @@
     <value>Повідомити про помилку</value>
   </data>
   <data name="RequestFeature.Text" xml:space="preserve">
-    <value>Замовити функцію</value>
+    <value>Створити запит на функцію</value>
   </data>
   <data name="Rescan.Text" xml:space="preserve">
     <value>Повторне сканування</value>
   </data>
   <data name="Results.Content" xml:space="preserve">
-    <value>Результати</value>
+    <value>Результати сканування</value>
   </data>
   <data name="SaveAs.Text" xml:space="preserve">
     <value>Зберегти як ...</value>
@@ -292,46 +292,46 @@
     <value>Сканувати з файлу ...</value>
   </data>
   <data name="Search.PlaceholderText" xml:space="preserve">
-    <value>Пошук</value>
+    <value>Знайти</value>
   </data>
   <data name="SelectTheme.Header" xml:space="preserve">
     <value>Виберіть тему</value>
   </data>
   <data name="Service.Text" xml:space="preserve">
-    <value>Сервіс</value>
+    <value>Служба</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>Налаштування</value>
   </data>
   <data name="ShowActionToolbar.Text" xml:space="preserve">
-    <value>Показати панель інструментів дій</value>
+    <value>Показати панель інструментів "Дія"</value>
   </data>
   <data name="ShowAlive.Text" xml:space="preserve">
-    <value>Показати живих</value>
+    <value>Показати ввімкнуті комп'ютери</value>
   </data>
   <data name="ShowDead.Text" xml:space="preserve">
-    <value>Показати мертвих</value>
+    <value>Показати вимкнуті комп'ютери</value>
   </data>
   <data name="ShowMiscellaneousToolbar.Text" xml:space="preserve">
-    <value>Показати різноманітну панель інструментів</value>
+    <value>Показати панель інструментів "Різне"</value>
   </data>
   <data name="ShowTheDetailsPane.Text" xml:space="preserve">
-    <value>Показати сторінку детелей</value>
+    <value>Показати область відомостей</value>
   </data>
   <data name="ShowUnknown.Text" xml:space="preserve">
-    <value>Показати невідомі</value>
+    <value>Показати комп'ютери без відомостей про стан</value>
   </data>
   <data name="Status.Header" xml:space="preserve">
-    <value>Статус</value>
+    <value>Стан</value>
   </data>
   <data name="StatusDetails.Text" xml:space="preserve">
-    <value>Статус</value>
+    <value>Стан</value>
   </data>
   <data name="Subnet.Content" xml:space="preserve">
-    <value>Підмережа цього комп’ютера буде просканована</value>
+    <value>Буде здійснено сканування підмережі цього комп'ютера</value>
   </data>
   <data name="SubnetC.Content" xml:space="preserve">
-    <value>Буде скановано підмережу класу 'C'</value>
+    <value>Буде здійснено сканування підмережі класу 'C'</value>
   </data>
   <data name="Tools.Text" xml:space="preserve">
     <value>Інструменти</value>
@@ -340,7 +340,7 @@
     <value>Тип</value>
   </data>
   <data name="Ukranian.Text" xml:space="preserve">
-    <value>Український (uk-UA)</value>
+    <value>Українська (uk-UA)</value>
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>без відомостей про стан</value>
@@ -349,7 +349,7 @@
     <value>Користувач</value>
   </data>
   <data name="View.Title" xml:space="preserve">
-    <value>Вид</value>
+    <value>Огляд</value>
   </data>
   <data name="WrongFile" xml:space="preserve">
     <value>Неможливо завантажити дані. Можливо, ви вибрали неправильний файл json</value>
