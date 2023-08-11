@@ -238,10 +238,10 @@ namespace IpScanner.Ui.ViewModels
             ShowActions = message.Visible;
         }
 
-        private async void OnScanFromFileMessage(object sender, ScanFromFileMessage message)
+        private void OnScanFromFileMessage(object sender, ScanFromFileMessage message)
         {
             IpRangeModule.IpRange = message.Content;
-            await ScanningModule.ScanCommand.ExecuteAsync(this);
+            ScanningModule.ScanCommand.Execute(this);
         }
 
         private async void OnPrintMessage(object sender, PrintPreviewMessage message)

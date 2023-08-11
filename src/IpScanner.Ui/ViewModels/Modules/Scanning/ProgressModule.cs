@@ -105,7 +105,7 @@ namespace IpScanner.Ui.ViewModels.Modules
                 return 0;
             }
 
-            return Math.Round(((double)CountOfScannedIps / TotalCountOfIps) * 100, 2);
+            return Math.Ceiling(((double)CountOfScannedIps / TotalCountOfIps) * 100);
         }
 
         private void IncreaseCountOfSpecificDevices(DeviceStatus status)

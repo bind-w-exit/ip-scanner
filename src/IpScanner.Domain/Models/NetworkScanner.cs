@@ -30,11 +30,14 @@ namespace IpScanner.Domain.Models
         public IReadOnlyCollection<IPAddress> ScannedIps { get => _ipsToScan.ToList(); }
 
         public event EventHandler<ScannedDeviceEventArgs> DeviceScanned;
+        public event EventHandler ScanningFinished;
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             IEnumerable<Task> tasks = _ipsToScan.Select(async destination => await ScanAndHandleCancellationAsync(destination, cancellationToken));
             await Task.WhenAll(tasks);
+
+            ScanningFinished?.Invoke(this, EventArgs.Empty);
         }
 
         private async Task ScanAndHandleCancellationAsync(IPAddress destination, CancellationToken cancellationToken)
@@ -50,19 +53,18 @@ namespace IpScanner.Domain.Models
 
         private async Task<ScannedDevice> ScanSpecificIpAsync(IPAddress destination, CancellationToken cancellationToken)
         {
-            PhysicalAddress macAddress =  await _macAddressRepository.GetMacAddressAsync(destination);
+            cancellationToken.ThrowIfCancellationRequested();
+            PhysicalAddress macAddress = await _macAddressRepository.GetMacAddressAsync(destination, cancellationToken);
             if (macAddress == PhysicalAddress.None)
             {
                 return new ScannedDevice(destination);
             }
 
             cancellationToken.ThrowIfCancellationRequested();
-
             string manufacturer = await _manufactorRepository.GetManufacturerOrEmptyStringAsync(macAddress);
+            
             cancellationToken.ThrowIfCancellationRequested();
-
             string name = await GetHostname(destination);
-            cancellationToken.ThrowIfCancellationRequested();
 
             return new ScannedDevice(DeviceStatus.Online, name, destination, manufacturer, macAddress, string.Empty);
         }
