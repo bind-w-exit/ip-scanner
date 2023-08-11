@@ -11,6 +11,7 @@ using IpScanner.Ui.ObjectModels;
 using System.Linq;
 using System.Collections.Generic;
 using FluentResults;
+using Windows.UI.Core;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
@@ -40,14 +41,11 @@ namespace IpScanner.Ui.ViewModels.Modules
             set => SetProperty(ref _currentlyScanning, value);
         }
 
-        public List<ScannedDevice> Devices
-        {
-            get => _scannedDevices.ToList();
-        }
+        public List<ScannedDevice> Devices => _scannedDevices.ToList();
 
-        public AsyncRelayCommand ScanCommand { get => new AsyncRelayCommand(ScanAsync); }
+        public RelayCommand ScanCommand => new RelayCommand(Scan);
 
-        public RelayCommand CancelCommand { get => new RelayCommand(CancelScanning); }
+        public RelayCommand CancelCommand => new RelayCommand(CancelScanning);
 
         public void Dispose() => _cancellationTokenSource.Dispose();
 
@@ -56,7 +54,7 @@ namespace IpScanner.Ui.ViewModels.Modules
             _scannedDevices = scannedDevices;
         }
 
-        private async Task ScanAsync()
+        private void Scan()
         {
             InitiateScanning();
 
@@ -68,14 +66,18 @@ namespace IpScanner.Ui.ViewModels.Modules
             }
 
             _progressModule.TotalCountOfIps = scanner.ScannedIps.Count;
-            await scanner.StartAsync(_cancellationTokenSource.Token);
 
-            FinishScanning();
+            var thread = new Thread(async () =>
+            {
+                await scanner.StartAsync(_cancellationTokenSource.Token);
+            });
+
+            thread.Start();
         }
 
         private void CancelScanning()
         {
-            CancelCurrentTask();
+            _cancellationTokenSource.Cancel();
             ResetCancellationTokenSource();
         }
 
@@ -89,7 +91,6 @@ namespace IpScanner.Ui.ViewModels.Modules
         private NetworkScanner CreateScannerIfErrorReturnNull()
         {
             IResult<NetworkScanner> result = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(_ipRangeModule.IpRange));
-
             if (result.IsFailed)
             {
                 return null;
@@ -97,18 +98,18 @@ namespace IpScanner.Ui.ViewModels.Modules
 
             NetworkScanner scanner = result.Value;
             scanner.DeviceScanned += DeviceScannedHandler;
+            scanner.ScanningFinished += ScanningFinished;
+
             return scanner;
         }
 
-        private void FinishScanning()
+        private async void ScanningFinished(object sender, EventArgs e)
         {
-            CurrentlyScanning = false;
-        }
-
-        private void CancelCurrentTask()
-        {
-            _cancellationTokenSource.Cancel();
-            CurrentlyScanning = false;
+            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CurrentlyScanning = false;
+            });
         }
 
         private void ResetCancellationTokenSource()
@@ -117,9 +118,10 @@ namespace IpScanner.Ui.ViewModels.Modules
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        private void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
+        private async void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
         {
-            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 _scannedDevices.Add(e.ScannedDevice);
                 _progressModule.UpdateProgress(_scannedDevices.Count, e.ScannedDevice.Status);
