@@ -22,7 +22,7 @@ git clone https://github.com/vitaliy-bezugly/ip-scanner.git
 - ✅ Providing easy access to network shares
 - ✅ Allowing remote control via RDP and Radmin
 - ✅ Detecting MAC addresses
-- ❌ Enabling switching on/off computers remotely
+- ✅ Enabling switching on/off computers remotely
 - ✅ Supporting scanning of different IP address ranges
 - ✅ Analyzing and recognizing different classes of IP addresses (Class A, B, C)
 
