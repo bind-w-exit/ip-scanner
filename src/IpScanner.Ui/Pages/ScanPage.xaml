@@ -54,7 +54,7 @@
                 </MenuFlyoutItem>
                 <MenuFlyoutItem Text="Wake On LAN" Command="{Binding WakeOnLanCommand}">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon Glyph="&#xE7E8;" Foreground="Red" />
+                        <FontIcon Glyph="&#xE7E8;"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
@@ -122,7 +122,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF6FA;" />
+                        <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue" />
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Subnet"/>
@@ -131,7 +131,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xED5C;"/>
+                        <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="SubnetC"/>
@@ -144,7 +144,7 @@
 
                 <Button Margin="5,0,5,0">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xEC8F;" Foreground="DarkCyan"/>
+                        <FontIcon Glyph="&#xEC8F;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Expand"/>
@@ -153,7 +153,7 @@
 
                 <Button Margin="5,0,5,0">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF165;" Foreground="Blue"/>
+                        <FontIcon Glyph="&#xF165;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Collapse"/>
@@ -216,7 +216,7 @@
                 <Button Margin="5,0,5,0" IsEnabled="{Binding SelectedDevice, Converter={StaticResource NullBoolConvertor}}"
                         Command="{Binding WakeOnLanCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE7E8;" Foreground="Red"/>
+                        <FontIcon Glyph="&#xE7E8;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Wake-On-LAN"/>
