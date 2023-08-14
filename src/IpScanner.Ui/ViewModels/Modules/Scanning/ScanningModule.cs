@@ -1,39 +1,43 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IpScanner.Domain.Models;
-using System.Threading.Tasks;
 using System.Threading;
 using IpScanner.Domain.Args;
-using Windows.System;
 using System;
-using IpScanner.Domain.Factories;
 using IpScanner.Ui.ObjectModels;
 using System.Linq;
 using System.Collections.Generic;
-using FluentResults;
 using Windows.UI.Core;
 using IpScanner.Domain.Enums;
+using System.Windows.Input;
+using System.Net;
+using IpScanner.Domain.Validators;
+using Windows.ApplicationModel.Core;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
     public class ScanningModule : ObservableObject, IDisposable
     {
         private bool _currentlyScanning;
-        private readonly INetworkScannerFactory _ipScannerFactory;
+        private bool _paused;
+        private readonly INetworkScanner _networkScanner;
+        private readonly IValidator<IpRange> _ipRangeValidator;
         private readonly ProgressModule _progressModule;
         private readonly IpRangeModule _ipRangeModule;
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
-        private NetworkScanner _scanner;
 
-        public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, INetworkScannerFactory factory)
+        public ScanningModule(INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, ProgressModule progressModule, IpRangeModule ipRangeModule)
         {
+            _networkScanner = networkScanner;
+            _ipRangeValidator = ipRangeValidator;
             _progressModule = progressModule;
             _ipRangeModule = ipRangeModule;
-
-            _ipScannerFactory = factory;
-
+            Paused = false;
             CurrentlyScanning = false;
+
+            _networkScanner.DeviceScanned += DeviceScannedHandler;
+            _networkScanner.ScanningFinished += ScanningFinished;
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -43,13 +47,21 @@ namespace IpScanner.Ui.ViewModels.Modules
             set => SetProperty(ref _currentlyScanning, value);
         }
 
+        public bool Paused
+        {
+            get => _paused;
+            set => SetProperty(ref _paused, value);
+        }
+
+        public ICommand ScanCommand => new RelayCommand(Scan);
+
+        public ICommand CancelCommand => new RelayCommand(Cancel);
+
+        public ICommand PauseCommand => new RelayCommand(Pause);
+
+        public ICommand ResumeCommand => new RelayCommand(Resume);
+
         public List<ScannedDevice> Devices => _scannedDevices.ToList();
-
-        public RelayCommand ScanCommand => new RelayCommand(Scan);
-
-        public RelayCommand CancelCommand => new RelayCommand(CancelScanning);
-
-        public RelayCommand PauseCommand => new RelayCommand(Pause);
 
         public void Dispose() => _cancellationTokenSource.Dispose();
 
@@ -62,69 +74,52 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             InitiateScanning();
 
-            _scanner = CreateScannerIfErrorReturnNull();
-            if (_scanner == null)
+            var ipRange = new IpRange(_ipRangeModule.IpRange);
+            bool validationResult = _ipRangeValidator.Validate(ipRange);  
+            if (validationResult == false)
             {
                 OnValidationError();
                 return;
             }
 
-            _progressModule.TotalCountOfIps = _scanner.ScannedIps.Count;
+            IEnumerable<IPAddress> addresses = ipRange.GenerateIPAddresses();
+            _progressModule.TotalCountOfIps = addresses.Count();
 
+            StartScanning(addresses);
+        }
+
+        private void InitiateScanning()
+        {
+            CurrentlyScanning = true;
+            _progressModule.ResetProgress();
+            _scannedDevices.Clear();
+        }
+
+        private void StartScanning(IEnumerable<IPAddress> addresses)
+        {
             var thread = new Thread(async () =>
             {
-                await _scanner.StartAsync(_cancellationTokenSource.Token);
+                await _networkScanner.StartAsync(addresses, _cancellationTokenSource.Token);
             });
-
             thread.Start();
         }
 
-        private void CancelScanning()
+        private void Cancel()
         {
             _cancellationTokenSource.Cancel();
             ResetCancellationTokenSource();
         }
 
-        private int counter = 0;
         private void Pause()
         {
-            if(counter % 2 == 0)
-                _scanner.Pause();
-            else
-                _scanner.Resume();
-
-            counter++;
+            Paused = true;
+            _networkScanner.Pause();
         }
 
-        private void InitiateScanning()
+        private void Resume()
         {
-            _progressModule.ResetProgress();
-            _scannedDevices.Clear();
-            CurrentlyScanning = true;
-        }
-
-        private NetworkScanner CreateScannerIfErrorReturnNull()
-        {
-            IResult<NetworkScanner> result = _ipScannerFactory.CreateBasedOnIpRange(new IpRange(_ipRangeModule.IpRange));
-            if (result.IsFailed)
-            {
-                return null;
-            }
-
-            NetworkScanner scanner = result.Value;
-            scanner.DeviceScanned += DeviceScannedHandler;
-            scanner.ScanningFinished += ScanningFinished;
-
-            return scanner;
-        }
-
-        private async void ScanningFinished(object sender, EventArgs e)
-        {
-            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                CurrentlyScanning = false;
-            });
+            Paused = false;
+            _networkScanner.Resume();
         }
 
         private void ResetCancellationTokenSource()
@@ -133,28 +128,42 @@ namespace IpScanner.Ui.ViewModels.Modules
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        private async void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
-        {
-            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                if(e.ScannedDevice.Status == DeviceStatus.Online)
-                {
-                    _scannedDevices.Insert(0, e.ScannedDevice);
-                }
-                else
-                {
-                    _scannedDevices.Add(e.ScannedDevice);
-                }
-
-                _progressModule.UpdateProgress(_scannedDevices.Count, e.ScannedDevice.Status);
-            });
-        }
-
         private void OnValidationError()
         {
             _ipRangeModule.ValidationModule.HasValidationError = true;
             CurrentlyScanning = false;
+        }
+
+        private void AddDevice(ScannedDevice scannedDevice)
+        {
+            if (scannedDevice.Status == DeviceStatus.Online)
+            {
+                _scannedDevices.Insert(0, scannedDevice);
+            }
+            else
+            {
+                _scannedDevices.Add(scannedDevice);
+            }
+
+            _progressModule.UpdateProgress(_scannedDevices.Count, scannedDevice.Status);
+        }
+
+        private void FinishScanning()
+        {
+            CurrentlyScanning = false;
+            Paused = false;
+        }
+
+        private async void ScanningFinished(object sender, EventArgs e)
+        {
+            CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, FinishScanning);
+        }
+
+        private async void DeviceScannedHandler(object sender, ScannedDeviceEventArgs e)
+        {
+            CoreDispatcher dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => AddDevice(e.ScannedDevice));
         }
     }
 }

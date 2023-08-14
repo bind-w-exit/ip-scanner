@@ -101,24 +101,36 @@
 
         <!-- Action bar -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Padding="5,0,5,0" Margin="0">
-            <Button x:Name="ScanButton" Command="{Binding ScanningModule.ScanCommand}" Margin="0 0 5 0"
-                    IsEnabled="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BooleanInvertConverter}}">
+            <Button Command="{Binding ScanningModule.ScanCommand}" Margin="0 0 5 0"
+                    Visibility="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE768;" Foreground="Green"/>
                     <TextBlock x:Uid="Scan" Margin="5,0,0,0" ></TextBlock>
                 </StackPanel>
             </Button>
-            <Button x:Name="StopButton" Command="{Binding ScanningModule.CancelCommand}" Margin="5,0,5,0" 
-                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}">
+
+            <Button Command="{Binding ScanningModule.CancelCommand}" 
+                    Visibility="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BoolToVisibilityConvertor}}"
+                    Margin="0 0 5 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE71A;" Foreground="DodgerBlue"/>
+                    <TextBlock x:Uid="Cancel" Margin="5,0,0,0" Text="Stop"></TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="5,0,5,0"  Command="{Binding ScanningModule.PauseCommand}"
+                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}"
+                    Visibility="{Binding ScanningModule.Paused, Converter={StaticResource BoolToVisibilityInvertConvertor}}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE769;"/>
                 </StackPanel>
             </Button>
 
-            <Button Command="{Binding ScanningModule.PauseCommand}" Margin="5,0,5,0" 
-                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}">
+            <Button Margin="5,0,5,0"  Command="{Binding ScanningModule.ResumeCommand}"
+                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}"
+                    Visibility="{Binding ScanningModule.Paused, Converter={StaticResource BoolToVisibilityConvertor}}">
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE769;" Foreground="Red"/>
+                    <FontIcon Glyph="&#xEDB5;" />
                 </StackPanel>
             </Button>
 
