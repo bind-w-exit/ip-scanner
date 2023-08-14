@@ -12,6 +12,7 @@ using IpScanner.Infrastructure.Services;
 using IpScanner.Ui.Services;
 using IpScanner.Infrastructure.Repositories.Factories;
 using IpScanner.Infrastructure.Extensions;
+using IpScanner.Ui.ViewModels.Modules.Scanning;
 
 namespace IpScanner.Ui.ViewModels.Modules.Menu
 {
