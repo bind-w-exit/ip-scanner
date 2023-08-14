@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 
-namespace IpScanner.Ui.ViewModels.Modules
+namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class FavoritesDevicesModule : ObservableObject
     {

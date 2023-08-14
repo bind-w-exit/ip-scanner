@@ -14,7 +14,7 @@ using System.Net;
 using IpScanner.Domain.Validators;
 using Windows.ApplicationModel.Core;
 
-namespace IpScanner.Ui.ViewModels.Modules
+namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class ScanningModule : ObservableObject
     {
