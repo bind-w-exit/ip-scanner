@@ -31,10 +31,18 @@ namespace IpScanner.Ui.Printing
             var items = itemsToPrint.ToList();
             int pages = (items.Count + 9) / 10;
 
-            for (int i = 0; i < pages; i++)
+            if(pages == 0)
             {
-                var grid = CreatePageGrid(items.Skip(i * 10).Take(10), i + 1);
+                var grid = CreatePageGrid(Enumerable.Empty<T>(), 1);
                 _printHelper.AddFrameworkElementToPrint(grid);
+            }
+            else
+            {
+                for (int i = 0; i < pages; i++)
+                {
+                    var grid = CreatePageGrid(items.Skip(i * 10).Take(10), i + 1);
+                    _printHelper.AddFrameworkElementToPrint(grid);
+                }
             }
 
             await ShowPrintDialogAsync();
@@ -45,11 +53,11 @@ namespace IpScanner.Ui.Printing
             var grid = new Grid
             {
                 RowDefinitions =
-            {
-                new RowDefinition() { Height = GridLength.Auto },
-                new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) },
-                new RowDefinition() { Height = GridLength.Auto }
-            }
+                {
+                    new RowDefinition() { Height = GridLength.Auto },
+                    new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) },
+                    new RowDefinition() { Height = GridLength.Auto }
+                }
             };
 
             grid.Children.Add(CreateHeader());
