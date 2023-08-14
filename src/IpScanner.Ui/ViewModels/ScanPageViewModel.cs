@@ -123,7 +123,7 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
 
-        public ICommand ExploreInExplorerCommand => new AsyncRelayCommand(ExploreInExplorerAsync);
+        public ICommand ExploreInExplorerCommand => new RelayCommand(ExploreInExplorerAsync);
 
         public ICommand ExploreHttpCommand => new AsyncRelayCommand(ExploreHttpAsync);
 
@@ -152,7 +152,7 @@ namespace IpScanner.Ui.ViewModels
             await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
         }
 
-        private async Task ExploreInExplorerAsync()
+        private async void ExploreInExplorerAsync()
         {
             await _uriOpenerService.OpenUriAsync(new Uri($"file://{SelectedDevice.Ip}"));
         }
