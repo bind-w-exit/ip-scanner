@@ -24,6 +24,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         private readonly IpRangeModule _ipRangeModule;
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
+        private NetworkScanner _scanner;
 
         public ScanningModule(ProgressModule progressModule, IpRangeModule ipRangeModule, INetworkScannerFactory factory)
         {
@@ -48,6 +49,8 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public RelayCommand CancelCommand => new RelayCommand(CancelScanning);
 
+        public RelayCommand PauseCommand => new RelayCommand(Pause);
+
         public void Dispose() => _cancellationTokenSource.Dispose();
 
         public void InitializeCollection(FilteredCollection<ScannedDevice> scannedDevices)
@@ -59,18 +62,18 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             InitiateScanning();
 
-            NetworkScanner scanner = CreateScannerIfErrorReturnNull();
-            if (scanner == null)
+            _scanner = CreateScannerIfErrorReturnNull();
+            if (_scanner == null)
             {
                 OnValidationError();
                 return;
             }
 
-            _progressModule.TotalCountOfIps = scanner.ScannedIps.Count;
+            _progressModule.TotalCountOfIps = _scanner.ScannedIps.Count;
 
             var thread = new Thread(async () =>
             {
-                await scanner.StartAsync(_cancellationTokenSource.Token);
+                await _scanner.StartAsync(_cancellationTokenSource.Token);
             });
 
             thread.Start();
@@ -80,6 +83,17 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             _cancellationTokenSource.Cancel();
             ResetCancellationTokenSource();
+        }
+
+        private int counter = 0;
+        private void Pause()
+        {
+            if(counter % 2 == 0)
+                _scanner.Pause();
+            else
+                _scanner.Resume();
+
+            counter++;
         }
 
         private void InitiateScanning()

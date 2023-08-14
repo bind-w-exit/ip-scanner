@@ -115,6 +115,13 @@
                 </StackPanel>
             </Button>
 
+            <Button Command="{Binding ScanningModule.PauseCommand}" Margin="5,0,5,0" 
+                    IsEnabled="{Binding ScanningModule.CurrentlyScanning}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE769;" Foreground="Red"/>
+                </StackPanel>
+            </Button>
+
             <StackPanel Orientation="Horizontal" Visibility="{Binding ShowMiscellaneous, Converter={StaticResource BoolToVisibilityConvertor}}">
                 <StackPanel Orientation="Vertical">
                     <AppBarSeparator Style="{StaticResource GraySeparatorStyle}" />
