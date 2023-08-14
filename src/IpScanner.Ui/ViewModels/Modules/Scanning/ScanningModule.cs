@@ -12,6 +12,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentResults;
 using Windows.UI.Core;
+using IpScanner.Domain.Enums;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
@@ -123,7 +124,15 @@ namespace IpScanner.Ui.ViewModels.Modules
             CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                _scannedDevices.Add(e.ScannedDevice);
+                if(e.ScannedDevice.Status == DeviceStatus.Online)
+                {
+                    _scannedDevices.Insert(0, e.ScannedDevice);
+                }
+                else
+                {
+                    _scannedDevices.Add(e.ScannedDevice);
+                }
+
                 _progressModule.UpdateProgress(_scannedDevices.Count, e.ScannedDevice.Status);
             });
         }
