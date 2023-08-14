@@ -255,6 +255,9 @@
   <data name="OptionsNavigationView.PaneTitle" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="Pause.Content" xml:space="preserve">
+    <value>Pause</value>
+  </data>
   <data name="Print.Text" xml:space="preserve">
     <value>Print ...</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Results.Content" xml:space="preserve">
     <value>Results</value>
+  </data>
+  <data name="Resume.Content" xml:space="preserve">
+    <value>Resume</value>
   </data>
   <data name="SaveAs.Text" xml:space="preserve">
     <value>Save as ...</value>
@@ -326,6 +332,9 @@
   </data>
   <data name="StatusDetails.Text" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="Stop.Text" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="Subnet.Content" xml:space="preserve">
     <value>Subnet of this machine will be scanned</value>
