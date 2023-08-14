@@ -110,6 +110,7 @@
             </Button>
 
             <Button Command="{Binding ScanningModule.CancelCommand}" 
+                    IsEnabled="{Binding ScanningModule.Stopping, Mode=TwoWay, Converter={StaticResource BooleanInvertConverter}}"
                     Visibility="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BoolToVisibilityConvertor}}"
                     Margin="0 0 5 0">
                 <StackPanel Orientation="Horizontal">

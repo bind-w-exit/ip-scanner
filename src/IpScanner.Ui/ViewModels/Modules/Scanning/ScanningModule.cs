@@ -20,6 +20,7 @@ namespace IpScanner.Ui.ViewModels.Modules
     {
         private bool _currentlyScanning;
         private bool _paused;
+        private bool _stopping;
         private readonly INetworkScanner _networkScanner;
         private readonly IValidator<IpRange> _ipRangeValidator;
         private readonly ProgressModule _progressModule;
@@ -35,6 +36,7 @@ namespace IpScanner.Ui.ViewModels.Modules
             _ipRangeModule = ipRangeModule;
             Paused = false;
             CurrentlyScanning = false;
+            Stopping = false;
 
             _networkScanner.DeviceScanned += DeviceScannedHandler;
             _networkScanner.ScanningFinished += ScanningFinished;
@@ -51,6 +53,12 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             get => _paused;
             set => SetProperty(ref _paused, value);
+        }
+
+        public bool Stopping
+        {
+            get => _stopping;
+            set => SetProperty(ref _stopping, value);
         }
 
         public ICommand ScanCommand => new RelayCommand(Scan);
@@ -105,6 +113,7 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         private void Cancel()
         {
+            Stopping = true;
             _cancellationTokenSource.Cancel();
             ResetCancellationTokenSource();
         }
@@ -151,6 +160,7 @@ namespace IpScanner.Ui.ViewModels.Modules
         {
             CurrentlyScanning = false;
             Paused = false;
+            Stopping = false;
         }
 
         private async void ScanningFinished(object sender, EventArgs e)
