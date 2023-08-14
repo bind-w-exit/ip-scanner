@@ -3,8 +3,8 @@ using IpScanner.Domain.Models;
 using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
-using IpScanner.Ui.ViewModels.Modules;
 using IpScanner.Ui.ViewModels.Modules.Menu;
+using IpScanner.Ui.ViewModels.Modules.Scanning;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IpScanner.Ui
