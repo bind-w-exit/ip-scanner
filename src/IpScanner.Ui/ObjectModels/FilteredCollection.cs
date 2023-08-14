@@ -25,7 +25,7 @@ namespace IpScanner.Ui.ObjectModels
 
             if (ItemSutisfiesFilters(item))
             {
-                _filteredItems.Add(item);
+                _filteredItems.Insert(index, item);
             }
         }
 
