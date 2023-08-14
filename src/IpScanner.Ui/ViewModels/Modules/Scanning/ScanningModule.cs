@@ -16,7 +16,7 @@ using Windows.ApplicationModel.Core;
 
 namespace IpScanner.Ui.ViewModels.Modules
 {
-    public class ScanningModule : ObservableObject, IDisposable
+    public class ScanningModule : ObservableObject
     {
         private bool _currentlyScanning;
         private bool _paused;
@@ -63,8 +63,6 @@ namespace IpScanner.Ui.ViewModels.Modules
 
         public List<ScannedDevice> Devices => _scannedDevices.ToList();
 
-        public void Dispose() => _cancellationTokenSource.Dispose();
-
         public void InitializeCollection(FilteredCollection<ScannedDevice> scannedDevices)
         {
             _scannedDevices = scannedDevices;
@@ -101,6 +99,7 @@ namespace IpScanner.Ui.ViewModels.Modules
             {
                 await _networkScanner.StartAsync(addresses, _cancellationTokenSource.Token);
             });
+
             thread.Start();
         }
 

@@ -255,6 +255,9 @@
   <data name="OptionsNavigationView.PaneTitle" xml:space="preserve">
     <value>Налаштування</value>
   </data>
+  <data name="Pause.Content" xml:space="preserve">
+    <value>Призупинити</value>
+  </data>
   <data name="Print.Text" xml:space="preserve">
     <value>Друкувати ...</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="Results.Content" xml:space="preserve">
     <value>Результати сканування</value>
+  </data>
+  <data name="Resume.Content" xml:space="preserve">
+    <value>Продовжити</value>
   </data>
   <data name="SaveAs.Text" xml:space="preserve">
     <value>Зберегти як ...</value>
@@ -326,6 +332,9 @@
   </data>
   <data name="StatusDetails.Text" xml:space="preserve">
     <value>Стан</value>
+  </data>
+  <data name="Stop.Text" xml:space="preserve">
+    <value>Зупинити</value>
   </data>
   <data name="Subnet.Content" xml:space="preserve">
     <value>Буде здійснено сканування підмережі цього комп'ютера</value>
