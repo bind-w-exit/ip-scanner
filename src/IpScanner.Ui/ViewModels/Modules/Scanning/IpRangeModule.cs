@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace IpScanner.Ui.ViewModels.Modules
+namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class IpRangeModule : ObservableObject
     {

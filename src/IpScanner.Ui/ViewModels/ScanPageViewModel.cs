@@ -11,7 +11,7 @@ using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
 using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
-using IpScanner.Ui.ViewModels.Modules;
+using IpScanner.Ui.ViewModels.Modules.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

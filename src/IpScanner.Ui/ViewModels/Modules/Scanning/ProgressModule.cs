@@ -3,7 +3,7 @@ using IpScanner.Domain.Enums;
 using IpScanner.Ui.Services;
 using System;
 
-namespace IpScanner.Ui.ViewModels.Modules
+namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class ProgressModule : ObservableObject
     {

@@ -3,7 +3,7 @@ using IpScanner.Domain.Models;
 using IpScanner.Ui.ObjectModels;
 using System;
 
-namespace IpScanner.Ui.ViewModels.Modules
+namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class SearchModule : ObservableObject
     {
