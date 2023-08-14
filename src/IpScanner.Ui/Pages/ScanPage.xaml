@@ -150,7 +150,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xF6FA;" Foreground="DodgerBlue" />
+                        <FontIcon Glyph="&#xF6FA;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="Subnet"/>
@@ -159,7 +159,7 @@
 
                 <Button Margin="5,0,5,0" Command="{Binding IpRangeModule.SetSubnetClassCMask}">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xED5C;" Foreground="DodgerBlue"/>
+                        <FontIcon Glyph="&#xED5C;"/>
                     </StackPanel>
                     <ToolTipService.ToolTip>
                         <ToolTip x:Uid="SubnetC"/>
