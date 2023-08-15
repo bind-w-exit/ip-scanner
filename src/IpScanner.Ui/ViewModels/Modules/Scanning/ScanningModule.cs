@@ -13,22 +13,28 @@ using System.Windows.Input;
 using System.Net;
 using IpScanner.Domain.Validators;
 using Windows.ApplicationModel.Core;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
+using IpScanner.Ui.Messages;
 
 namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class ScanningModule : ObservableObject
     {
-        private bool _currentlyScanning;
         private bool _paused;
         private bool _stopping;
+        private bool _currentlyScanning;
+        private ScannedDevice _selectedDevice;
         private readonly INetworkScanner _networkScanner;
         private readonly IValidator<IpRange> _ipRangeValidator;
         private readonly ProgressModule _progressModule;
         private readonly IpRangeModule _ipRangeModule;
+        private readonly FavoritesDevicesModule _favoritesDevicesModule;
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public ScanningModule(INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, ProgressModule progressModule, IpRangeModule ipRangeModule)
+        public ScanningModule(IMessenger messanger, INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, 
+            ProgressModule progressModule, IpRangeModule ipRangeModule, FavoritesDevicesModule favoritesDevicesModule)
         {
             _networkScanner = networkScanner;
             _ipRangeValidator = ipRangeValidator;
@@ -41,6 +47,12 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             _networkScanner.DeviceScanned += DeviceScannedHandler;
             _networkScanner.ScanningFinished += ScanningFinished;
             _cancellationTokenSource = new CancellationTokenSource();
+
+            messanger.Register<DeviceSelectedMessage>(this, (sender, message) =>
+            {
+                _selectedDevice = message.Device;
+            });
+            _favoritesDevicesModule = favoritesDevicesModule;
         }
 
         public bool CurrentlyScanning
@@ -63,6 +75,8 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         public ICommand ScanCommand => new RelayCommand(Scan);
 
+        public ICommand RescanCommand => new AsyncRelayCommand(RescanAsync);
+
         public ICommand CancelCommand => new RelayCommand(Cancel);
 
         public ICommand PauseCommand => new RelayCommand(Pause);
@@ -79,26 +93,39 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private void Scan()
         {
             InitiateScanning();
+            var collectionToModify = GetSelectedCollection();
 
-            var ipRange = new IpRange(_ipRangeModule.IpRange);
-            bool validationResult = _ipRangeValidator.Validate(ipRange);  
-            if (validationResult == false)
+            IEnumerable<IPAddress> items = _favoritesDevicesModule.DisplayFavorites 
+                ? collectionToModify.Select(f => f.Ip).ToList()
+                : GetAddressesBasedOnIpRange();
+
+            if (items == null)
             {
                 OnValidationError();
-                return;
             }
+            else
+            {
+                collectionToModify.Clear();
 
-            IEnumerable<IPAddress> addresses = ipRange.GenerateIPAddresses();
-            _progressModule.TotalCountOfIps = addresses.Count();
+                _progressModule.SetTotalCountOfIps(items.Count());
+                StartScanning(items);
+            }
+        }
 
-            StartScanning(addresses);
+        private async Task RescanAsync()
+        {
+            InitiateScanning();
+
+            IEnumerable<IPAddress> addresses = new List<IPAddress> { _selectedDevice.Ip };
+            _progressModule.SetTotalCountOfIps(addresses.Count());
+
+            await _networkScanner.StartAsync(addresses, _cancellationTokenSource.Token);
         }
 
         private void InitiateScanning()
         {
             CurrentlyScanning = true;
             _progressModule.ResetProgress();
-            _scannedDevices.Clear();
         }
 
         private void StartScanning(IEnumerable<IPAddress> addresses)
@@ -144,16 +171,38 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         private void AddDevice(ScannedDevice scannedDevice)
         {
-            if (scannedDevice.Status == DeviceStatus.Online)
+            FilteredCollection<ScannedDevice> currentCollection = GetSelectedCollection();
+
+            ScannedDevice exists = currentCollection.FirstOrDefault(device => device.Ip.Equals(scannedDevice.Ip));
+            if (exists != null)
             {
-                _scannedDevices.Insert(0, scannedDevice);
+                currentCollection.ReplaceItem(exists, scannedDevice);
             }
             else
             {
-                _scannedDevices.Add(scannedDevice);
+                if (scannedDevice.Status == DeviceStatus.Online)
+                {
+                    currentCollection.Insert(0, scannedDevice);
+                }
+                else
+                {
+                    currentCollection.Add(scannedDevice);
+                }
             }
 
-            _progressModule.UpdateProgress(_scannedDevices.Count, scannedDevice.Status);
+            _progressModule.IncreaseProgress(scannedDevice.Status);
+        }
+
+        private IEnumerable<IPAddress> GetAddressesBasedOnIpRange()
+        {
+            var ipRange = new IpRange(_ipRangeModule.IpRange);
+            bool validationResult = _ipRangeValidator.Validate(ipRange);
+            if (validationResult == false)
+            {
+                return null;
+            }
+
+            return ipRange.GenerateIPAddresses();
         }
 
         private void FinishScanning()
@@ -161,6 +210,13 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             CurrentlyScanning = false;
             Paused = false;
             Stopping = false;
+        }
+
+        private FilteredCollection<ScannedDevice> GetSelectedCollection()
+        {
+            return _favoritesDevicesModule.DisplayFavorites
+                ? _favoritesDevicesModule.FavoritesDevices
+                : _scannedDevices;
         }
 
         private async void ScanningFinished(object sender, EventArgs e)
