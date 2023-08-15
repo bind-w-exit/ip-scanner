@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Domain.Models;
+using IpScanner.Ui.Pages;
 using IpScanner.Ui.Printing;
 using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
@@ -13,6 +14,8 @@ namespace IpScanner.Ui
     {
         public static IServiceCollection ConfigureUiServices(this IServiceCollection services)
         {
+            services.AddTransient<OptionsPage>();
+
             services.AddSingleton<MainPageViewModel>();
             services.AddSingleton<ScanPageViewModel>();
             services.AddSingleton<DetailsPageViewModel>();

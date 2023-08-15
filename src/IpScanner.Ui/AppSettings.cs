@@ -1,4 +1,6 @@
-﻿namespace IpScanner.Ui
+﻿using Windows.UI.Xaml;
+
+namespace IpScanner.Ui
 {
     public class AppSettings
     {
@@ -12,6 +14,7 @@
             ShowDetails = false;
             FavoritesSelected = false;
             IpRange = string.Empty;
+            ColorTheme = ElementTheme.Default.ToString();
         }
 
         public bool ShowUnknown { get; set; }
@@ -22,5 +25,6 @@
         public bool ShowDetails { get; set; }
         public bool FavoritesSelected { get; set; }
         public string IpRange { get; set; }
+        public string ColorTheme { get; set; }
     }
 }

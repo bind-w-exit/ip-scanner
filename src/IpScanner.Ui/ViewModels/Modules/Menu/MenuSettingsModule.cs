@@ -9,16 +9,19 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
 {
     public class MenuSettingsModule : ObservableObject
     {
+        private readonly OptionsPage _optionsPage;
         private readonly INavigationService _navigationService;
         private readonly ILocalizationService _localizationService;
         private readonly IModalsService _modalsService;
 
         public MenuSettingsModule(INavigationService navigationService, ILocalizationService localizationService,
-                       IModalsService modalsService)
+                       IModalsService modalsService, OptionsPage optionsPage)
         {
             _navigationService = navigationService;
             _localizationService = localizationService;
             _modalsService = modalsService;
+
+            _optionsPage = optionsPage;
         }
 
         public AsyncRelayCommand<string> ChangeLanguageCommand { get => new AsyncRelayCommand<string>(ChangeLanguageAsync); }
@@ -33,7 +36,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
 
         private async Task ShowOptionsDialog()
         {
-            await _modalsService.ShowPageAsync(typeof(OptionsPage));
+            await _modalsService.ShowPageAsync(_optionsPage.GetType());
         }
     }
 }

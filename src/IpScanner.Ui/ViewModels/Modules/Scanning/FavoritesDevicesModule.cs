@@ -146,7 +146,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private void UnloadFavorites()
         {
             DisplayFavorites = false;
-            FavoritesDevices.Clear();
+            FavoritesDevices?.Clear();
         }
 
         private async Task AddToFavoritesAsync()

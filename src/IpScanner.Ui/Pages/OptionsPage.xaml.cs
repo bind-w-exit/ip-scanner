@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using IpScanner.Ui.Services;
+﻿using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace IpScanner.Ui.Pages
 {
