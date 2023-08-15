@@ -95,20 +95,20 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             InitiateScanning();
             var collectionToModify = GetSelectedCollection();
 
-            List<IPAddress> addresses = _favoritesDevicesModule.DisplayFavorites 
+            IEnumerable<IPAddress> items = _favoritesDevicesModule.DisplayFavorites 
                 ? collectionToModify.Select(f => f.Ip).ToList()
-                : GetAddressesBasedOnIpRange().ToList();
+                : GetAddressesBasedOnIpRange();
 
-            collectionToModify.Clear();
-
-            if (addresses == null)
+            if (items == null)
             {
                 OnValidationError();
             }
             else
             {
-                _progressModule.SetTotalCountOfIps(addresses.Count());
-                StartScanning(addresses);
+                collectionToModify.Clear();
+
+                _progressModule.SetTotalCountOfIps(items.Count());
+                StartScanning(items);
             }
         }
 
