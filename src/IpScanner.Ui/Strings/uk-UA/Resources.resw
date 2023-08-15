@@ -120,6 +120,9 @@
   <data name="About.Text" xml:space="preserve">
     <value>Відомості ...</value>
   </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>Все</value>
+  </data>
   <data name="CheckForUpdates.Text" xml:space="preserve">
     <value>Перевірка наявності оновлень</value>
   </data>
@@ -149,6 +152,15 @@
   </data>
   <data name="Copy.Text" xml:space="preserve">
     <value>Скопіювати</value>
+  </data>
+  <data name="CopyMACAddress.Text" xml:space="preserve">
+    <value>MAC адреса</value>
+  </data>
+  <data name="CopyManufacturer.Text" xml:space="preserve">
+    <value>Виробник</value>
+  </data>
+  <data name="CopyName.Text" xml:space="preserve">
+    <value>Ім'я</value>
   </data>
   <data name="CorruptedMessage" xml:space="preserve">
     <value>Файл пошкоджено. Будь ласка, видаліть його та повторіть спробу.</value>

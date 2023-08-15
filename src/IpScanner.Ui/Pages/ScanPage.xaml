@@ -66,13 +66,13 @@
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
             <MenuFlyoutSubItem x:Uid="Copy">
-                <MenuFlyoutItem Text="All" Command="{Binding CopyAllCommand}"> </MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="All" Command="{Binding CopyAllCommand}"> </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                
-                <MenuFlyoutItem Text="Name" Command="{Binding CopyNameCommand}"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="IP" Command="{Binding CopyIpCommand}"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="Manufacturer" Command="{Binding CopyManufacturerCommand}"></MenuFlyoutItem>
-                <MenuFlyoutItem Text="MAC address" Command="{Binding CopyMacCommand}"></MenuFlyoutItem>
+
+                <MenuFlyoutItem x:Uid="CopyName" Command="{Binding CopyNameCommand}"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="Ip" Command="{Binding CopyIpCommand}"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="CopyManufacturer" Command="{Binding CopyManufacturerCommand}"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="CopyMACAddress" Command="{Binding CopyMacCommand}"></MenuFlyoutItem>
             </MenuFlyoutSubItem>
             <MenuFlyoutItem x:Uid="Rescan" Command="{Binding ScanningModule.RescanCommand}" 
                             IsEnabled="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BooleanInvertConverter}}"/>
