@@ -99,5 +99,10 @@ namespace IpScanner.Domain.Models
             _favorite = false;
             return _favorite;
         }
+
+        public override string ToString()
+        {
+            return $"{Status}: {Name}; {Ip}; {Manufacturer}; {MacAddress}; {Comments}";
+        }
     }
 }

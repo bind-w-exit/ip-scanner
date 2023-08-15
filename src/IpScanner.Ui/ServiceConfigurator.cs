@@ -51,6 +51,8 @@ namespace IpScanner.Ui
 
             services.AddSingleton<ISettingsService, SettingsService>();
 
+            services.AddTransient<IClipboardService, ClipboardService>();
+
             return services;
         }
     }
