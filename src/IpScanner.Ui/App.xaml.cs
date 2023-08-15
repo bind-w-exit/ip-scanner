@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using IpScanner.Domain;
 using IpScanner.Infrastructure;
+using IpScanner.Ui.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.ApplicationModel;
@@ -14,6 +15,7 @@ namespace IpScanner.Ui
     sealed partial class App : Application
     {
         private readonly IServiceCollection _serviceCollection;
+        private IServiceProvider _serviceProvider;
 
         public App()
         {
@@ -41,7 +43,10 @@ namespace IpScanner.Ui
             }
 
             _serviceCollection.AddSingleton(rootFrame);
-            ConfigureIoc();
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
+            ConfigureIoc(_serviceProvider);
+
+            _serviceProvider.GetRequiredService<ISettingsService>();
 
             if (e.PrelaunchActivated == false)
             {
@@ -62,12 +67,21 @@ namespace IpScanner.Ui
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+
+            if(_serviceProvider == null)
+            {
+                throw new InvalidOperationException("Service provider is not initialized");
+            }
+
+            var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+            settingsService.SaveSettings();
+
             deferral.Complete();
         }
 
-        private void ConfigureIoc()
+        private void ConfigureIoc(IServiceProvider serviceProvider)
         {
-             Ioc.Default.ConfigureServices(_serviceCollection.BuildServiceProvider());
+             Ioc.Default.ConfigureServices(serviceProvider);
         }
     }
 }

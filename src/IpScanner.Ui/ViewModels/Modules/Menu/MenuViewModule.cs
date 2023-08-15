@@ -5,6 +5,7 @@ using IpScanner.Domain.Enums;
 using IpScanner.Domain.Models;
 using IpScanner.Ui.Messages;
 using IpScanner.Ui.ObjectModels;
+using IpScanner.Ui.Services;
 
 namespace IpScanner.Ui.ViewModels.Modules.Menu
 {
@@ -17,17 +18,19 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
         private bool _showMiscellaneous;
         private bool _showActions;
         private readonly IMessenger _messenger;
+        private readonly AppSettings _appSettings;
         private readonly ItemFilter<ScannedDevice> _unknownFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Unknown);
         private readonly ItemFilter<ScannedDevice> _onlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Online);
         private readonly ItemFilter<ScannedDevice> _offlineFilter = new ItemFilter<ScannedDevice>(device => device.Status != DeviceStatus.Offline);
 
-        public MenuViewModule(IMessenger messenger)
+        public MenuViewModule(IMessenger messenger, ISettingsService settingsService)
         {
             _messenger = messenger;
+            _appSettings = settingsService.Settings;
 
-            ShowUnknown = false;
-            ShowOnline = true;
-            ShowOffline = true;
+            ShowUnknown = _appSettings.ShowUnknown;
+            ShowOnline = _appSettings.ShowOnline;
+            ShowOffline = _appSettings.ShowOffline;
             ShowDetails = false;
             ShowMiscellaneous = true;
             ShowActions = true;
@@ -39,7 +42,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             set
             {
                 _messenger.Send(new FilterMessage(_unknownFilter, !value));
-                SetProperty(ref _showUnknown, value);
+                if(SetProperty(ref _showUnknown, value))
+                {
+                    _appSettings.ShowUnknown = value;
+                }
             }
         }
 
@@ -48,9 +54,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             get => _showOnline;
             set
             {
+                _messenger.Send(new FilterMessage(_onlineFilter, !value));
                 if (SetProperty(ref _showOnline, value))
                 {
-                    _messenger.Send(new FilterMessage(_onlineFilter, !value));
+                    _appSettings.ShowOnline = value;
                 }
             }
         }
@@ -61,7 +68,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             set
             {
                 _messenger.Send(new FilterMessage(_offlineFilter, !value));
-                SetProperty(ref _showOffline, value);
+                if(SetProperty(ref _showOffline, value))
+                {
+                    _appSettings.ShowOffline = value;
+                }
             }
         }
 

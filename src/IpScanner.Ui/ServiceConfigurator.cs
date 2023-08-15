@@ -46,6 +46,8 @@ namespace IpScanner.Ui
 
             services.AddTransient<IModalsService, ModalsService>();
 
+            services.AddSingleton<ISettingsService, SettingsService>();
+
             return services;
         }
     }
