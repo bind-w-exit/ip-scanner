@@ -125,6 +125,7 @@
     <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Convertors\BoolToVisibilityInvertConvertor.cs" />
     <Compile Include="Convertors\DeviceStatusToGlyphConverter.cs" />
+    <Compile Include="Convertors\MacAddressToStringConverter.cs" />
     <Compile Include="Convertors\NavigationViewItemConverter.cs" />
     <Compile Include="Convertors\NullBoolConvertor.cs" />
     <Compile Include="Convertors\RightTappedToScannedDeviceConverter.cs" />

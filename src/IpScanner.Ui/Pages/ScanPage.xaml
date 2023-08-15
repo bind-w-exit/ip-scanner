@@ -23,6 +23,7 @@
         <convertors:BoolToVisibilityInvertConvertor x:Key="BoolToVisibilityInvertConvertor" />
         <convertors:NullBoolConvertor x:Key="NullBoolConvertor" />
         <convertors:RightTappedToScannedDeviceConverter x:Key="RightTappedToScannedDeviceConverter" />
+        <convertors:MacAddressToStringConverter x:Key="MacAddressToStringConverter" />
 
         <MenuFlyout x:Key="ResultsContextMenu">
             <MenuFlyoutItem x:Uid="Explore" Command="{Binding ExploreInExplorerCommand}">
@@ -32,6 +33,11 @@
             </MenuFlyoutItem>
 
             <MenuFlyoutSubItem x:Uid="Tools">
+                <MenuFlyoutItem Text="Ping" IsEnabled="False"></MenuFlyoutItem>
+                <MenuFlyoutItem Text="Traceroute" IsEnabled="False"></MenuFlyoutItem>
+                <MenuFlyoutItem Text="Telnet" IsEnabled="False"></MenuFlyoutItem>
+                <MenuFlyoutItem Text="SSH" IsEnabled="False"></MenuFlyoutItem>
+
                 <MenuFlyoutItem Text="HTTP" Command="{Binding ExploreHttpCommand}">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE774;" />
@@ -345,7 +351,7 @@
                                 <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
                                 <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
                                 <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" />
                                 <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                             </controls:DataGrid.Columns>
                         </controls:DataGrid>
@@ -379,7 +385,7 @@
                                 <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
                                 <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
                                 <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" />
                                 <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                             </controls:DataGrid.Columns>
                         </controls:DataGrid>

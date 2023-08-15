@@ -14,9 +14,11 @@ using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules.Scanning;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using Windows.System;
 
 namespace IpScanner.Ui.ViewModels
 {
