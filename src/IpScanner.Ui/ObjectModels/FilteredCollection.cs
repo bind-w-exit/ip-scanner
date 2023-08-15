@@ -19,16 +19,6 @@ namespace IpScanner.Ui.ObjectModels
             get => _filteredItems;
         }
 
-        protected override void InsertItem(int index, T item)
-        {
-            base.InsertItem(index, item);
-
-            if (ItemSutisfiesFilters(item))
-            {
-                _filteredItems.Insert(index, item);
-            }
-        }
-
         public void AddFilter(ItemFilter<T> filter)
         {
             _filters.Add(filter);
@@ -52,11 +42,23 @@ namespace IpScanner.Ui.ObjectModels
             }
         }
 
-        public void AddRange(IEnumerable<T> items)
+        public void ReplaceItem(T oldItem, T newItem)
         {
-            foreach (var item in items)
+            var index = IndexOf(oldItem);
+
+            if (index != -1)
             {
-                Add(item);
+                this[index] = newItem;
+            }
+        }
+
+        protected override void InsertItem(int index, T item)
+        {
+            base.InsertItem(index, item);
+
+            if (ItemSutisfiesFilters(item))
+            {
+                _filteredItems.Insert(index, item);
             }
         }
 

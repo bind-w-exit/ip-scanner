@@ -66,7 +66,8 @@
             <MenuFlyoutSeparator></MenuFlyoutSeparator>
 
             <MenuFlyoutItem x:Uid="Copy" IsEnabled="False"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="Rescan" IsEnabled="False"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Rescan" Command="{Binding ScanningModule.RescanCommand}" 
+                            IsEnabled="{Binding ScanningModule.CurrentlyScanning, Converter={StaticResource BooleanInvertConverter}}"/>
             <MenuFlyoutItem x:Uid="SaveAs" Command="{Binding SaveDeviceCommand}">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE792;" />

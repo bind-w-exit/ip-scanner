@@ -13,14 +13,18 @@ using System.Windows.Input;
 using System.Net;
 using IpScanner.Domain.Validators;
 using Windows.ApplicationModel.Core;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
+using IpScanner.Ui.Messages;
 
 namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
     public class ScanningModule : ObservableObject
     {
-        private bool _currentlyScanning;
         private bool _paused;
         private bool _stopping;
+        private bool _currentlyScanning;
+        private ScannedDevice _selectedDevice;
         private readonly INetworkScanner _networkScanner;
         private readonly IValidator<IpRange> _ipRangeValidator;
         private readonly ProgressModule _progressModule;
@@ -28,7 +32,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public ScanningModule(INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, ProgressModule progressModule, IpRangeModule ipRangeModule)
+        public ScanningModule(IMessenger messanger, INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, ProgressModule progressModule, IpRangeModule ipRangeModule)
         {
             _networkScanner = networkScanner;
             _ipRangeValidator = ipRangeValidator;
@@ -41,6 +45,11 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             _networkScanner.DeviceScanned += DeviceScannedHandler;
             _networkScanner.ScanningFinished += ScanningFinished;
             _cancellationTokenSource = new CancellationTokenSource();
+
+            messanger.Register<DeviceSelectedMessage>(this, (sender, message) =>
+            {
+                _selectedDevice = message.Device;
+            });
         }
 
         public bool CurrentlyScanning
@@ -63,6 +72,8 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         public ICommand ScanCommand => new RelayCommand(Scan);
 
+        public ICommand RescanCommand => new AsyncRelayCommand(RescanAsync);
+
         public ICommand CancelCommand => new RelayCommand(Cancel);
 
         public ICommand PauseCommand => new RelayCommand(Pause);
@@ -79,6 +90,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private void Scan()
         {
             InitiateScanning();
+            _scannedDevices.Clear();
 
             var ipRange = new IpRange(_ipRangeModule.IpRange);
             bool validationResult = _ipRangeValidator.Validate(ipRange);  
@@ -89,16 +101,25 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             }
 
             IEnumerable<IPAddress> addresses = ipRange.GenerateIPAddresses();
-            _progressModule.TotalCountOfIps = addresses.Count();
+            _progressModule.SetTotalCountOfIps(addresses.Count());
 
             StartScanning(addresses);
+        }
+
+        private async Task RescanAsync()
+        {
+            InitiateScanning();
+
+            IEnumerable<IPAddress> addresses = new List<IPAddress> { _selectedDevice.Ip };
+            _progressModule.SetTotalCountOfIps(addresses.Count());
+
+            await _networkScanner.StartAsync(addresses, _cancellationTokenSource.Token);
         }
 
         private void InitiateScanning()
         {
             CurrentlyScanning = true;
             _progressModule.ResetProgress();
-            _scannedDevices.Clear();
         }
 
         private void StartScanning(IEnumerable<IPAddress> addresses)
@@ -144,16 +165,24 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         private void AddDevice(ScannedDevice scannedDevice)
         {
-            if (scannedDevice.Status == DeviceStatus.Online)
+            ScannedDevice exists = _scannedDevices.FirstOrDefault(device => device.Ip.Equals(scannedDevice.Ip));
+            if (exists != null)
             {
-                _scannedDevices.Insert(0, scannedDevice);
+                _scannedDevices.ReplaceItem(exists, scannedDevice);
             }
             else
             {
-                _scannedDevices.Add(scannedDevice);
+                if (scannedDevice.Status == DeviceStatus.Online)
+                {
+                    _scannedDevices.Insert(0, scannedDevice);
+                }
+                else
+                {
+                    _scannedDevices.Add(scannedDevice);
+                }
             }
 
-            _progressModule.UpdateProgress(_scannedDevices.Count, scannedDevice.Status);
+            _progressModule.IncreaseProgress(scannedDevice.Status);
         }
 
         private void FinishScanning()

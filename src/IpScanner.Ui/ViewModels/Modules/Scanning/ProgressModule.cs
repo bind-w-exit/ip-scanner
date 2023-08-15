@@ -89,6 +89,12 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             IncreaseCountOfSpecificDevices(status);
         }
 
+        public void IncreaseProgress(DeviceStatus status)
+        {
+            CountOfScannedIps += 1;
+            IncreaseCountOfSpecificDevices(status);
+        }
+
         public void ResetProgress()
         {
             CountOfScannedIps = 0;
@@ -96,6 +102,11 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             CountOfOnlineDevices = 0;
             CountOfOfflineDevices = 0;
             TotalCountOfIps = int.MaxValue;
+        }
+
+        public void SetTotalCountOfIps(int count)
+        {
+            TotalCountOfIps = count;
         }
 
         private double CalculateProgress()
