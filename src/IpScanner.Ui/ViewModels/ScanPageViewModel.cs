@@ -42,11 +42,12 @@ namespace IpScanner.Ui.ViewModels
         private readonly ILocalizationService _localizationService;
         private readonly IRdpService _rdpService;
         private readonly IWakeOnLanService _wakeOnLanService;
+        private readonly IClipboardService _clipboardService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintService<ScannedDevice> printService, IDeviceRepositoryFactory deviceRepositoryFactory, 
             IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
-            IRdpService rdpService, IWakeOnLanService wakeOnLanService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule,
-            IpRangeModule ipRangeModule, ScanningModule scanningModule)
+            IRdpService rdpService, IWakeOnLanService wakeOnLanService, IClipboardService clipboardService, FavoritesDevicesModule favoritesDevicesModule, 
+            ProgressModule progressModule, IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
@@ -58,6 +59,7 @@ namespace IpScanner.Ui.ViewModels
             _localizationService = localizationService;
             _rdpService = rdpService;
             _wakeOnLanService = wakeOnLanService;
+            _clipboardService = clipboardService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -135,6 +137,16 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand WakeOnLanCommand => new AsyncRelayCommand(WakeOnLanAsync);
 
+        public ICommand CopyAllCommand => new RelayCommand(CopyAll);
+
+        public ICommand CopyNameCommand => new RelayCommand(CopyName);
+
+        public ICommand CopyIpCommand => new RelayCommand(CopyIp);
+
+        public ICommand CopyMacCommand => new RelayCommand(CopyMac);
+
+        public ICommand CopyManufacturerCommand => new RelayCommand(CopyManufacturer);
+
         private void OnRightTapped(ScannedDevice selectedItem)
         {
             SelectedDevice = selectedItem;
@@ -206,6 +218,31 @@ namespace IpScanner.Ui.ViewModels
         private async Task WakeOnLanAsync()
         {
             await _wakeOnLanService.SendPacketAsync(SelectedDevice.MacAddress, SelectedDevice.Ip);
+        }
+
+        private void CopyAll()
+        {
+            _clipboardService.CopyToClipboard(SelectedDevice.ToString());
+        }
+
+        private void CopyName()
+        {
+            _clipboardService.CopyToClipboard(SelectedDevice.Name);
+        }
+
+        private void CopyIp()
+        {
+            _clipboardService.CopyToClipboard(SelectedDevice.Ip.ToString());
+        }
+
+        private void CopyMac()
+        {
+            _clipboardService.CopyToClipboard(SelectedDevice.MacAddress.ToString());
+        }
+
+        private void CopyManufacturer()
+        {
+            _clipboardService.CopyToClipboard(SelectedDevice.Manufacturer);
         }
 
         private void RegisterMessages(IMessenger messenger)
