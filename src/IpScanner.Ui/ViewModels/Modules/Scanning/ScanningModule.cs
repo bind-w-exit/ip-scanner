@@ -29,10 +29,12 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private readonly IValidator<IpRange> _ipRangeValidator;
         private readonly ProgressModule _progressModule;
         private readonly IpRangeModule _ipRangeModule;
+        private readonly FavoritesDevicesModule _favoritesDevicesModule;
         private FilteredCollection<ScannedDevice> _scannedDevices;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public ScanningModule(IMessenger messanger, INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, ProgressModule progressModule, IpRangeModule ipRangeModule)
+        public ScanningModule(IMessenger messanger, INetworkScanner networkScanner, IValidator<IpRange> ipRangeValidator, 
+            ProgressModule progressModule, IpRangeModule ipRangeModule, FavoritesDevicesModule favoritesDevicesModule)
         {
             _networkScanner = networkScanner;
             _ipRangeValidator = ipRangeValidator;
@@ -50,6 +52,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             {
                 _selectedDevice = message.Device;
             });
+            _favoritesDevicesModule = favoritesDevicesModule;
         }
 
         public bool CurrentlyScanning
@@ -90,20 +93,23 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private void Scan()
         {
             InitiateScanning();
-            _scannedDevices.Clear();
+            var collectionToModify = GetSelectedCollection();
 
-            var ipRange = new IpRange(_ipRangeModule.IpRange);
-            bool validationResult = _ipRangeValidator.Validate(ipRange);  
-            if (validationResult == false)
+            List<IPAddress> addresses = _favoritesDevicesModule.DisplayFavorites 
+                ? collectionToModify.Select(f => f.Ip).ToList()
+                : GetAddressesBasedOnIpRange().ToList();
+
+            collectionToModify.Clear();
+
+            if (addresses == null)
             {
                 OnValidationError();
-                return;
             }
-
-            IEnumerable<IPAddress> addresses = ipRange.GenerateIPAddresses();
-            _progressModule.SetTotalCountOfIps(addresses.Count());
-
-            StartScanning(addresses);
+            else
+            {
+                _progressModule.SetTotalCountOfIps(addresses.Count());
+                StartScanning(addresses);
+            }
         }
 
         private async Task RescanAsync()
@@ -165,24 +171,38 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         private void AddDevice(ScannedDevice scannedDevice)
         {
-            ScannedDevice exists = _scannedDevices.FirstOrDefault(device => device.Ip.Equals(scannedDevice.Ip));
+            FilteredCollection<ScannedDevice> currentCollection = GetSelectedCollection();
+
+            ScannedDevice exists = currentCollection.FirstOrDefault(device => device.Ip.Equals(scannedDevice.Ip));
             if (exists != null)
             {
-                _scannedDevices.ReplaceItem(exists, scannedDevice);
+                currentCollection.ReplaceItem(exists, scannedDevice);
             }
             else
             {
                 if (scannedDevice.Status == DeviceStatus.Online)
                 {
-                    _scannedDevices.Insert(0, scannedDevice);
+                    currentCollection.Insert(0, scannedDevice);
                 }
                 else
                 {
-                    _scannedDevices.Add(scannedDevice);
+                    currentCollection.Add(scannedDevice);
                 }
             }
 
             _progressModule.IncreaseProgress(scannedDevice.Status);
+        }
+
+        private IEnumerable<IPAddress> GetAddressesBasedOnIpRange()
+        {
+            var ipRange = new IpRange(_ipRangeModule.IpRange);
+            bool validationResult = _ipRangeValidator.Validate(ipRange);
+            if (validationResult == false)
+            {
+                return null;
+            }
+
+            return ipRange.GenerateIPAddresses();
         }
 
         private void FinishScanning()
@@ -190,6 +210,13 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             CurrentlyScanning = false;
             Paused = false;
             Stopping = false;
+        }
+
+        private FilteredCollection<ScannedDevice> GetSelectedCollection()
+        {
+            return _favoritesDevicesModule.DisplayFavorites
+                ? _favoritesDevicesModule.FavoritesDevices
+                : _scannedDevices;
         }
 
         private async void ScanningFinished(object sender, EventArgs e)
