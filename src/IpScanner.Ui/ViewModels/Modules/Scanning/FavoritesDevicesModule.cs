@@ -25,29 +25,30 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private StorageFile _storageFile;
         private ScannedDevice _selectedDevice;
         private readonly ObservableCollection<string> _collections;
-        private readonly FilteredCollection<ScannedDevice> _filteredDevices;
+        private readonly FilteredCollection<ScannedDevice> _favoriteDevices;
+        private readonly AppSettings _appSettings;
         private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
         private readonly IDeviceRepositoryFactory _deviceRepositoryFactory;
         private readonly ILocalizationService _localizationService;
 
         public FavoritesDevicesModule(IMessenger messenger, IFileService fileService, IDeviceRepositoryFactory deviceRepositoryFactory, 
-            IDialogService dialogService, ILocalizationService localizationService)
+            IDialogService dialogService, ILocalizationService localizationService, ISettingsService settingsService)
         {
+            _appSettings = settingsService.Settings;
             _fileService = fileService;
             _deviceRepositoryFactory = deviceRepositoryFactory;
             _dialogService = dialogService;
             _localizationService = localizationService;
 
-            _displayFavorites = false;
-            _filteredDevices = new FilteredCollection<ScannedDevice>();
+            DisplayFavorites = _appSettings.FavoritesSelected;
             _collections = new ObservableCollection<string>
             {
                 "Results",
                 "Favorites"
             };
-
-            SelectedCollection = _collections.First();
+            SelectedCollection = _appSettings.FavoritesSelected ? "Favorites" : "Results";
+            _favoriteDevices = new FilteredCollection<ScannedDevice>();
 
             RegisterMessages(messenger);
         }
@@ -55,7 +56,13 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         public bool DisplayFavorites
         {
             get => _displayFavorites;
-            set => SetProperty(ref _displayFavorites, value);
+            set
+            {
+                if(SetProperty(ref _displayFavorites, value))
+                {
+                    _appSettings.FavoritesSelected = value;
+                }
+            }
         }
 
         public string SelectedCollection
@@ -68,7 +75,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             }
         }
 
-        public FilteredCollection<ScannedDevice> FavoritesDevices { get => _filteredDevices; }
+        public FilteredCollection<ScannedDevice> FavoritesDevices { get => _favoriteDevices; }
 
         public ICommand ExecuteSelectedOption => new AsyncRelayCommand<string>(ExecuteOptionAsync);
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IpScanner.Ui.Services;
 
 namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
@@ -7,11 +8,14 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
     {
         private string _ipRange;
         private readonly ValidationModule _validationModule;
+        private readonly AppSettings _appSettings;
 
-        public IpRangeModule()
+        public IpRangeModule(ISettingsService settingsService)
         {
+            _appSettings = settingsService.Settings;
             _validationModule = new ValidationModule();
-            IpRange = string.Empty;
+
+            IpRange = _appSettings.IpRange;
         }
 
         public string IpRange
@@ -20,7 +24,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             set
             {
                 _validationModule.HasValidationError = false;
-                SetProperty(ref _ipRange, value);
+                if(SetProperty(ref _ipRange, value))
+                {
+                    _appSettings.IpRange = value;
+                }
             }
         }
 

@@ -31,9 +31,9 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             ShowUnknown = _appSettings.ShowUnknown;
             ShowOnline = _appSettings.ShowOnline;
             ShowOffline = _appSettings.ShowOffline;
-            ShowDetails = false;
-            ShowMiscellaneous = true;
-            ShowActions = true;
+            ShowDetails = _appSettings.ShowDetails;
+            ShowMiscellaneous = _appSettings.ShowMiscellaneousToolbar;
+            ShowActions = _appSettings.ShowActionsToolbar;
         }
 
         public bool ShowUnknown
@@ -80,9 +80,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             get => _showDetails;
             set
             {
+                _messenger.Send(new DetailsPageVisibilityMessage(value));
                 if (SetProperty(ref _showDetails, value))
                 {
-                    _messenger.Send(new DetailsPageVisibilityMessage(value));
+                    _appSettings.ShowDetails = value;
                 }
             }
         }
@@ -92,9 +93,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             get => _showMiscellaneous;
             set
             {
+                _messenger.Send(new MiscellaneousBarVisibilityMessage(value));
                 if (SetProperty(ref _showMiscellaneous, value))
                 {
-                    _messenger.Send(new MiscellaneousBarVisibilityMessage(value));
+                    _appSettings.ShowMiscellaneousToolbar = value;
                 }
             }
         }
@@ -104,9 +106,10 @@ namespace IpScanner.Ui.ViewModels.Modules.Menu
             get => _showActions;
             set
             {
+                _messenger.Send(new ActionsBarVisibilityMessage(value));
                 if (SetProperty(ref _showActions, value))
                 {
-                    _messenger.Send(new ActionsBarVisibilityMessage(value));
+                    _appSettings.ShowActionsToolbar = value;
                 }
             }
         }
