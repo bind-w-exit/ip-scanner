@@ -120,8 +120,14 @@
   <data name="About.Text" xml:space="preserve">
     <value>Відомості ...</value>
   </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Додатково</value>
+  </data>
   <data name="All.Text" xml:space="preserve">
     <value>Все</value>
+  </data>
+  <data name="ChangeMAC.Text" xml:space="preserve">
+    <value>Змінити MAC-адресу ...</value>
   </data>
   <data name="CheckForUpdates.Text" xml:space="preserve">
     <value>Перевірка наявності оновлень</value>
@@ -179,6 +185,9 @@
   </data>
   <data name="Details.Text" xml:space="preserve">
     <value>Відомості</value>
+  </data>
+  <data name="EditComment.Text" xml:space="preserve">
+    <value>Змінити коментар</value>
   </data>
   <data name="English.Text" xml:space="preserve">
     <value>Англійська (en-US)</value>
@@ -281,6 +290,9 @@
   </data>
   <data name="RdpError" xml:space="preserve">
     <value>Не вдалося підключитися до пристрою через протокол RDP</value>
+  </data>
+  <data name="Rename.Text" xml:space="preserve">
+    <value>Перейменувати</value>
   </data>
   <data name="ReportBug.Text" xml:space="preserve">
     <value>Повідомити про помилку</value>

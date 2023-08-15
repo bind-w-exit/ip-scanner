@@ -97,6 +97,12 @@
                     <FontIcon Glyph="&#xECC9;" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
+
+            <MenuFlyoutItem x:Uid="Rename" IsEnabled="False"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="EditComment" IsEnabled="False"></MenuFlyoutItem>
+            <MenuFlyoutSubItem x:Uid="Advanced">
+                <MenuFlyoutItem x:Uid="ChangeMAC" IsEnabled="False"></MenuFlyoutItem>
+            </MenuFlyoutSubItem>
         </MenuFlyout>
     </Page.Resources>
 

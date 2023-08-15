@@ -120,8 +120,14 @@
   <data name="About.Text" xml:space="preserve">
     <value>About ...</value>
   </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
   <data name="All.Text" xml:space="preserve">
     <value>All</value>
+  </data>
+  <data name="ChangeMAC.Text" xml:space="preserve">
+    <value>Edit MAC address ...</value>
   </data>
   <data name="CheckForUpdates.Text" xml:space="preserve">
     <value>Check for updates</value>
@@ -179,6 +185,9 @@
   </data>
   <data name="Details.Text" xml:space="preserve">
     <value>Details</value>
+  </data>
+  <data name="EditComment.Text" xml:space="preserve">
+    <value>Edit comment</value>
   </data>
   <data name="English.Text" xml:space="preserve">
     <value>English (en-US)</value>
@@ -281,6 +290,9 @@
   </data>
   <data name="RdpError" xml:space="preserve">
     <value>Could not connect to device via RDP protocol</value>
+  </data>
+  <data name="Rename.Text" xml:space="preserve">
+    <value>Rename</value>
   </data>
   <data name="ReportBug.Text" xml:space="preserve">
     <value>Report a bug</value>
