@@ -104,10 +104,10 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
 
-            <MenuFlyoutItem x:Uid="Rename" IsEnabled="False"></MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="EditComment" IsEnabled="False"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="Rename" Command="{Binding EditNameCommand}"></MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="EditComment" Command="{Binding EditCommentsCommand}"></MenuFlyoutItem>
             <MenuFlyoutSubItem x:Uid="Advanced">
-                <MenuFlyoutItem x:Uid="ChangeMAC" IsEnabled="False"></MenuFlyoutItem>
+                <MenuFlyoutItem x:Uid="ChangeMAC" Command="{Binding EditMacCommand}"></MenuFlyoutItem>
             </MenuFlyoutSubItem>
         </MenuFlyout>
     </Page.Resources>
@@ -323,12 +323,13 @@
                 <ScrollViewer Grid.Row="1" Padding="5" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                     <Grid x:Name="DevicesGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                         <!-- Results list -->
-                        <controls:DataGrid x:Name="ScannedDevicesDataGrid" ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
-                            AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
-                            ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        <controls:DataGrid x:Name="ScannedDevicesDataGrid" AutoGenerateColumns="False" CanBeScrollAnchor="True" 
+                            ScrollViewer.VerticalScrollMode ="Enabled" ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ItemsSource="{Binding ScannedDevices.FilteredItems, Mode=TwoWay}" 
+                            SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                             Visibility="{Binding FavoritesDevicesModule.DisplayFavorites, Converter={StaticResource BoolToVisibilityInvertConvertor}}"
-                            ContextFlyout="{StaticResource ResultsContextMenu}">
-                            
+                            ContextFlyout="{StaticResource ResultsContextMenu}"
+                            PreparingCellForEdit="FavoritesDevicesDataGrid_PreparingCellForEdit">
                             <interactivity:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="RightTapped">
                                     <core:InvokeCommandAction Command="{Binding RightTappedCommand}"
@@ -358,11 +359,14 @@
                         <Grid x:Name="CustomPrintContainer"
                             Opacity="0" />
                         <!-- Favorites list -->
-                        <controls:DataGrid x:Name="FavoritesDevicesDataGrid" ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
-                            AutoGenerateColumns="False" CanBeScrollAnchor="True" ScrollViewer.VerticalScrollMode ="Enabled"
-                            ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" ContextFlyout="{StaticResource ResultsContextMenu}">
-
+                        <controls:DataGrid x:Name="FavoritesDevicesDataGrid" AutoGenerateColumns="False" CanBeScrollAnchor="True" 
+                            ScrollViewer.VerticalScrollMode ="Enabled" ScrollViewer.IsVerticalRailEnabled="True" 
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ItemsSource="{Binding FavoritesDevicesModule.FavoritesDevices.FilteredItems}" 
+                            SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                            Visibility="{Binding FavoritesDevicesModule.DisplayFavorites}" 
+                            ContextFlyout="{StaticResource ResultsContextMenu}"
+                            PreparingCellForEdit="FavoritesDevicesDataGrid_PreparingCellForEdit">
                             <interactivity:Interaction.Behaviors>
                                 <core:EventTriggerBehavior EventName="RightTapped">
                                     <core:InvokeCommandAction Command="{Binding RightTappedCommand}"
@@ -385,7 +389,7 @@
                                 <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
                                 <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
                                 <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" IsReadOnly="False"/>
                                 <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                             </controls:DataGrid.Columns>
                         </controls:DataGrid>

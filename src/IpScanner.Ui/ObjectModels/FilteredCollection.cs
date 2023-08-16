@@ -48,7 +48,8 @@ namespace IpScanner.Ui.ObjectModels
 
             if (index != -1)
             {
-                this[index] = newItem;
+                Remove(oldItem);
+                Insert(index, newItem);
             }
         }
 

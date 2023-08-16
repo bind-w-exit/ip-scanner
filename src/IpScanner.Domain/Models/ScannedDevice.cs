@@ -45,12 +45,12 @@ namespace IpScanner.Domain.Models
             _favorite = favorite;
         }
 
-        public DeviceStatus Status { get; private set; }
-        public string Name { get; private set; }
-        public IPAddress Ip { get; private set; }
-        public string Manufacturer { get; private set; }
-        public PhysicalAddress MacAddress { get; private set; }
-        public string Comments { get; private set; }
+        public DeviceStatus Status { get; set; }
+        public string Name { get; set; }
+        public IPAddress Ip { get; set; }
+        public string Manufacturer { get; set; }
+        public PhysicalAddress MacAddress { get; set; }
+        public string Comments { get; set; }
         public bool Favorite { get => _favorite; }
 
         public bool Equals(ScannedDevice other)

@@ -161,6 +161,24 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand CopyManufacturerCommand => new RelayCommand(CopyManufacturer);
 
+        public ICommand EditNameCommand => new RelayCommand(() =>
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Hostname, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
+        });
+
+        public ICommand EditCommentsCommand => new RelayCommand(() =>
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Comments, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
+        });
+
+        public ICommand EditMacCommand => new RelayCommand(() =>
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Mac, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
+        });
+
         private void OnRightTapped(ScannedDevice selectedItem)
         {
             SelectedDevice = selectedItem;
