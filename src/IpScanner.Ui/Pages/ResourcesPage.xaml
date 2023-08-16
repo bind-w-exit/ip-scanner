@@ -8,7 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Resources" FontSize="28" />
-    </Grid>
+    <StackPanel>
+        <TextBlock Text="Scan resources: " FontSize="18"/>
+        <CheckBox Content="Shared folders and printers" IsChecked="True"/>
+        <CheckBox Content="HTTP" IsChecked="True"/>
+        <CheckBox Content="HTTPS" IsChecked="True"/>
+        <CheckBox Content="FTP" IsChecked="True"/>
+        <CheckBox Content="NetBIOS group" />
+        <CheckBox Content="RDP" IsChecked="True"/>
+        <CheckBox Content="Date, time, time zone" />
+    </StackPanel>
 </Page>

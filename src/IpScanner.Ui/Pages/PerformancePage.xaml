@@ -8,7 +8,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Performance" FontSize="24" />
-    </Grid>
+    <StackPanel>
+        <CheckBox Content="High-accuracy scanning (lower speed)" />
+        <TextBlock Text="Scanning speed" />
+        <Slider Minimum="0" Maximum="100" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Slow scanning, low CPU usage" />
+            <TextBlock Grid.Column="1" Text="Fast scanning, high CPU usage" TextAlignment="Right"/>
+        </Grid>
+    </StackPanel>
 </Page>

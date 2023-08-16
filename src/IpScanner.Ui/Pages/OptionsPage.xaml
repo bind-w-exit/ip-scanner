@@ -9,8 +9,8 @@
     mc:Ignorable="d">
 
     <Grid>
-        <NavigationView x:Uid="OptionsNavigationView" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneDisplayMode="Left"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Uid="OptionsNavigationView" IsSettingsVisible="False" IsBackButtonVisible="Collapsed"
+            Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemInvoked">
                     <core:EventTriggerBehavior.Actions>
@@ -38,7 +38,11 @@
             </NavigationView.MenuItems>
 
             <NavigationView.Content>
-                <Frame x:Name="ContentFrame" />
+                <Border CornerRadius="10,0,0,0" BorderThickness="1" Padding="10"
+                        BorderBrush="{ThemeResource TextControlElevationBorderBrush}" 
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Frame x:Name="ContentFrame" Margin="3,0,0,0"/>
+                </Border>
             </NavigationView.Content>
         </NavigationView>
     </Grid>

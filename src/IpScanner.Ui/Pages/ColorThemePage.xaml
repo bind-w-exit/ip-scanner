@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="20">
+    <Grid>
         <ComboBox x:Uid="SelectTheme" MinWidth="250" SelectedValuePath="Tag" 
                   SelectedValue="{Binding SelectedTheme, Mode=TwoWay}">
             <ComboBoxItem x:Uid="Light" Tag="Light"></ComboBoxItem>
