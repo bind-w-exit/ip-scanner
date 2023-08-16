@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Core;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 using IpScanner.Ui.Messages;
+using IpScanner.Ui.Enums;
 
 namespace IpScanner.Ui.ViewModels.Modules.Scanning
 {
@@ -24,6 +25,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         private bool _paused;
         private bool _stopping;
         private bool _currentlyScanning;
+        private CurrentCollection _currentCollection;
         private ScannedDevice _selectedDevice;
         private readonly INetworkScanner _networkScanner;
         private readonly IValidator<IpRange> _ipRangeValidator;
@@ -43,6 +45,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
             Paused = false;
             CurrentlyScanning = false;
             Stopping = false;
+            _currentCollection = CurrentCollection.None;
 
             _networkScanner.DeviceScanned += DeviceScannedHandler;
             _networkScanner.ScanningFinished += ScanningFinished;
@@ -126,6 +129,9 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
         {
             CurrentlyScanning = true;
             _progressModule.ResetProgress();
+            _currentCollection = _favoritesDevicesModule.DisplayFavorites
+                ? CurrentCollection.Favorites
+                : CurrentCollection.Regular;
         }
 
         private void StartScanning(IEnumerable<IPAddress> addresses)
@@ -214,7 +220,7 @@ namespace IpScanner.Ui.ViewModels.Modules.Scanning
 
         private FilteredCollection<ScannedDevice> GetSelectedCollection()
         {
-            return _favoritesDevicesModule.DisplayFavorites
+            return _currentCollection == CurrentCollection.Favorites
                 ? _favoritesDevicesModule.FavoritesDevices
                 : _scannedDevices;
         }
