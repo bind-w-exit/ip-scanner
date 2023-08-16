@@ -352,7 +352,7 @@
                                 <controls:DataGridTextColumn x:Uid="Name" Binding="{Binding Name}" />
                                 <controls:DataGridTextColumn x:Uid="IPAddress" Binding="{Binding Ip}"/>
                                 <controls:DataGridTextColumn x:Uid="Manufacturer" Binding="{Binding Manufacturer}" />
-                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" />
+                                <controls:DataGridTextColumn x:Uid="MACAddress" Binding="{Binding MacAddress, Converter={StaticResource MacAddressToStringConverter}}" IsReadOnly="False"/>
                                 <controls:DataGridTextColumn x:Uid="Comments" Binding="{Binding Comments}" Width="*" />
                             </controls:DataGrid.Columns>
                         </controls:DataGrid>

@@ -161,23 +161,11 @@ namespace IpScanner.Ui.ViewModels
 
         public ICommand CopyManufacturerCommand => new RelayCommand(CopyManufacturer);
 
-        public ICommand EditNameCommand => new RelayCommand(() =>
-        {
-            var message = new SetFocusToCellMessage(Enums.DeviceRow.Hostname, FavoritesDevicesModule.DisplayFavorites);
-            _messanger.Send(message);
-        });
+        public ICommand EditNameCommand => new RelayCommand(EditName);
 
-        public ICommand EditCommentsCommand => new RelayCommand(() =>
-        {
-            var message = new SetFocusToCellMessage(Enums.DeviceRow.Comments, FavoritesDevicesModule.DisplayFavorites);
-            _messanger.Send(message);
-        });
+        public ICommand EditCommentsCommand => new RelayCommand(EditComments);
 
-        public ICommand EditMacCommand => new RelayCommand(() =>
-        {
-            var message = new SetFocusToCellMessage(Enums.DeviceRow.Mac, FavoritesDevicesModule.DisplayFavorites);
-            _messanger.Send(message);
-        });
+        public ICommand EditMacCommand => new RelayCommand(EditMac);
 
         private void OnRightTapped(ScannedDevice selectedItem)
         {
@@ -303,6 +291,24 @@ namespace IpScanner.Ui.ViewModels
         private void CopyManufacturer()
         {
             _clipboardService.CopyToClipboard(SelectedDevice.Manufacturer);
+        }
+
+        private void EditName()
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Hostname, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
+        }
+
+        private void EditComments()
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Comments, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
+        }
+
+        private void EditMac()
+        {
+            var message = new SetFocusToCellMessage(Enums.DeviceRow.Mac, FavoritesDevicesModule.DisplayFavorites);
+            _messanger.Send(message);
         }
 
         private void RegisterMessages(IMessenger messenger)
