@@ -200,7 +200,9 @@ namespace IpScanner.Ui.ViewModels
             if (result.IsFailed)
             {
                 string errorTitle = _localizationService.GetLocalizedString("Error");
-                await _dialogService.ShowMessageAsync(errorTitle, "Failed to find telnet.exe. Check if Telnet is installed");
+                string telnetError = _localizationService.GetLocalizedString("TelnetError");
+
+                await _dialogService.ShowMessageAsync(errorTitle, telnetError);
             }
         }
 

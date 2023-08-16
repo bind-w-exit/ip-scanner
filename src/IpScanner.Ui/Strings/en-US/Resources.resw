@@ -366,6 +366,9 @@
   <data name="SubnetC.Content" xml:space="preserve">
     <value>Subnet of class 'C' will be scanned</value>
   </data>
+  <data name="TelnetError" xml:space="preserve">
+    <value>Failed to find telnet.exe. Check if Telnet is installed</value>
+  </data>
   <data name="Tools.Text" xml:space="preserve">
     <value>Tools</value>
   </data>

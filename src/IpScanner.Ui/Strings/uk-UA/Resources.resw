@@ -366,6 +366,9 @@
   <data name="SubnetC.Content" xml:space="preserve">
     <value>Буде здійснено сканування підмережі класу 'C'</value>
   </data>
+  <data name="TelnetError" xml:space="preserve">
+    <value>Не вдалося знайти telnet.exe. Перевірте, чи встановлено Telnet</value>
+  </data>
   <data name="Tools.Text" xml:space="preserve">
     <value>Інструменти</value>
   </data>
