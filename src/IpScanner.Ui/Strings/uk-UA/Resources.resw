@@ -279,6 +279,9 @@
   <data name="Pause.Content" xml:space="preserve">
     <value>Призупинити</value>
   </data>
+  <data name="Performance.Content" xml:space="preserve">
+    <value>Продуктивність</value>
+  </data>
   <data name="Print.Text" xml:space="preserve">
     <value>Друкувати ...</value>
   </data>
@@ -302,6 +305,9 @@
   </data>
   <data name="Rescan.Text" xml:space="preserve">
     <value>Повторне сканування</value>
+  </data>
+  <data name="Resources.Content" xml:space="preserve">
+    <value>Ресурси</value>
   </data>
   <data name="Results.Content" xml:space="preserve">
     <value>Результати сканування</value>

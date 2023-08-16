@@ -159,6 +159,12 @@
     <Compile Include="Pages\OptionsPage.xaml.cs">
       <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PerformancePage.xaml.cs">
+      <DependentUpon>PerformancePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ResourcesPage.xaml.cs">
+      <DependentUpon>ResourcesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ScanPage.xaml.cs">
       <DependentUpon>ScanPage.xaml</DependentUpon>
     </Compile>
@@ -279,6 +285,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\OptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PerformancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ResourcesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

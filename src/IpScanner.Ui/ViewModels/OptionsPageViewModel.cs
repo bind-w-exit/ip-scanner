@@ -32,6 +32,12 @@ namespace IpScanner.Ui.ViewModels
                     case "ColorTheme":
                         _navigationService.NavigateToPage(_frame, typeof(ColorThemePage));
                         break;
+                    case "Performance":
+                        _navigationService.NavigateToPage(_frame, typeof(PerformancePage));
+                        break;
+                    case "Resources":
+                        _navigationService.NavigateToPage(_frame, typeof(ResourcesPage));
+                        break;
                     default:
                         throw new NotImplementedException();
                 }

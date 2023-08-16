@@ -25,6 +25,16 @@
                         <FontIcon Glyph="&#xE790;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="Performance" Tag="Performance">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D2;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Resources" Tag="Resources">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xF259;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.Content>
