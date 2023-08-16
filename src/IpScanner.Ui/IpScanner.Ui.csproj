@@ -131,6 +131,7 @@
     <Compile Include="Convertors\RightTappedToScannedDeviceConverter.cs" />
     <Compile Include="Convertors\StringContentToVisibility.cs" />
     <Compile Include="Convertors\ValidationErrorToColorConverter.cs" />
+    <Compile Include="Enums\CurrentCollection.cs" />
     <Compile Include="Extensions\ElementThemeExtensions.cs" />
     <Compile Include="Extensions\FilteredCollectionExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
