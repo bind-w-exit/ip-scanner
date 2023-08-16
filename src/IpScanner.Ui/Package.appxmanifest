@@ -44,7 +44,7 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
+    <Capability Name="internetClient"/>
     <DeviceCapability Name="wifiControl" />
   </Capabilities>
 </Package>
