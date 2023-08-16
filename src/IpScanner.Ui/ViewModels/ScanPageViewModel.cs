@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using FluentResults;
 using IpScanner.Domain.Models;
 using IpScanner.Infrastructure.Repositories;
 using IpScanner.Infrastructure.Repositories.Factories;
@@ -14,11 +15,9 @@ using IpScanner.Ui.Services;
 using IpScanner.Ui.ViewModels.Modules.Scanning;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
-using Windows.System;
 
 namespace IpScanner.Ui.ViewModels
 {
@@ -45,11 +44,14 @@ namespace IpScanner.Ui.ViewModels
         private readonly IRdpService _rdpService;
         private readonly IWakeOnLanService _wakeOnLanService;
         private readonly IClipboardService _clipboardService;
+        private readonly ITelnetService _telnetService;
+        private readonly ICmdService _cmdService;
 
         public ScanPageViewModel(IMessenger messenger, IFileService fileService, IPrintService<ScannedDevice> printService, IDeviceRepositoryFactory deviceRepositoryFactory, 
             IUriOpenerService uriOpenerService, IFtpService ftpService, IDialogService dialogService, ILocalizationService localizationService,
-            IRdpService rdpService, IWakeOnLanService wakeOnLanService, IClipboardService clipboardService, FavoritesDevicesModule favoritesDevicesModule, 
-            ProgressModule progressModule, IpRangeModule ipRangeModule, ScanningModule scanningModule)
+            IRdpService rdpService, IWakeOnLanService wakeOnLanService, IClipboardService clipboardService, ICmdService cmdService, 
+            ITelnetService telnetService, FavoritesDevicesModule favoritesDevicesModule, ProgressModule progressModule, 
+            IpRangeModule ipRangeModule, ScanningModule scanningModule)
         {
             _messanger = messenger;
             _fileService = fileService;
@@ -62,6 +64,8 @@ namespace IpScanner.Ui.ViewModels
             _rdpService = rdpService;
             _wakeOnLanService = wakeOnLanService;
             _clipboardService = clipboardService;
+            _cmdService = cmdService;
+            _telnetService = telnetService;
 
             ShowDetails = false;
             ShowMiscellaneous = true;
@@ -123,6 +127,14 @@ namespace IpScanner.Ui.ViewModels
 
         public FavoritesDevicesModule FavoritesDevicesModule => _favoritesDevicesModule;
 
+        public ICommand PingCommand => new RelayCommand(Ping);
+
+        public ICommand TracerouteCommand => new RelayCommand(Traceroute);
+
+        public ICommand SshCommand => new RelayCommand(ResearchSsh);
+
+        public ICommand OpenTelnetCommand => new RelayCommand(OpenTelnet);
+
         public ICommand RightTappedCommand => new RelayCommand<ScannedDevice>(OnRightTapped);
 
         public ICommand SaveDeviceCommand => new AsyncRelayCommand(SaveDeviceAsync);
@@ -164,6 +176,32 @@ namespace IpScanner.Ui.ViewModels
 
             IDeviceRepository repository = _deviceRepositoryFactory.CreateWithFile(file);
             await repository.SaveDevicesAsync(new List<ScannedDevice> { SelectedDevice });
+        }
+
+        private void Ping()
+        {
+            _cmdService.Execute($"ping {SelectedDevice.Ip}");
+        }
+
+        private void Traceroute()
+        {
+            _cmdService.Execute($"tracert {SelectedDevice.Ip}");
+        }
+
+        private void ResearchSsh()
+        {
+            _cmdService.Execute($"plink {SelectedDevice.Ip}");
+        }
+
+        private async void OpenTelnet()
+        {
+            Result result = _telnetService.OpenTelnetSession(SelectedDevice.Ip);
+
+            if (result.IsFailed)
+            {
+                string errorTitle = _localizationService.GetLocalizedString("Error");
+                await _dialogService.ShowMessageAsync(errorTitle, "Failed to find telnet.exe. Check if Telnet is installed");
+            }
         }
 
         private async void ExploreInExplorerAsync()

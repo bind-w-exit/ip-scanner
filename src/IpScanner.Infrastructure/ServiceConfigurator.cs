@@ -39,6 +39,10 @@ namespace IpScanner.Infrastructure
 
             services.AddScoped<IWakeOnLanService, WakeOnLanService>();
 
+            services.AddTransient<ICmdService, CmdService>();
+
+            services.AddTransient<ITelnetService, TelnetService>();
+
             return services;
         }
     }
